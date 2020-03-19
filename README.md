@@ -8,7 +8,7 @@
 
 
 
-/*USER STORIES - SUMMARIZED
+## USER STORIES - SUMMARIZED
 
 Billboard Viewer program on displays must run autonomously once started.
 
@@ -46,9 +46,9 @@ The Billboard Server should be configurable through a db.props properties file
 (note: this file is described later on in this specification), containing fields
 describing how to connect to the database server and the database connection to use. 
 "This will allow us to change where the database is hosted and even change the type of 
-database in use without recompiling the application.”*/
+database in use without recompiling the application.”
 
-
+---
 
 
 
