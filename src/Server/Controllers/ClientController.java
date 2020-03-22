@@ -29,6 +29,17 @@ public class ClientController implements Runnable {
         *
         * Sending looks like this.outputStream.writeUTF("great Success")
         * Close the connection with return;
+        *
+        * eg:
+        * Document request = parseRequest(inputStream.read());
+        * if(request.category == 'Billboard'){
+        *   BillboardModel bbModel = new BillboardModel(dbConn);
+        *   BillboardController bb = new BillboardController(bbModel);
+        *
+        *   if(request.type == 'getBillboard'){
+        *       this.outputStream.writeUTF(bb.getBillboard());
+        *   }
+        * }
         * */
         try{
             this.outputStream.writeUTF("Great Success, Comrades\n");
@@ -39,6 +50,5 @@ public class ClientController implements Runnable {
         } catch (IOException e) {
             System.err.println("Client handler failed: " + e.getMessage());
         }
-
     }
 }
