@@ -32,11 +32,11 @@ public class ClientController implements Runnable {
         *
         * eg:
         * Document request = parseRequest(inputStream.read());
-        * if(request.category == 'Billboard'){
+        * if(request.type == 'Billboard'){
         *   BillboardModel bbModel = new BillboardModel(dbConn);
         *   BillboardController bb = new BillboardController(bbModel);
         *
-        *   if(request.type == 'getBillboard'){
+        *   if(request.task == 'getBillboard'){
         *       this.outputStream.writeUTF(bb.getBillboard());
         *   }
         * }
