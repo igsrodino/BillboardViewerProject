@@ -1,8 +1,5 @@
 package Server.Controllers;
 
-import Server.Models.BillboardModel;
-import Server.Models.ScheduleModel;
-import Server.Models.UserModel;
 import Server.Utilities.Database;
 
 import java.io.DataInputStream;
@@ -14,18 +11,13 @@ public class ClientController implements Runnable {
     private Socket socket;
     private DataInputStream inputStream;
     private DataOutputStream outputStream;
-    private BillboardModel billboard;
-    private UserModel user;
-    private ScheduleModel schedule;
+    private Database dbConn;
 
     public ClientController(Socket socket, DataInputStream inputSteam, DataOutputStream outputStream, Database dbConn){
         this.socket = socket;
         this.inputStream = inputSteam;
         this.outputStream = outputStream;
-        this.billboard = billboard;
-        this.user = user;
-        this.schedule = schedule;
-
+        this.dbConn = dbConn;
     }
 
     @Override
