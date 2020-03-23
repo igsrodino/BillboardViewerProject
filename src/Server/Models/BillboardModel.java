@@ -16,11 +16,9 @@ public class BillboardModel {
     }
     public ResultSet getBillboard(){
         // Returns a ResultSet containing the results of the query
-        return dbConn.runQuery("select * from test");
+        return this.dbConn.runQuery("select * from test");
     }
-    public boolean deleteBillboard(int billboardID){
-        // This is basically it until the database connection is done.
-        // Then we swing back around and actually implement it.
-        return true;
+    public ResultSet deleteBillboard(int billboardID){
+        return this.dbConn.runQuery("delete * from test where Column1 = 1");
     }
 }

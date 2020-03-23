@@ -19,7 +19,7 @@ public class BillboardController {
         int res = 0;
         try{
         while(rs.next()){
-            res +=rs.getInt("te");
+            res +=rs.getInt("Column1");
         }}catch(Exception e){
             System.out.println(e.getMessage());
         }
