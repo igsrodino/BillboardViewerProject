@@ -23,9 +23,7 @@ public class Server {
     public static void main(String[] args){
         try
         {
-            // Create and start the database
             Database db = new Database();
-
             // Start the server
             boolean listening = true;
             ServerSocket serverSocket = null;
@@ -53,7 +51,7 @@ public class Server {
                     DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
 
                     // Create a handler for the request
-                    ClientController client = new ClientController(clientSocket,inputStream, outputStream, db );
+                    ClientController client = new ClientController(clientSocket,inputStream, outputStream, db);
                     Thread t = new Thread(client);
                     t.start();
                 } catch (IOException e) {
@@ -66,6 +64,7 @@ public class Server {
             {
                 System.out.println(" Closing down the server socket gracefully.");
                 serverSocket.close();
+                db.closeConnection();
             }
             catch (IOException e)
             {
