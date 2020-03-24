@@ -17,7 +17,7 @@ public class BillboardController {
         // Don't forget error handling (try catch, exceptions etc)
         this.model.getBillboard();
 
-        return "<billboard>xml</billboard>" + res;
+        return "<billboard>xml</billboard>";
     }
 
 }
