@@ -1,15 +1,16 @@
 package Server.Utilities;
-import javax.xml.transform.Result;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.*;
+import java.util.Properties;
+
 
 // Needs to create a pool of connections, which get used when runQuery gets called, rather than slamming a single
 // connection. Remember this is created and shared between models.
 public class Database {
     // private db connection type data;
     private Connection dbConn;
-    private String jdbcUrl = "jdbc:mysql://localhost:3306/CAB302?useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private String username = "root";
-    private String password = "admin";
     public Database (){
         // Load the configuration from db.props. Use the Context class to load and process. Datasource might be
         // better that Driver
@@ -18,8 +19,14 @@ public class Database {
 
         // Create connection
         try{
-            this.dbConn = DriverManager.getConnection(jdbcUrl, username, password);
+            Properties props = new Properties();
+            InputStream input = new FileInputStream(System.getProperty("user.dir")+ "/db.props");
+            props.load(input);
+            this.dbConn = DriverManager.getConnection(props.getProperty("jdbc.url")+"/"+props.getProperty("jdbc" +
+                            ".schema")+"?useLegacyDatetimeCode=false&serverTimezone=UTC",
+                    props.getProperty("jdbc.username"), props.getProperty("jdbc.password"));
             System.out.println("Database connected");
+            input.close();
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
