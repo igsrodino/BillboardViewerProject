@@ -75,3 +75,46 @@ The `test` folder should already be marked as 'Test Sources Root'. Organise your
 * getSchedule
 * setSchedule
 * deleteSchedule
+
+Request without payload
+
+```xml
+<request>
+	<type>Billboard</type>
+	<task>GetBillboard</task>
+	<data></data>
+</request>
+```
+
+Request with payload
+
+```xml
+<request>
+	<type>User</type>
+	<task>Login</task>
+	<data>
+		<username>bob</username>
+		<password>password-hash</password>
+	</data>
+</request>
+```
+
+Acknowledgement response
+
+```
+<response>
+	<type>success</type>
+	<data></data>
+</response>
+```
+
+Payload bearing response
+
+```
+<response>
+	<type>success</type>
+	<data>
+		<?xml version="1.0" encoding="UTF-8"?> <billboard background="#0000FF">    <message colour="#FFFF00">Welcome to the ____ Corporation's Annual Fundraiser!</message>    <picture url="https://example.com/fundraiser_image.jpg" />     <information colour="#00FFFF">Be sure to check out https://example.com/ for more information.</information> </billboard>
+	</data>
+</response>
+```

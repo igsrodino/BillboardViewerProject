@@ -19,9 +19,10 @@ public class BillboardModel {
     private String information_color;
     private String start_time;
     private String end_time;
+
+    /* Constructs the Billboard object
+    * @param dbConnection  allows access to the database via the connection established at server start*/
     public BillboardModel(Database dbConnection){
-        // Gets passed the database connection on creation, which is then used to retrieve and set billboard specific
-        // records.
         this.dbConn = dbConnection;
         this.background = "";
         this.id = 0;
@@ -64,9 +65,16 @@ public class BillboardModel {
     public String getEnd_time(){
         return this.end_time;
     }
+
+    /*
+    * Fetches the specified billboard
+    * It will populate the Billboard model object with the billboard
+    * data. This can then be accessed via the getter methods
+    * */
     public void getBillboard(){
-        // Returns a ResultSet containing the results of the query
-        ResultSet rs = this.dbConn.runQuery("select * from test");
+        // TODO: Change signature to public bool getBillboard(int billboardID) where billboardID is the id of the
+        //  billboard to retrieve and the return type is the success or failure of retrieval
+        ResultSet rs = this.dbConn.runSelectQuery("select * from test");
         try{
             while(rs.next()){
                 this.id = rs.getInt("id");
@@ -85,6 +93,6 @@ public class BillboardModel {
         }
     }
     public void deleteBillboard(int billboardID){
-        this.dbConn.runQuery("delete * from test where Column1 = 1");
+        this.dbConn.runSelectQuery("delete * from test where Column1 = 1");
     }
 }

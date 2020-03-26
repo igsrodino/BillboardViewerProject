@@ -2,6 +2,7 @@ package Server.Controllers;
 
 import Server.Models.BillboardModel;
 import Server.Utilities.Database;
+import org.w3c.dom.Document;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -58,5 +59,11 @@ public class ClientController implements Runnable {
             System.err.println("Client has failed differently: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+    private String generateResponse (Document data){
+        // Takes an XML Document object and returns a correct string in the response format
+        // Parameter is enclosed in <data></data> tags
+        // If data == null, return acknowledgement response string
+        return "<response></response>";
     }
 }

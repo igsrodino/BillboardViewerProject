@@ -6,8 +6,9 @@ import java.util.Map;
 import java.util.Properties;
 
 
-// Needs to create a pool of connections, which get used when runQuery gets called, rather than slamming a single
-// connection. Remember this is created and shared between models.
+/*
+* Establishes a connection to the database specified in the Server/db.props file
+* */
 public class Database {
     // private db connection type data;
     private Connection dbConn;
@@ -31,6 +32,9 @@ public class Database {
             System.out.println(e.getMessage());
         }
     }
+    /*
+    * Cleanly closes the database connection to prevent the database from getting choked
+    * */
     public void closeConnection(){
         try{
             this.dbConn.close();
@@ -38,6 +42,10 @@ public class Database {
             System.out.println(e.getMessage());
         }
     };
+    /*
+    * Creates any missing tables according to the schema laid out in src/sql-scripts
+    * @return void
+    * */
     private void createTables(){
         // Check for tables. If none found, create some, otherwise pass.
         try{
@@ -97,7 +105,13 @@ public class Database {
             System.out.println("Error: "+e.getMessage());
         }
     }
-    public ResultSet runQuery(String sql){
+    /*
+    * Used to execute a select statement query on the database
+    * Cannot be used to modify data, only retrieve it
+    * @param String   containing a valid sql query
+    * @return ResultSet   containing the results of the query
+    * */
+    public ResultSet runSelectQuery(String sql){
         ResultSet result = null;
         try{
             Statement query = this.dbConn.createStatement();
@@ -106,17 +120,24 @@ public class Database {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-
         return result;
     }
-    public void runUpdate(String sql){
+    /*
+    * Executes an insert,update, or delete query on the database.
+    * Used to modify data, cannot be used to retrieve it
+    * @param sql  contains the sql query to run
+    * @return int  representing the number of rows affected. Returns 0 if the query did nothing
+    * */
+    public int runUpdateQuery(String sql){
+        int rowCount = 0;
         try{
             Statement query = this.dbConn.createStatement();
-            query.executeUpdate(sql);
+            rowCount = query.executeUpdate(sql);
         } catch (SQLException e) {
             System.out.println("Error: "+e.getMessage());
             e.printStackTrace();
         }
+        return rowCount;
     }
 
 }
