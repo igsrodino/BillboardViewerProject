@@ -74,7 +74,7 @@ public class BillboardModel {
     public void getBillboard(){
         // TODO: Change signature to public bool getBillboard(int billboardID) where billboardID is the id of the
         //  billboard to retrieve and the return type is the success or failure of retrieval
-        ResultSet rs = this.dbConn.runSelectQuery("select * from test");
+        ResultSet rs = this.dbConn.runSelectQuery("select * from billboards order by id limit 1");
         try{
             while(rs.next()){
                 this.id = rs.getInt("id");

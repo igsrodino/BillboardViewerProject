@@ -14,11 +14,12 @@ public class Database {
     private Connection dbConn;
     private Properties props;
     private Map<String, Boolean> tables;
-    public Database (){
+    public Database () throws SQLSyntaxErrorException {
         // Populate the hashmap for use in table checking
         tables = new HashMap<String, Boolean>();
         tables.put("billboards", false);
         tables.put("users", false);
+        tables.put("schedule", false);
         tables.put("permissions", false);
         try{
             props = new Properties();
@@ -29,7 +30,7 @@ public class Database {
             System.out.println("Database connected\nChecking for existing tables");
             this.createTables();
         }catch(Exception e){
-            System.out.println(e.getMessage());
+            throw new SQLSyntaxErrorException(e.getMessage());
         }
     }
     /*
@@ -46,7 +47,7 @@ public class Database {
     * Creates any missing tables according to the schema laid out in src/sql-scripts
     * @return void
     * */
-    private void createTables(){
+    private void createTables() throws SQLSyntaxErrorException {
         // Check for tables. If none found, create some, otherwise pass.
         try{
             DatabaseMetaData meta = dbConn.getMetaData();
@@ -54,7 +55,7 @@ public class Database {
             String table = "";
             while(rs.next()){
                 table = rs.getString(3);
-                System.out.println("Table: "+ table);
+                System.out.println("Found table: "+ table);
                 if(tables.containsKey(table) == true){
                     tables.replace(table, true);
                 }
@@ -64,6 +65,15 @@ public class Database {
                 if(entry.getValue() == false){
                     // Create table
                     switch (entry.getKey()){
+
+                        case "users":
+                            createTable.executeUpdate("CREATE TABLE `users` (\n" +
+                                    "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
+                                    "  `username` varchar(255) UNIQUE NOT NULL,\n" +
+                                    "  `password` varchar(255) NOT NULL,\n" +
+                                    "  `salt` varchar(255) NOT NULL\n" +
+                                    ");");
+                            break;
                         case "billboards":
                             createTable.executeUpdate("CREATE TABLE `billboards` (\n" +
                                     "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
@@ -74,35 +84,39 @@ public class Database {
                                     "  `data` varchar(255),\n" +
                                     "  `information` varchar(255),\n" +
                                     "  `information_color` varchar(255),\n" +
-                                    "  `start_time` time,\n" +
-                                    "  `end_time` time\n" +
+                                    "  `owner` int\n" +
                                     ");");
+
                             break;
-                        case "users":
-                            createTable.executeUpdate("CREATE TABLE `users` (\n" +
+                        case "schedule":
+                            createTable.executeUpdate("CREATE TABLE `schedule` (\n" +
                                     "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
-                                    "  `username` varchar(255) UNIQUE NOT NULL,\n" +
-                                    "  `password` varchar(255) NOT NULL\n" +
+                                    "  `start_time` time,\n" +
+                                    "  `end_time` time,\n" +
+                                    "  `duration` int,\n" +
+                                    "  `recurs` int,\n" +
+                                    "  `billboard` int\n" +
                                     ");");
                             break;
                         case "permissions":
                             createTable.executeUpdate("CREATE TABLE `permissions` (\n" +
                                     "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
-                                    "  `permission` enum('create_billboards', 'edit_billboards', 'schedule_billboards', 'edit_users') NOT NULL,\n" +
+                                    "  `permission` ENUM ('create_billboards', 'edit_billboards', 'schedule_billboards', 'edit_users') NOT NULL,\n" +
                                     "  `user` int\n" +
                                     ");");
-                            createTable.executeUpdate("ALTER TABLE `permissions` ADD FOREIGN KEY (`user`) REFERENCES" +
-                                    " `users` (`id`);");
                             break;
                         default: break;
                     }
 
                 }
             }
+            createTable.executeUpdate("ALTER TABLE `billboards` ADD FOREIGN KEY (`owner`) REFERENCES `users` (`id`);");
+            createTable.executeUpdate("ALTER TABLE `schedule` ADD FOREIGN KEY (`billboard`) REFERENCES `billboards` (`id`);");
+            createTable.executeUpdate("ALTER TABLE `permissions` ADD FOREIGN KEY (`user`) REFERENCES `users` (`id`);");
             System.out.println("Database is ready");
 
         }catch(Exception e){
-            System.out.println("Error: "+e.getMessage());
+            throw new SQLSyntaxErrorException(e.getMessage());
         }
     }
     /*
