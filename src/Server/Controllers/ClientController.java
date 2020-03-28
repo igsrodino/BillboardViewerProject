@@ -2,13 +2,12 @@ package Server.Controllers;
 
 import Server.Models.BillboardModel;
 import Server.Utilities.Database;
-import org.w3c.dom.Document;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.sql.ResultSet;
+
 
 public class ClientController implements Runnable {
     private Socket socket;
@@ -43,27 +42,31 @@ public class ClientController implements Runnable {
         *       this.outputStream.writeUTF(bb.getBillboard());
         *   }
         * }
+        *
+        * Requests must have their permissions validated with the User controller
+        * before calling the relevant Schedule or Billboard controller method
         * */
         try{
             BillboardModel md = new BillboardModel(dbConn);
             BillboardController bb = new BillboardController(md);
-            String re = bb.getBillboard();
-            this.outputStream.writeUTF(re +"\n" );
-            this.socket.close();
-            this.inputStream.close();
-            this.outputStream.close();
+            // billboardID is retrieved by using the Schedule controller to find out which billboard should
+            // be displayed (Schedule.getCurrentBillboard())
+            String re = bb.getBillboard(1);
+            this.sendResponse(re);
             return;
-        } catch (IOException e) {
-            System.err.println("Client handler failed: " + e.getMessage());
-        }  catch(Exception e){
+        } catch(Exception e){
             System.err.println("Client has failed differently: " + e.getMessage());
             e.printStackTrace();
         }
     }
-    private String generateResponse (Document data){
-        // Takes an XML Document object and returns a correct string in the response format
-        // Parameter is enclosed in <data></data> tags
-        // If data == null, return acknowledgement response string
-        return "<response></response>";
+    private void sendResponse(String response){
+        try{
+            this.outputStream.writeUTF(response );
+            this.socket.close();
+            this.inputStream.close();
+            this.outputStream.close();
+        } catch(IOException e){
+            System.err.println("Client handler failed: " + e.getMessage());
+        }
     }
 }

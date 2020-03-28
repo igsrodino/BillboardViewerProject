@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Properties;
 
 
-/*
+/**
 * Establishes a connection to the database specified in the Server/db.props file
 * */
 public class Database {
@@ -43,7 +43,7 @@ public class Database {
             System.out.println(e.getMessage());
         }
     };
-    /*
+    /**
     * Creates any missing tables according to the schema laid out in src/sql-scripts
     * @return void
     * */
@@ -119,10 +119,10 @@ public class Database {
             throw new SQLSyntaxErrorException(e.getMessage());
         }
     }
-    /*
+    /**
     * Used to execute a select statement query on the database
     * Cannot be used to modify data, only retrieve it
-    * @param String   containing a valid sql query
+    * @param sql   The sql query to run
     * @return ResultSet   containing the results of the query
     * */
     public ResultSet runSelectQuery(String sql){
@@ -136,7 +136,7 @@ public class Database {
         }
         return result;
     }
-    /*
+    /**
     * Executes an insert,update, or delete query on the database.
     * Used to modify data, cannot be used to retrieve it
     * @param sql  contains the sql query to run
