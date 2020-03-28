@@ -2,6 +2,7 @@ package Server.Controllers;
 
 import Server.Models.BillboardModel;
 import Server.Utilities.Database;
+import org.w3c.dom.Document;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -62,6 +63,20 @@ public class ClientController implements Runnable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Checks the validity of an access token.
+     * @param token  the access token to verify
+     * @return  true if it is valid, false if it is not
+     */
+    public boolean checkAccessToken(String token){
+        // Use the UserAuthentication methods to verify it.
+        return false;
+    }
+    /**
+     * Sends the Response string and closes the stream, ending the connection
+     * @param response  the stringified xml Response object to send
+     */
     private void sendResponse(String response){
         try{
             this.outputStream.writeUTF(response );
@@ -71,5 +86,14 @@ public class ClientController implements Runnable {
         } catch(IOException e){
             System.err.println("Client handler failed: " + e.getMessage());
         }
+    }
+
+    /**
+     * Processes a stringified XML Request object into a Document object
+     * @param request  the stringified XML Request object
+     * @return  a Document object containing the XML in the request string
+     */
+    private Document processRequestString(String request){
+        return null;
     }
 }

@@ -92,7 +92,8 @@ public class UserController {
      * @param permission  the permission to check for
      * @return  true if the user has the permission, or false if they do not
      */
-    public boolean checkPermissions(int userID, String permission){
+    public boolean checkPermission(int userID, String permission){
+        // Call this.getUser(userID) to populate the fields
         return false;
     }
 
