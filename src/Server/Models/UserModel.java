@@ -95,6 +95,13 @@ public class UserModel {
         return false;
     }
 
+    /**
+     * Sets the user permissions for the given user.
+     * This will destructively set permissions. Any existing permissions will be erased.
+     * @param userID  the user id to set permissions for
+     * @param permissions  the permissions to set
+     * @return
+     */
     public boolean setPermissions(int userID, String[] permissions){
         return false;
     }
