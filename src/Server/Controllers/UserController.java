@@ -20,7 +20,7 @@ public class UserController {
      * Creates a session token for a valid user
      * @param username  the username of the person to log in
      * @param password  the password hash from the client
-     * @return  a Response string with the session token in the <data></data> element
+     * @return  a Response string with the session token in the data element
      */
     public String login(String username, String password){
         // Uses the UserAuthentication class to generate a session token

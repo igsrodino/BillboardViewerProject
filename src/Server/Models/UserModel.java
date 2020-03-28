@@ -88,6 +88,8 @@ public class UserModel {
      * Sets the password of the given user
      * This just writes the record into the database. The provided password must already be
      * hashed in the UserController.setUserPassword() method before calling this method
+     * Will update the internal user fields (username, password, etc)
+     * @param userID the user id of the user to update
      * @param password  the password hash to store in the database
      * @return  true if the update was a success, or false if it was not
      */
@@ -98,9 +100,10 @@ public class UserModel {
     /**
      * Sets the user permissions for the given user.
      * This will destructively set permissions. Any existing permissions will be erased.
+     * Will update the internal user fields (username, password, etc)
      * @param userID  the user id to set permissions for
      * @param permissions  the permissions to set
-     * @return
+     * @return true if the operation was a success or false if it failed
      */
     public boolean setPermissions(int userID, String[] permissions){
         return false;

@@ -21,7 +21,7 @@ public class ScheduleModel {
      * Gets the schedule for a billboard.
      * @param billboardID  the billboard to retrieve the schedule for
      * @return  a Document xml object containing the schedule details. The schedule details are
-     * enclosed in a <data></data> root element. There may be more than one schedule item in the
+     * enclosed in a data root element. There may be more than one schedule item in the
      * Document (ie the billboard shows at 900 and 1500 daily for 30 minutes.
      */
     public Document getBillboardSchedule(int billboardID){
@@ -30,7 +30,7 @@ public class ScheduleModel {
 
     /**
      * Gets the schedule data for every billboard in the system.
-     * @return  a Document xml object containing the schedules inside a root <data></data> element
+     * @return  a Document xml object containing the schedules inside a root data element
      */
     public Document getSchedule(){
         return null;

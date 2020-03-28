@@ -105,7 +105,7 @@ public class BillboardModel {
     /**
     * Retrieves a complete list of all billboards
     * @return a Document object with the list of billboard objects contained in a root
-     * <data></data> element
+     * data element
      * */
     public Document listBillboards(){
         return null;
