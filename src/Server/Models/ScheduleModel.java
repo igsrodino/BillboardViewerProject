@@ -42,7 +42,7 @@ public class ScheduleModel {
      * @param startTime  the start time of the schedule to be removed
      * @return  an int containing the number of affected rows. Generally going to be 1 or 0.
      */
-    public int removedSchedule(int billboardID, int startTime){
+    public int removeSchedule(int billboardID, int startTime){
         return 0;
     }
 
