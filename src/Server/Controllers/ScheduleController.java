@@ -32,7 +32,7 @@ public class ScheduleController {
 
     /**
      * Gets the id of the Billboard that should be displayed at the time of the request
-     * @return  int, the BillboardID of the billboard that should be displayed right now, or 0 if
+     * @return  int, the BillboardID of the billboard that should be displayed right now, or -1 if
      * no billboards are scheduled
      */
     public int getCurrentBillboard(){

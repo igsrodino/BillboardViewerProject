@@ -7,17 +7,19 @@ import java.util.Map;
 * creating a new user, and checking a provided password hash)
 * */
 public class UserAuthentication {
+    /* A map of <accessToken, unhashed value>
+     * Unhashed value: userID, salt, ISO time of token creation where userID is an int, salt is
+     * a random int, and ISO time was obtained from LocalDateTime*/
     private static Map<String, String> currentSessions;
 
     /**
      * Checks if the provided token is valid
      * @param token  the token to check
-     * @return  True if the session is valid, false otherwise
+     * @return  the userID of the user who requested the token or -1 if it is invalid
      */
-    public static boolean isValidSessionToken(String token){
+    public static int isValidSessionToken(String token){
         // Calls this.purgeExpiredTokens
-
-        return false;
+        return -1;
     }
 
     /**

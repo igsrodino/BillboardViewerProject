@@ -59,4 +59,13 @@ public class UserController {
         return "Response";
     }
 
+    /**
+     * Removes the given user from the system. This will also invalidate any
+     * @param username
+     * @return
+     */
+    public String deleteUser(String username){
+        return "Response";
+    }
+    // Permissions
 }
