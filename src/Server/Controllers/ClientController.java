@@ -43,8 +43,11 @@ public class ClientController implements Runnable {
         *   }
         * }
         *
-        * Requests must have their permissions validated with the User controller
-        * before calling the relevant Schedule or Billboard controller method
+        *
+        * Requests must have their permissions validated with the User controller and their
+        * access token validated (if it's required) with UserAuthentication.isValidSessionToken()
+        * before calling the relevant controller method for the requested action
+        *
         * */
         try{
             BillboardModel md = new BillboardModel(dbConn);

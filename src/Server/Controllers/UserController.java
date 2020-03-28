@@ -43,7 +43,7 @@ public class UserController {
      * @return  true if the user is logged in, false if they are not.
      */
     public boolean validateUserRequest(String accessToken){
-        return UserAuthentication.isValidSessionToken(accessToken);
+        return UserAuthentication.isValidSessionToken(accessToken) >=0;
     }
 
     /**
@@ -60,12 +60,59 @@ public class UserController {
     }
 
     /**
-     * Removes the given user from the system. This will also invalidate any
-     * @param username
-     * @return
+     * Removes the given user from the system. This will also invalidate any existing access
+     * tokens for the user
+     * @param username the username of the user to delete
+     * @return  a Response string
      */
     public String deleteUser(String username){
         return "Response";
     }
-    // Permissions
+
+    /**
+     * Gets a list of all the users in the system
+     * @return  a Response string
+     */
+    public String listUsers(){
+        return "Response";
+    }
+
+    /**
+     * Gets the permissions for the given user
+     * @param username  the username to retrieve permissions for
+     * @return  a Response string
+     */
+    public String getUserPermissions(String username){
+        return "Response";
+    }
+
+    /**
+     * Checks to see if the given user has a specific permission
+     * @param userID  the user ID to check
+     * @param permission  the permission to check for
+     * @return  true if the user has the permission, or false if they do not
+     */
+    public boolean checkPermissions(int userID, String permission){
+        return false;
+    }
+
+    /**
+     * Sets the permissions for a user
+     * @param username  the username to set permissions for
+     * @param permissions  a list of permissions to set
+     * @return  a Response string
+     */
+    public String setPermissions(String username, String[] permissions){
+        return "Response";
+    }
+
+    /**
+     * Sets a user's password.
+     * @param username  the user to reset the password for
+     * @param password  the password hash from the client
+     * @return  a Response object
+     */
+    public String setUserPassword(String username, String password){
+        return "Response";
+    }
 }

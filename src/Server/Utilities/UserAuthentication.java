@@ -13,6 +13,15 @@ public class UserAuthentication {
     private static Map<String, String> currentSessions;
 
     /**
+     * Gets the user id of the person to whom the access token was issued
+     * @param token  the token to extract the userID from
+     * @return  an int that is an exact match for the database userID or -1 if the token is
+     * expired or invalid
+     */
+    public static int extractUserIDFromToken(String token){
+        return -1;
+    }
+    /**
      * Checks if the provided token is valid
      * @param token  the token to check
      * @return  the userID of the user who requested the token or -1 if it is invalid
@@ -54,7 +63,7 @@ public class UserAuthentication {
     /**
      * Removes the user's token from the list of active sessions
      * Will also remove any expired tokens from the list.
-     * @param token
+     * @param token the access token to invalidate
      */
     public static void invalidateSessionToken(String token){
         // Calls this.purgeExpiredTokens

@@ -65,13 +65,14 @@ public class BillboardModel {
     }
 
     /**
-    * Fetches the specified billboard
-    * It will populate the Billboard model object with the billboard
-    * data. This can then be accessed via the getter methods
-    * */
+     * Fetches the specified billboard.
+     * It will populate the Billboard model object with the
+     * billboard data. This can then be
+     * accessed via the getter methods
+     * @param billboardID the billboard ID to retrieve
+     * @return true if the operation was successful, or false if no billboard was found
+     */
     public boolean getBillboard(int billboardID){
-        // TODO: Change signature to public bool getBillboard(int billboardID) where billboardID is the id of the
-        //  billboard to retrieve and the return type is the success or failure of retrieval
         boolean status = false;
         ResultSet rs = this.dbConn.runSelectQuery("select * from billboards where id = "+id +" order by id limit 1");
         try{
