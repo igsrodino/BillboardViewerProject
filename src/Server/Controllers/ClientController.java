@@ -23,33 +23,14 @@ public class ClientController implements Runnable {
         this.dbConn = dbConn;
     }
 
+    /**
+     * Reads the incoming request and processes it
+     * Requests must have their access token verified (if one is needed), and user permissions
+     * validated before calling the requisite controller method.
+     */
     @Override
     public void run() {
-        // Read the stream, figure out which controller to use, create, call, and return the result from the
-        // controller method.
-        /*
-        * Read the stream, parse it. Create a model and controller, call the controller, return the result
-        *
-        * Sending looks like this.outputStream.writeUTF("great Success")
-        * Close the connection with return;
-        *
-        * eg:
-        * Document request = parseRequest(inputStream.read());
-        * if(request.type == 'Billboard'){
-        *   BillboardModel bbModel = new BillboardModel(dbConn);
-        *   BillboardController bb = new BillboardController(bbModel);
-        *
-        *   if(request.task == 'getBillboard'){
-        *       this.outputStream.writeUTF(bb.getBillboard());
-        *   }
-        * }
-        *
-        *
-        * Requests must have their permissions validated with the User controller and their
-        * access token validated (if it's required) with UserAuthentication.isValidSessionToken()
-        * before calling the relevant controller method for the requested action
-        *
-        * */
+
         try{
             BillboardModel md = new BillboardModel(dbConn);
             BillboardController bb = new BillboardController(md);
@@ -64,15 +45,6 @@ public class ClientController implements Runnable {
         }
     }
 
-    /**
-     * Checks the validity of an access token.
-     * @param token  the access token to verify
-     * @return  true if it is valid, false if it is not
-     */
-    public boolean checkAccessToken(String token){
-        // Use the UserAuthentication methods to verify it.
-        return false;
-    }
     /**
      * Sends the Response string and closes the stream, ending the connection
      * @param response  the stringified xml Response object to send
