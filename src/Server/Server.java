@@ -12,6 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLSyntaxErrorException;
 
 
 /*
@@ -23,9 +24,13 @@ public class Server {
     public static void main(String[] args){
         try
         {
-            // Create and start the database
-            Database db = new Database();
-
+            Database db = null;
+            try{
+                db = new Database();
+            }catch(SQLSyntaxErrorException e){
+                System.out.println("Database connection has failed: " + e.getMessage());
+                System.exit(1);
+            }
             // Start the server
             boolean listening = true;
             ServerSocket serverSocket = null;
@@ -53,7 +58,7 @@ public class Server {
                     DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
 
                     // Create a handler for the request
-                    ClientController client = new ClientController(clientSocket,inputStream, outputStream, db );
+                    ClientController client = new ClientController(clientSocket,inputStream, outputStream, db);
                     Thread t = new Thread(client);
                     t.start();
                 } catch (IOException e) {
@@ -66,6 +71,7 @@ public class Server {
             {
                 System.out.println(" Closing down the server socket gracefully.");
                 serverSocket.close();
+                db.closeConnection();
             }
             catch (IOException e)
             {
