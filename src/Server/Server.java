@@ -20,7 +20,7 @@ import java.sql.SQLSyntaxErrorException;
 * */
 
 public class Server {
-    private static int portNumber = 4980; // needs to be set from .props file?
+    private static int portNumber = 5050; // needs to be set from .props file?
     public static void main(String[] args){
         try
         {

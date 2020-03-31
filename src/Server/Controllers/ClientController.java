@@ -4,9 +4,7 @@ import Server.Models.BillboardModel;
 import Server.Utilities.Database;
 import org.w3c.dom.Document;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 
@@ -32,12 +30,18 @@ public class ClientController implements Runnable {
     public void run() {
 
         try{
+//            StringBuilder req = new StringBuilder();
+            String req = "";
+            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(inputStream));
+            req = inFromServer.readLine().toUpperCase();
+
+
             BillboardModel md = new BillboardModel(dbConn);
             BillboardController bb = new BillboardController(md);
             // billboardID is retrieved by using the Schedule controller to find out which billboard should
             // be displayed (Schedule.getCurrentBillboard())
             String re = bb.getBillboard(1);
-            this.sendResponse(re);
+            this.sendResponse(req);
             return;
         } catch(Exception e){
             System.err.println("Client has failed differently: " + e.getMessage());

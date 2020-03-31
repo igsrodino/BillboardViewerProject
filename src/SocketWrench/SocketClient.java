@@ -1,42 +1,58 @@
 package SocketWrench;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class SocketClient {
-    private static StringBuilder response;
+    private static String response;
 
     public SocketClient() {
 
     }
     public static void sendRequest(int port, String request){
         // Open a connection, send it, save response
+        try{
 
-        try (Socket socket = new Socket("127.0.0.1", port))
-        {
+            String modifiedSentence;
 
-            InputStream input = socket.getInputStream();
-            InputStreamReader reader = new InputStreamReader(input);
+            Socket clientSocket = new Socket("localhost", port);
+            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            int character;
-            response = new StringBuilder();
-
-            while ((character = reader.read()) != -1) {
-
-                response.append((char) character);
-            }
-
-        }catch(Exception e) {
-            e.printStackTrace();
+            outToServer.writeBytes(request + '\n');
+            response = inFromServer.readLine();
+            clientSocket.close();
+        } catch(Exception e){
+            System.err.println(e.getMessage());
         }
+//        try (Socket socket = new Socket("127.0.0.1", port))
+//        {
+//
+//            InputStream input = socket.getInputStream();
+//            InputStreamReader reader = new InputStreamReader(input);
+//            BufferedWriter out =
+//                    new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+//            out.write(request);
+//            // Read the response
+//            int character;
+//            response = new StringBuilder();
+//
+//            while ((character = reader.read()) != -1) {
+//
+//                response.append((char) character);
+//            }
+//
+//        }catch(Exception e) {
+//            e.printStackTrace();
+//        }
 
     };
 
 
     public static String getResponse(){
-        return response.toString().substring(2);
+        return response.substring(2);
     }
 }
