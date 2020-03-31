@@ -15,40 +15,16 @@ public class SocketClient {
     public static void sendRequest(int port, String request){
         // Open a connection, send it, save response
         try{
-
-            String modifiedSentence;
-
             Socket clientSocket = new Socket("localhost", port);
             DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            outToServer.writeBytes(request + '\n');
+            outToServer.writeBytes(request.replace("\n", " ") + '\n');
             response = inFromServer.readLine();
             clientSocket.close();
         } catch(Exception e){
             System.err.println(e.getMessage());
         }
-//        try (Socket socket = new Socket("127.0.0.1", port))
-//        {
-//
-//            InputStream input = socket.getInputStream();
-//            InputStreamReader reader = new InputStreamReader(input);
-//            BufferedWriter out =
-//                    new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-//            out.write(request);
-//            // Read the response
-//            int character;
-//            response = new StringBuilder();
-//
-//            while ((character = reader.read()) != -1) {
-//
-//                response.append((char) character);
-//            }
-//
-//        }catch(Exception e) {
-//            e.printStackTrace();
-//        }
-
     };
 
 
