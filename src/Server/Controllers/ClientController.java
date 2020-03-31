@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.stream.Collectors;
 
 
 public class ClientController implements Runnable {
@@ -30,18 +31,21 @@ public class ClientController implements Runnable {
     public void run() {
 
         try{
-//            StringBuilder req = new StringBuilder();
-            String req = "";
-            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(inputStream));
-            req = inFromServer.readLine().toUpperCase();
 
+            // Read the request from the client
+            StringBuilder request = new StringBuilder();
+            BufferedReader clientRequest = new BufferedReader(new InputStreamReader(inputStream));
+            String line = "";
+            while(clientRequest.ready() && (line = clientRequest.readLine()) != null) {
+                request.append(line);
+            }
 
             BillboardModel md = new BillboardModel(dbConn);
             BillboardController bb = new BillboardController(md);
             // billboardID is retrieved by using the Schedule controller to find out which billboard should
             // be displayed (Schedule.getCurrentBillboard())
             String re = bb.getBillboard(1);
-            this.sendResponse(req);
+            this.sendResponse(request.toString());
             return;
         } catch(Exception e){
             System.err.println("Client has failed differently: " + e.getMessage());
