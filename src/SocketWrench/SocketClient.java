@@ -1,36 +1,42 @@
 package SocketWrench;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class SocketClient {
-    private static String response = "";
+    private static StringBuilder response;
 
     public SocketClient() {
 
     }
     public static void sendRequest(int port, String request){
         // Open a connection, send it, save response
-        try
+
+        try (Socket socket = new Socket("127.0.0.1", port))
         {
-            Scanner scn = new Scanner(System.in);
 
-            // getting localhost ip
-            InetAddress ip = InetAddress.getByName("localhost");
+            InputStream input = socket.getInputStream();
+            InputStreamReader reader = new InputStreamReader(input);
 
-            // establish the connection with server port 5056
-            Socket socket = new Socket(ip, port);
+            int character;
+            response = new StringBuilder();
 
-            // obtaining input and out streams
+            while ((character = reader.read()) != -1) {
+
+                response.append((char) character);
+            }
 
         }catch(Exception e) {
             e.printStackTrace();
         }
+
     };
 
 
     public static String getResponse(){
-        return response;
+        return response.toString().substring(2);
     }
 }

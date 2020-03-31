@@ -24,9 +24,9 @@ public class WrenchGUI {
                 }
 
                 String request = requestData.getText();
-                if(portNum<=0 || request.length() <=0) {
+                if(portNum<=0 ) {
                     response.setText(
-                            "Invalid values detected");
+                            "Invalid port, try 5050");
                 } else {
                     conn.sendRequest(portNum, request);
                     response.setText(SocketClient.getResponse());
