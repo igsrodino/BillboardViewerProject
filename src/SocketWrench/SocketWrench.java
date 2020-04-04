@@ -16,6 +16,7 @@ public class SocketWrench {
         catch (Exception e)
         {
             //error handling code
+            System.err.println(e.getMessage());
         }
     }
 }

@@ -11,11 +11,10 @@ public class SocketClient {
     }
     public static void sendRequest(int port, String request){
         // Open a connection, send it, save response
-        try{
+        try {
             Socket clientSocket = new Socket("localhost", port);
             DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
             BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
             outToServer.writeBytes(request.replace("\n", " ") + '\n');
             response = inFromServer.readLine();
             clientSocket.close();
@@ -26,6 +25,7 @@ public class SocketClient {
 
 
     public static String getResponse(){
+        if(response == null) return "Error: No data received";
         return response.substring(2);
     }
 }
