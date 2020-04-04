@@ -18,6 +18,7 @@ public class ControlPanel {
             MainFrame mainFrame = new MainFrame();
             mainFrame.showPanel("login");
 
+
         }
         catch (Exception e)
         {

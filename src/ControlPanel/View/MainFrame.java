@@ -33,9 +33,10 @@ public class MainFrame {
     }
 
     public void showPanel(String panelName){
-        cardLayout.show(content, panelName);
-        content.revalidate();
-        frame.revalidate();
+        CardLayout cl = (CardLayout)(content.getLayout());
+        cl.show(content, panelName);
+//        content.revalidate();
+//        frame.revalidate();
     }
 
     public LoginView getLoginView() {
