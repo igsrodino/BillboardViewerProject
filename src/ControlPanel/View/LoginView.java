@@ -7,6 +7,9 @@ public class LoginView {
     private JPanel loginPanel;
     private JTextField username;
     private JButton login;
+    public JButton getLogin() {
+        return login;
+    }
 
     public JPanel getLoginPanel() {
         return loginPanel;
@@ -19,5 +22,4 @@ public class LoginView {
     public JTextField getUsername() {
         return username;
     }
-
 }
