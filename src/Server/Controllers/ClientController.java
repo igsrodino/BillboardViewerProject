@@ -49,6 +49,7 @@ public class ClientController implements Runnable {
         } catch(Exception e){
             System.err.println("Client has failed differently: " + e.getMessage());
             e.printStackTrace();
+            this.sendResponse("Error: "+e.getMessage());
         }
     }
 
