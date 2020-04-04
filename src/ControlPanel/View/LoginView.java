@@ -8,6 +8,10 @@ public class LoginView {
     private JTextField username;
     private JButton login;
 
+    public JPanel getLoginPanel() {
+        return loginPanel;
+    }
+
     public JPasswordField getPassword() {
         return password;
     }

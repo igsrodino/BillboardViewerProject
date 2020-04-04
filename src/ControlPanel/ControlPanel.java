@@ -1,9 +1,9 @@
 package ControlPanel;
 
-import ControlPanel.Controller.MasterController;
 import ControlPanel.Models.BillboardModel;
 import ControlPanel.Models.ScheduleModel;
 import ControlPanel.Models.UserModel;
+import ControlPanel.View.LoginView;
 import ControlPanel.View.MainFrame;
 
 public class ControlPanel {
@@ -13,16 +13,15 @@ public class ControlPanel {
             BillboardModel billboardModel = new BillboardModel();
             ScheduleModel scheduleModel = new ScheduleModel();
             UserModel userModel = new UserModel();
-            MainFrame frame = new MainFrame();
-            MasterController masterController = new MasterController(billboardModel,
-                    scheduleModel, userModel, frame);
-            masterController.init();
 
-            // Assemble all the pieces of the MVC
-//            Model m = new Model("Sylvain", "Saurel");
-//            View v = new View("MVC with SSaurel");
-//            Controller c = new Controller(m, v);
-//            c.initController();
+            // MainFrame sets up the primary view frame/container. All other views are added to
+            // it with the mainFrame.addPanel(name, panel) method. Panels can then be shown with
+            // mainFrame.showPanel(panelName)
+
+            MainFrame mainFrame = new MainFrame();
+            // TODO: Instantiate views and add them to mainFrame with mainframe.addPanel
+            //  (panelName, panel)
+            mainFrame.showPanel("login");
 
         }
         catch (Exception e)
