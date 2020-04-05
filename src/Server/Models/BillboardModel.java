@@ -23,15 +23,15 @@ public class BillboardModel {
         // Gets passed the database connection on creation, which is then used to retrieve and set billboard specific
         // records.
         this.dbConn = dbConnection;
-        this.background = "";
+        this.background = "#0000FF";
         this.id = 0;
-        this.message = "";
-        this.message_color = "";
-        this.url = "";
+        this.message = "Hello World";
+        this.message_color = "#FFFF00";
+        this.url = "https://e3.365dm.com/20/01/2048x1152/skynews-roger-federer-tennis_4889782.jpg?bypass-service-worker&20200112150901";
         this.data = "";
-        this.information = "";
-        this.information_color = "";
-        this.start_time = "";
+        this.information = "Enjoying my time writing XML files.";
+        this.information_color = "#00FFFF";
+        this.start_time = "";a
         this.end_time = "";
     }
     public int getId(){
@@ -87,4 +87,6 @@ public class BillboardModel {
     public void deleteBillboard(int billboardID){
         this.dbConn.runQuery("delete * from test where Column1 = 1");
     }
+
+
 }
