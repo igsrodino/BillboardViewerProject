@@ -2,7 +2,7 @@ package ControlPanel;
 
 
 public class ControlPanel {
-    x
+    
     public static void main(String args[]){
 
         try
