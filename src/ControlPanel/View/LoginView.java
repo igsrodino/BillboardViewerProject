@@ -15,11 +15,11 @@ public class LoginView {
         return loginPanel;
     }
 
-    public JPasswordField getPassword() {
-        return password;
+    public String getPassword() {
+        return new String(password.getPassword());
     }
 
-    public JTextField getUsername() {
-        return username;
+    public String getUsername() {
+        return username.getText();
     }
 }

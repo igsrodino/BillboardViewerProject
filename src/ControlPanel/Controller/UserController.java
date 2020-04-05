@@ -7,18 +7,24 @@ import ControlPanel.View.MainFrame;
 import javax.swing.*;
 
 public class UserController {
+    private LoginView loginView;
     private MainFrame frame;
     private UserModel model;
-    public UserController(MainFrame frame, UserModel model) {
+    public UserController(MainFrame frame, LoginView loginView, UserModel model) {
         this.frame = frame;
         this.model = model;
+        this.loginView = loginView;
         initController();
     }
 
     /**
-     * Sets up all the event listeners for the User related panels
+     * Sets up all the event listeners for the User related panels and adds the panel to the card
+     * layout. Views can be shown with frame.showPanel("panel-name")
      */
     private void initController() {
+        loginView.getLogin().addActionListener(e -> System.out.println(loginView.getUsername() +
+                " - " + loginView.getPassword()));
+        frame.addView(loginView.getLoginPanel(), "login");
     }
 
     /**

@@ -10,25 +10,18 @@ public class MainFrame {
     private OpeningScreen openingView;
     private LoginView loginView;
 
-    public MainFrame(LoginView loginView){
-        this.loginView = loginView;
-
+    public MainFrame(){
         this.frame = new JFrame("Control Panel");
 
         // Setup the CardLayout and content panel
         this.cardLayout = new CardLayout();
         this.content = new JPanel(new CardLayout());
 
-        // Instantiate the rest of the views and add them to the content panel
-        content.add("login", this.loginView.getLoginPanel());
-//        this.openingView = new OpeningScreen();
-//        content.add("openingView", openingView.getPanel());
-
         frame.getContentPane().setLayout(new BorderLayout());
         frame.add(content, BorderLayout.CENTER);
     }
-    public void addView(JPanel view){
-
+    public void addView(JPanel view, String name){
+        content.add(name, view);
     }
 
     public void initialiseViews() {

@@ -30,7 +30,7 @@ public class ControlPanel {
             // Start the controllers
             BillboardController billboardController = new BillboardController(mainFrame, billboardModel);
             ScheduleController scheduleController = new ScheduleController(mainFrame, scheduleModel);
-            UserController userController = new UserController(mainFrame, userModel);
+            UserController userController = new UserController(mainFrame, loginView, userModel);
 
             // Start the views
             mainFrame.initialiseViews();
