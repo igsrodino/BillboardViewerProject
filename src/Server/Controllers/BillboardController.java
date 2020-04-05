@@ -48,7 +48,8 @@ public class BillboardController {
         // Return the stringified xml.
         // Don't forget error handling (try catch, exceptions etc)
 
-        this.model.getBillboard(billboardID);
+        boolean x = this.model.getBillboard(billboardID);
+        System.out.println(this.model.getMessage());
         String billboardXMLStringValue = null;
         try
         {
@@ -58,18 +59,12 @@ public class BillboardController {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
             //Create billboard root elements
-            Element element = doc.createElement("billboard");
-            doc.appendChild(element);
-            element = doc.createElement("message");
-            /*
-            // set attribute to staff element
-		Attr attr = doc.createAttribute("id");
-		attr.setValue("1");
-		staff.setAttributeNode(attr);
-             */
+            Element root = doc.createElement("billboard");
+            doc.appendChild(root);
+
             Attr attr = doc.createAttribute("background");
             attr.setValue(this.model.getBackground());
-            element.setAttributeNode(attr);
+            root.setAttributeNode(attr);
 
             //Create message elements
             Element messageElement = doc.createElement("message");
@@ -77,7 +72,7 @@ public class BillboardController {
             attrType.setValue(this.model.getMessage_color());
             messageElement.setAttributeNode(attrType);
             messageElement.appendChild(doc.createTextNode(this.model.getMessage()));
-            element.appendChild(messageElement);
+            root.appendChild(messageElement);
 
 
             //Create picture elements
@@ -85,7 +80,7 @@ public class BillboardController {
             Attr attrType1 = doc.createAttribute("url");
             attrType1.setValue(this.model.getUrl());
             pictureElement.setAttributeNode(attrType1);
-            element.appendChild(pictureElement);
+            root.appendChild(pictureElement);
 
             //Create information element
             Element informationElement = doc.createElement("information");
@@ -93,7 +88,7 @@ public class BillboardController {
             attrType2.setValue(this.model.getInformation_color());
             informationElement.setAttributeNode(attrType2);
             informationElement.appendChild(doc.createTextNode(this.model.getInformation()));
-            element.appendChild(informationElement);
+            root.appendChild(informationElement);
 
             //Transform document to XML string
             TransformerFactory tf = TransformerFactory.newInstance();

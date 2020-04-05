@@ -26,14 +26,14 @@ public class BillboardModel {
      * */
     public BillboardModel(Database dbConnection){
         this.dbConn = dbConnection;
-        this.background = "#0000FF";
+        this.background = "";
         this.id = 0;
-        this.message = "Hello World";
-        this.message_color = "#FFFF00";
-        this.url = "https://e3.365dm.com/20/01/2048x1152/skynews-roger-federer-tennis_4889782.jpg?bypass-service-worker&20200112150901";
+        this.message = "";
+        this.message_color = "";
+        this.url = "";
         this.data = "";
-        this.information = "Enjoying my time writing XML files.";
-        this.information_color = "#00FFFF";
+        this.information = "";
+        this.information_color = "";
 
         this.owner = 0;
 
@@ -76,7 +76,8 @@ public class BillboardModel {
      */
     public boolean getBillboard(int billboardID){
         boolean status = false;
-        ResultSet rs = this.dbConn.runSelectQuery("select * from billboards where id = "+id +" order by id limit 1");
+        ResultSet rs =
+                this.dbConn.runSelectQuery("select * from billboards where id = "+billboardID +" " + "order by id limit 1");
         try{
             while(rs.next()){
                 this.id = rs.getInt("id");
