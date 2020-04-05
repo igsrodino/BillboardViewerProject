@@ -80,15 +80,19 @@ public class BillboardModel {
                 this.dbConn.runSelectQuery("select * from billboards where id = "+billboardID +" " + "order by id limit 1");
         try{
             while(rs.next()){
-                this.id = rs.getInt("id");
-                this.background = rs.getString("background");
-                this.message = rs.getString("message");
-                this.message_color = rs.getString("message_color");
-                this.url = rs.getString("url");
-                this.data = rs.getString("data");
-                this.information = rs.getString("information");
-                this.information_color = rs.getString("information_color");
-
+                this.owner = rs.getInt("owner") > 0 ? rs.getInt("owner"): -1;
+                this.id = rs.getInt("id") > 0 ?rs.getInt("id") : -1;
+                this.background = rs.getString("background") != null ?
+                        rs.getString("background") : "";
+                this.message = rs.getString("message") != null ? rs.getString("message") : "";
+                this.message_color = rs.getString("message_color") != null ? rs.getString(
+                        "message_color") : "";
+                this.url = rs.getString("url") != null ? rs.getString("url") : "";
+                this.data = rs.getString("data") != null ?rs.getString("data") : "";
+                this.information = rs.getString("information") != null ?rs.getString("information"):
+                        "";
+                this.information_color = rs.getString("information_color") != null ?
+                        rs.getString("information_color"):"";
             }
             status = true;
         }catch(Exception e){

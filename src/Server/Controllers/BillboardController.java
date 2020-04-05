@@ -62,33 +62,50 @@ public class BillboardController {
             Element root = doc.createElement("billboard");
             doc.appendChild(root);
 
-            Attr attr = doc.createAttribute("background");
-            attr.setValue(this.model.getBackground());
-            root.setAttributeNode(attr);
+            if(model.getBackground().length()>0 ){
+                Attr attr = doc.createAttribute("background");
+                attr.setValue(this.model.getBackground());
+                root.setAttributeNode(attr);
+            }
 
-            //Create message elements
-            Element messageElement = doc.createElement("message");
-            Attr attrType = doc.createAttribute("colour");
-            attrType.setValue(this.model.getMessage_color());
-            messageElement.setAttributeNode(attrType);
-            messageElement.appendChild(doc.createTextNode(this.model.getMessage()));
-            root.appendChild(messageElement);
+//            //Create message elements
+            if(model.getMessage().length() >0){
+                Element messageElement = doc.createElement("message");
+                if(model.getMessage_color().length()>0){
+                    Attr attrType = doc.createAttribute("colour");
+                    attrType.setValue(this.model.getMessage_color());
+                    messageElement.setAttributeNode(attrType);
+                }
+                messageElement.appendChild(doc.createTextNode(this.model.getMessage()));
+                root.appendChild(messageElement);
+            }
 
 
-            //Create picture elements
-            Element pictureElement = doc.createElement("picture");
-            Attr attrType1 = doc.createAttribute("url");
-            attrType1.setValue(this.model.getUrl());
-            pictureElement.setAttributeNode(attrType1);
-            root.appendChild(pictureElement);
 
-            //Create information element
-            Element informationElement = doc.createElement("information");
-            Attr attrType2 = doc.createAttribute("colour");
-            attrType2.setValue(this.model.getInformation_color());
-            informationElement.setAttributeNode(attrType2);
-            informationElement.appendChild(doc.createTextNode(this.model.getInformation()));
-            root.appendChild(informationElement);
+//            //Create picture elements
+            if(model.getUrl().length() >0){
+                Element pictureElement = doc.createElement("picture");
+                Attr attrType1 = doc.createAttribute("url");
+                attrType1.setValue(this.model.getUrl());
+                pictureElement.setAttributeNode(attrType1);
+                root.appendChild(pictureElement);
+            } else if(model.getData().length() > 0){
+                Element pictureElement = doc.createElement("picture");
+                Attr attrType1 = doc.createAttribute("data");
+                attrType1.setValue(this.model.getData());
+                pictureElement.setAttributeNode(attrType1);
+                root.appendChild(pictureElement);
+            }
+//
+//            //Create information element
+            if(model.getInformation().length() > 0){
+                Element informationElement = doc.createElement("information");
+                Attr attrType2 = doc.createAttribute("colour");
+                attrType2.setValue(this.model.getInformation_color());
+                informationElement.setAttributeNode(attrType2);
+                informationElement.appendChild(doc.createTextNode(this.model.getInformation()));
+                root.appendChild(informationElement);
+            }
 
             //Transform document to XML string
             TransformerFactory tf = TransformerFactory.newInstance();
