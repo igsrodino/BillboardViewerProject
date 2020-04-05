@@ -1,29 +1,41 @@
 package Server.Utilities;
-import javax.xml.transform.Result;
-import java.sql.*;
 
-// Needs to create a pool of connections, which get used when runQuery gets called, rather than slamming a single
-// connection. Remember this is created and shared between models.
+import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
+
+/**
+* Establishes a connection to the database specified in the Server/db.props file
+* */
 public class Database {
     // private db connection type data;
     private Connection dbConn;
-    private String jdbcUrl = "jdbc:mysql://localhost:3306/CAB302?useLegacyDatetimeCode=false&serverTimezone=UTC";
-    private String username = "root";
-    private String password = "admin";
-    public Database (){
-        // Load the configuration from db.props. Use the Context class to load and process. Datasource might be
-        // better that Driver
-        // Check for existing tables
-        // If not found, create new tables
-
-        // Create connection
+    private Properties props;
+    private Map<String, Boolean> tables;
+    public Database () throws SQLSyntaxErrorException {
+        // Populate the hashmap for use in table checking
+        tables = new HashMap<String, Boolean>();
+        tables.put("billboards", false);
+        tables.put("users", false);
+        tables.put("schedule", false);
+        tables.put("permissions", false);
         try{
-            this.dbConn = DriverManager.getConnection(jdbcUrl, username, password);
-            System.out.println("Database connected");
+            props = new Properties();
+            props.load(getClass().getResourceAsStream("../db.props"));
+            this.dbConn = DriverManager.getConnection(props.getProperty("jdbc.url")+"/"+props.getProperty("jdbc" +
+                            ".schema")+"?useLegacyDatetimeCode=false&serverTimezone=UTC",
+                    props.getProperty("jdbc.username"), props.getProperty("jdbc.password"));
+            System.out.println("Database connected\nChecking for existing tables");
+            this.createTables();
         }catch(Exception e){
-            System.out.println(e.getMessage());
+            throw new SQLSyntaxErrorException(e.getMessage());
         }
     }
+    /*
+    * Cleanly closes the database connection to prevent the database from getting choked
+    * */
     public void closeConnection(){
         try{
             this.dbConn.close();
@@ -31,20 +43,115 @@ public class Database {
             System.out.println(e.getMessage());
         }
     };
-     void createTables(){}
-    public ResultSet runQuery(String sql){
+    /**
+    * Creates any missing tables according to the schema laid out in src/sql-scripts
+    * @return void
+    * */
+    private void createTables() throws SQLSyntaxErrorException {
+        // Check for tables. If none found, create some, otherwise pass.
+        try{
+            DatabaseMetaData meta = dbConn.getMetaData();
+            ResultSet rs = meta.getTables(props.getProperty("jdbc.schema"), null, "%", null);
+            String table = "";
+            while(rs.next()){
+                table = rs.getString(3);
+                System.out.println("Found table: "+ table);
+                if(tables.containsKey(table) == true){
+                    tables.replace(table, true);
+                }
+            }
+            Statement createTable = dbConn.createStatement();
+            for(Map.Entry<String, Boolean> entry : tables.entrySet()){
+                if(entry.getValue() == false){
+                    // Create table
+                    switch (entry.getKey()){
+
+                        case "users":
+                            createTable.executeUpdate("CREATE TABLE `users` (\n" +
+                                    "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
+                                    "  `username` varchar(255) UNIQUE NOT NULL,\n" +
+                                    "  `password` varchar(255) NOT NULL,\n" +
+                                    "  `salt` varchar(255) NOT NULL\n" +
+                                    ");");
+                            break;
+                        case "billboards":
+                            createTable.executeUpdate("CREATE TABLE `billboards` (\n" +
+                                    "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
+                                    "  `background` varchar(255),\n" +
+                                    "  `message` varchar(255),\n" +
+                                    "  `message_color` varchar(255),\n" +
+                                    "  `url` varchar(255),\n" +
+                                    "  `data` varchar(255),\n" +
+                                    "  `information` varchar(255),\n" +
+                                    "  `information_color` varchar(255),\n" +
+                                    "  `owner` int\n" +
+                                    ");");
+
+                            break;
+                        case "schedule":
+                            createTable.executeUpdate("CREATE TABLE `schedule` (\n" +
+                                    "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
+                                    "  `start_time` time,\n" +
+                                    "  `end_time` time,\n" +
+                                    "  `duration` int,\n" +
+                                    "  `recurs` int,\n" +
+                                    "  `billboard` int\n" +
+                                    ");");
+                            break;
+                        case "permissions":
+                            createTable.executeUpdate("CREATE TABLE `permissions` (\n" +
+                                    "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
+                                    "  `permission` ENUM ('create_billboards', 'edit_billboards', 'schedule_billboards', 'edit_users') NOT NULL,\n" +
+                                    "  `user` int\n" +
+                                    ");");
+                            break;
+                        default: break;
+                    }
+
+                }
+            }
+            createTable.executeUpdate("ALTER TABLE `billboards` ADD FOREIGN KEY (`owner`) REFERENCES `users` (`id`);");
+            createTable.executeUpdate("ALTER TABLE `schedule` ADD FOREIGN KEY (`billboard`) REFERENCES `billboards` (`id`);");
+            createTable.executeUpdate("ALTER TABLE `permissions` ADD FOREIGN KEY (`user`) REFERENCES `users` (`id`);");
+            System.out.println("Database is ready");
+
+        }catch(Exception e){
+            throw new SQLSyntaxErrorException(e.getMessage());
+        }
+    }
+    /**
+    * Used to execute a select statement query on the database
+    * Cannot be used to modify data, only retrieve it
+    * @param sql   The sql query to run
+    * @return ResultSet   containing the results of the query
+    * */
+    public ResultSet runSelectQuery(String sql){
         ResultSet result = null;
         try{
             Statement query = this.dbConn.createStatement();
             result = query.executeQuery(sql);
-        }catch(Exception e){
+        }catch(SQLException e){
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-
         return result;
     }
-    public void closeDBConnection(){
-        // Closes the connection, used on program exit to avoid crashing the database.
+    /**
+    * Executes an insert,update, or delete query on the database.
+    * Used to modify data, cannot be used to retrieve it
+    * @param sql  contains the sql query to run
+    * @return int  representing the number of rows affected. Returns 0 if the query did nothing
+    * */
+    public int runUpdateQuery(String sql){
+        int rowCount = 0;
+        try{
+            Statement query = this.dbConn.createStatement();
+            rowCount = query.executeUpdate(sql);
+        } catch (SQLException e) {
+            System.out.println("Error: "+e.getMessage());
+            e.printStackTrace();
+        }
+        return rowCount;
     }
 
 }

@@ -1,12 +1,13 @@
 package Server.Models;
 import Server.Utilities.Database;
+import org.w3c.dom.Document;
 
 import java.sql.ResultSet;
 
 
-/*
-* Contains the data retrieval methods.
-* */
+/**
+ * Contains the data retrieval methods.
+ * */
 public class BillboardModel {
     private Database dbConn;
     private int id;
@@ -17,11 +18,13 @@ public class BillboardModel {
     private String data;
     private String information;
     private String information_color;
-    private String start_time;
-    private String end_time;
+    private int owner;
+
+    /**
+     * Constructs the Billboard object
+     * @param dbConnection  allows access to the database via the connection established at server start
+     * */
     public BillboardModel(Database dbConnection){
-        // Gets passed the database connection on creation, which is then used to retrieve and set billboard specific
-        // records.
         this.dbConn = dbConnection;
         this.background = "#0000FF";
         this.id = 0;
@@ -31,8 +34,9 @@ public class BillboardModel {
         this.data = "";
         this.information = "Enjoying my time writing XML files.";
         this.information_color = "#00FFFF";
-        this.start_time = "";
-        this.end_time = "";
+
+        this.owner = 0;
+
     }
     public int getId(){
         return this.id;
@@ -58,15 +62,21 @@ public class BillboardModel {
     public String getInformation_color(){
         return this.information_color;
     }
-    public String getStart_time(){
-        return this.start_time;
+    public int getOwner(){
+        return this.owner;
     }
-    public String getEnd_time(){
-        return this.end_time;
-    }
-    public void getBillboard(){
-        // Returns a ResultSet containing the results of the query
-        ResultSet rs = this.dbConn.runQuery("select * from test");
+
+    /**
+     * Fetches the specified billboard.
+     * It will populate the Billboard model object with the
+     * billboard data. This can then be
+     * accessed via the getter methods
+     * @param billboardID the billboard ID to retrieve
+     * @return true if the operation was successful, or false if no billboard was found
+     */
+    public boolean getBillboard(int billboardID){
+        boolean status = false;
+        ResultSet rs = this.dbConn.runSelectQuery("select * from billboards where id = "+id +" order by id limit 1");
         try{
             while(rs.next()){
                 this.id = rs.getInt("id");
@@ -77,15 +87,63 @@ public class BillboardModel {
                 this.data = rs.getString("data");
                 this.information = rs.getString("information");
                 this.information_color = rs.getString("information_color");
-                this.start_time = rs.getString("start_time");
-                this.end_time = rs.getString("end_time");
+
             }
+            status = true;
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+        return status;
     }
-    public void deleteBillboard(int billboardID){
-        this.dbConn.runQuery("delete * from test where Column1 = 1");
+    /**
+    * Deletes the specified billboard
+    * @param billboardID  the id of the billboard to delete
+    * @return the number of rows affected by the delete (should always = either 1 or 0)
+    * */
+    public int deleteBillboard(int billboardID){
+        return this.dbConn.runUpdateQuery("delete * from billboards where id = "+billboardID);
+    }
+
+
+    /**
+    * Retrieves a complete list of all billboards
+    * @return a Document object with the list of billboard objects contained in a root
+     * data element
+     * */
+    public Document listBillboards(){
+        return null;
+    }
+
+    /**
+     * Creates a billboard with the provided information
+     * @param background  a hex value representing the color of the background
+     * @param message  the billboard message
+     * @param message_color  the color of the message text
+     * @param image  the url or base64 data string of the image
+     * @param imageType  the type of image. The two valid options are: 'url' or 'data'
+     * @param information  in depth details about the billboard message
+     * @param information_color  the hex code for the information text color
+     * @param owner  the id of the user creating the billboard
+     * @return int representing the number of rows inserted
+    * */
+    public int createBillboard(String background, String message, String message_color, String image,
+                                   String imageType, String information, String information_color, int owner){
+        int result = 0;
+        try{
+            if(imageType == "url") {
+                result = this.dbConn.runUpdateQuery("insert into billboards (background, message, message_color, url," +
+                        " information, information_color, owner" + " ) " +
+                        "values ("+background+", "+message+", "+message_color+", "+image+", "+information+", "+information_color+", "+owner+")");
+            } else if(imageType == "data"){
+                result = this.dbConn.runUpdateQuery("insert into billboards (background, message, message_color, " +
+                        "data," +
+                        " information, information_color, owner" + " ) " +
+                        "values ("+background+", "+message+", "+message_color+", "+image+", "+information+", "+information_color+", "+owner+")");
+            }
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+        return result;
     }
 
 

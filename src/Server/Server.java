@@ -12,9 +12,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLSyntaxErrorException;
 
 
-/*
+/**
 * Server Controller
 * */
 
@@ -23,7 +24,13 @@ public class Server {
     public static void main(String[] args){
         try
         {
-            Database db = new Database();
+            Database db = null;
+            try{
+                db = new Database();
+            }catch(SQLSyntaxErrorException e){
+                System.out.println("Database connection has failed: " + e.getMessage());
+                System.exit(1);
+            }
             // Start the server
             boolean listening = true;
             ServerSocket serverSocket = null;
