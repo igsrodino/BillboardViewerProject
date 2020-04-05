@@ -3,8 +3,14 @@ package Server.Controllers;
 import Server.Models.BillboardModel;
 import Server.Utilities.Database;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+
 import java.net.Socket;
 
 
@@ -28,9 +34,7 @@ public class ClientController implements Runnable {
      */
     @Override
     public void run() {
-
         try{
-
             // Read the request from the client
             StringBuilder request = new StringBuilder();
             BufferedReader clientRequest = new BufferedReader(new InputStreamReader(inputStream));
@@ -38,7 +42,7 @@ public class ClientController implements Runnable {
             while(clientRequest.ready() && (line = clientRequest.readLine()) != null) {
                 request.append(line);
             }
-
+            Document parsedRequest = processRequestString(request.toString());
             BillboardModel md = new BillboardModel(dbConn);
             BillboardController bb = new BillboardController(md);
             // billboardID is retrieved by using the Schedule controller to find out which billboard should
@@ -46,11 +50,25 @@ public class ClientController implements Runnable {
             String re = bb.getBillboard(1);
             this.sendResponse(re);
             return;
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            this.sendResponse("Error: "+e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+            this.sendResponse("Error: "+e.getMessage());
+        } catch (SAXException e) {
+            e.printStackTrace();
+            this.sendResponse("Error: "+e.getMessage());
         } catch(Exception e){
             System.err.println("Client has failed differently: " + e.getMessage());
             e.printStackTrace();
             this.sendResponse("Error: "+e.getMessage());
         }
+
+
+
+
+
     }
 
     /**
@@ -71,9 +89,14 @@ public class ClientController implements Runnable {
     /**
      * Processes a stringified XML Request object into a Document object
      * @param request  the stringified XML Request object
-     * @return  a Document object containing the XML in the request string
-     */
-    private Document processRequestString(String request){
-        return null;
+     * @return  a Document object containing the XML in the request string    */
+
+
+    private Document processRequestString(String request) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+        return documentBuilder.parse(new InputSource(new StringReader(request)));
+
+
     }
 }
