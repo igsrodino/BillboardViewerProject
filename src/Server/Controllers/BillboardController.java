@@ -42,14 +42,14 @@ public class BillboardController {
      */
     public String getBillboard(int billboardID){
 
-        // Call this.model.getBillboard() to populate the object.
-        // Use the getter methods to build a Document object  https://mkyong.com/java/how-to-create-xml-file-in-java-dom/
-        // Convert the Document to a string (gonna need to google it. Not complicated though)
-        // Return the stringified xml.
-        // Don't forget error handling (try catch, exceptions etc)
+        boolean status = this.model.getBillboard(billboardID);
+        if(!status){
+            return "<response>\n" +
+                    "    <type>billboard-not-found</type>\n" +
+                    "    <data></data>\n" +
+                    "</response>";
+        }
 
-        boolean x = this.model.getBillboard(billboardID);
-        System.out.println(this.model.getMessage());
         String billboardXMLStringValue = null;
         try
         {
@@ -58,37 +58,63 @@ public class BillboardController {
             //Creating the new document
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
+            Element resp = doc.createElement("response");
+            Element data = doc.createElement("data");
+            Element type = doc.createElement("type");
+            type.appendChild(doc.createTextNode("success"));
+            doc.appendChild(resp);
+            resp.appendChild(type);
+            resp.appendChild(data);
             //Create billboard root elements
-            Element root = doc.createElement("billboard");
-            doc.appendChild(root);
+            Element billboard = doc.createElement("billboard");
+            data.appendChild(billboard);
 
-            Attr attr = doc.createAttribute("background");
-            attr.setValue(this.model.getBackground());
-            root.setAttributeNode(attr);
+            if(model.getBackground().length()>0 ){
+                Attr attr = doc.createAttribute("background");
+                attr.setValue(this.model.getBackground());
+                billboard.setAttributeNode(attr);
+            }
 
-            //Create message elements
-            Element messageElement = doc.createElement("message");
-            Attr attrType = doc.createAttribute("colour");
-            attrType.setValue(this.model.getMessage_color());
-            messageElement.setAttributeNode(attrType);
-            messageElement.appendChild(doc.createTextNode(this.model.getMessage()));
-            root.appendChild(messageElement);
+//            //Create message elements
+            if(model.getMessage().length() >0){
+                Element messageElement = doc.createElement("message");
+                if(model.getMessage_color().length()>0){
+                    Attr attrType = doc.createAttribute("colour");
+                    attrType.setValue(this.model.getMessage_color());
+                    messageElement.setAttributeNode(attrType);
+                }
+                messageElement.appendChild(doc.createTextNode(this.model.getMessage()));
+                billboard.appendChild(messageElement);
+            }
 
 
-            //Create picture elements
-            Element pictureElement = doc.createElement("picture");
-            Attr attrType1 = doc.createAttribute("url");
-            attrType1.setValue(this.model.getUrl());
-            pictureElement.setAttributeNode(attrType1);
-            root.appendChild(pictureElement);
 
-            //Create information element
-            Element informationElement = doc.createElement("information");
-            Attr attrType2 = doc.createAttribute("colour");
-            attrType2.setValue(this.model.getInformation_color());
-            informationElement.setAttributeNode(attrType2);
-            informationElement.appendChild(doc.createTextNode(this.model.getInformation()));
-            root.appendChild(informationElement);
+//            //Create picture elements
+            if(model.getUrl().length() >0){
+                Element pictureElement = doc.createElement("picture");
+                Attr attrType1 = doc.createAttribute("url");
+                attrType1.setValue(this.model.getUrl());
+                pictureElement.setAttributeNode(attrType1);
+                billboard.appendChild(pictureElement);
+            } else if(model.getData().length() > 0){
+                Element pictureElement = doc.createElement("picture");
+                Attr attrType1 = doc.createAttribute("data");
+                attrType1.setValue(this.model.getData());
+                pictureElement.setAttributeNode(attrType1);
+                billboard.appendChild(pictureElement);
+            }
+//
+//            //Create information element
+            if(model.getInformation().length() > 0){
+                Element informationElement = doc.createElement("information");
+                if(model.getInformation_color().length() > 0){
+                    Attr attrType2 = doc.createAttribute("colour");
+                    attrType2.setValue(this.model.getInformation_color());
+                    informationElement.setAttributeNode(attrType2);
+                }
+                informationElement.appendChild(doc.createTextNode(this.model.getInformation()));
+                billboard.appendChild(informationElement);
+            }
 
             //Transform document to XML string
             TransformerFactory tf = TransformerFactory.newInstance();
