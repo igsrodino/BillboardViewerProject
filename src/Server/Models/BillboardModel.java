@@ -31,7 +31,7 @@ public class BillboardModel {
         this.data = "";
         this.information = "Enjoying my time writing XML files.";
         this.information_color = "#00FFFF";
-        this.start_time = "";a
+        this.start_time = "";
         this.end_time = "";
     }
     public int getId(){
