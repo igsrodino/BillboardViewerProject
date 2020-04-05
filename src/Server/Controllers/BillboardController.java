@@ -1,5 +1,17 @@
 package Server.Controllers;
+import java.io.StringWriter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import Server.Models.BillboardModel;
 
 import java.sql.ResultSet;
@@ -16,7 +28,10 @@ public class BillboardController {
      */
     public BillboardController(BillboardModel model){
         this.model = model;
+
     }
+
+
 
     /**
      * Gets the billboard to be displayed at the current time
@@ -26,14 +41,98 @@ public class BillboardController {
      * @return string containing the full XML response
      */
     public String getBillboard(int billboardID){
-        // Call this.model.getBillboard() to populate the object.
-        // Use the getter methods to build a Document object  https://mkyong.com/java/how-to-create-xml-file-in-java-dom/
-        // Convert the Document to a string (gonna need to google it. Not complicated though)
-        // Return the stringified xml.
-        // Don't forget error handling (try catch, exceptions etc)
-        this.model.getBillboard(billboardID);
-        return "<billboard>xml</billboard>";
+
+        boolean status = this.model.getBillboard(billboardID);
+        if(!status){
+            return "<response>\n" +
+                    "    <type>billboard-not-found</type>\n" +
+                    "    <data></data>\n" +
+                    "</response>";
+        }
+
+        String billboardXMLStringValue = null;
+        try
+        {
+            //Creating the document
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            //Creating the new document
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+            Element resp = doc.createElement("response");
+            Element data = doc.createElement("data");
+            Element type = doc.createElement("type");
+            type.appendChild(doc.createTextNode("success"));
+            doc.appendChild(resp);
+            resp.appendChild(type);
+            resp.appendChild(data);
+            //Create billboard root elements
+            Element billboard = doc.createElement("billboard");
+            data.appendChild(billboard);
+
+            if(model.getBackground().length()>0 ){
+                Attr attr = doc.createAttribute("background");
+                attr.setValue(this.model.getBackground());
+                billboard.setAttributeNode(attr);
+            }
+
+//            //Create message elements
+            if(model.getMessage().length() >0){
+                Element messageElement = doc.createElement("message");
+                if(model.getMessage_color().length()>0){
+                    Attr attrType = doc.createAttribute("colour");
+                    attrType.setValue(this.model.getMessage_color());
+                    messageElement.setAttributeNode(attrType);
+                }
+                messageElement.appendChild(doc.createTextNode(this.model.getMessage()));
+                billboard.appendChild(messageElement);
+            }
+
+
+
+//            //Create picture elements
+            if(model.getUrl().length() >0){
+                Element pictureElement = doc.createElement("picture");
+                Attr attrType1 = doc.createAttribute("url");
+                attrType1.setValue(this.model.getUrl());
+                pictureElement.setAttributeNode(attrType1);
+                billboard.appendChild(pictureElement);
+            } else if(model.getData().length() > 0){
+                Element pictureElement = doc.createElement("picture");
+                Attr attrType1 = doc.createAttribute("data");
+                attrType1.setValue(this.model.getData());
+                pictureElement.setAttributeNode(attrType1);
+                billboard.appendChild(pictureElement);
+            }
+//
+//            //Create information element
+            if(model.getInformation().length() > 0){
+                Element informationElement = doc.createElement("information");
+                if(model.getInformation_color().length() > 0){
+                    Attr attrType2 = doc.createAttribute("colour");
+                    attrType2.setValue(this.model.getInformation_color());
+                    informationElement.setAttributeNode(attrType2);
+                }
+                informationElement.appendChild(doc.createTextNode(this.model.getInformation()));
+                billboard.appendChild(informationElement);
+            }
+
+            //Transform document to XML string
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            StringWriter writer = new StringWriter();
+
+            transformer.transform(new DOMSource(doc), new StreamResult(writer));
+            billboardXMLStringValue = writer.getBuffer().toString();
+
+        }catch(Exception e){
+            System.out.println("Something went wrong.");}
+
+        return billboardXMLStringValue;
     }
+
+
+
+
 
     /**
      * Gets a list of all the billboards in the system
@@ -74,3 +173,4 @@ public class BillboardController {
     }
 
 }
+
