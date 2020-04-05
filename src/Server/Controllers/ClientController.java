@@ -4,9 +4,7 @@ import Server.Models.BillboardModel;
 import Server.Utilities.Database;
 import org.w3c.dom.Document;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 
@@ -32,6 +30,15 @@ public class ClientController implements Runnable {
     public void run() {
 
         try{
+
+            // Read the request from the client
+            StringBuilder request = new StringBuilder();
+            BufferedReader clientRequest = new BufferedReader(new InputStreamReader(inputStream));
+            String line = "";
+            while(clientRequest.ready() && (line = clientRequest.readLine()) != null) {
+                request.append(line);
+            }
+
             BillboardModel md = new BillboardModel(dbConn);
             BillboardController bb = new BillboardController(md);
             // billboardID is retrieved by using the Schedule controller to find out which billboard should
@@ -42,6 +49,7 @@ public class ClientController implements Runnable {
         } catch(Exception e){
             System.err.println("Client has failed differently: " + e.getMessage());
             e.printStackTrace();
+            this.sendResponse("Error: "+e.getMessage());
         }
     }
 
