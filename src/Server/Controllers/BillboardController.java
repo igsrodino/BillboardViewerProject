@@ -171,6 +171,5 @@ public class BillboardController {
                                 String imageType, String information, String information_color, int owner){
         return "Response";
     }
-
 }
 

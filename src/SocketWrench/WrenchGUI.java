@@ -12,9 +12,15 @@ public class WrenchGUI {
     private JTextField port;
     private JTextArea requestData;
     private SocketClient conn = new SocketClient();
+    private String request;
 
     public WrenchGUI() {
-
+        this.requestData.setText("<request>\n    <type>getBillboard</type>\n    " +
+                "<data></data>\n</request" +
+                ">");
+        this.request = "<request>\n    <type>getBillboard</type>\n    " +
+                "<data></data>\n</request" +
+                ">";
         sendItButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -25,7 +31,8 @@ public class WrenchGUI {
                     System.err.println(ex.getMessage());
                 }
 
-                String request = requestData.getText();
+               request = requestData.getText();
+
                 if(portNum<=0 ) {
                     response.setText(
                             "Invalid port, try 5050");

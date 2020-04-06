@@ -52,6 +52,8 @@
         <properties>
           <columns value="0"/>
           <editable value="true"/>
+          <lineWrap value="true"/>
+          <wrapStyleWord value="true"/>
         </properties>
       </component>
       <component id="ddd44" class="javax.swing.JLabel">

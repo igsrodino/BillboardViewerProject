@@ -94,6 +94,8 @@ public class UserController {
      */
     public boolean checkPermission(int userID, String permission){
         // Call this.getUser(userID) to populate the fields
+        if(userID < 0) return false;
+
         return false;
     }
 
@@ -115,5 +117,14 @@ public class UserController {
      */
     public String setUserPassword(String username, String password){
         return "Response";
+    }
+
+    /**
+     * Fetches a userID for a user
+     * @param username  the user to retrieve the userID from
+     * @return int  the userID, or -1 if user not found
+     */
+    public int getUserID(String username) {
+        return -1;
     }
 }
