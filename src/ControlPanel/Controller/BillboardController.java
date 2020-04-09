@@ -1,12 +1,12 @@
 package ControlPanel.Controller;
 
 import ControlPanel.Models.BillboardModel;
-import ControlPanel.View.MainFrame;
+import ControlPanel.View.AppFrame;
 
 public class BillboardController {
-    private MainFrame frame;
+    private AppFrame frame;
     private BillboardModel model;
-    public BillboardController(MainFrame frame, BillboardModel model) {
+    public BillboardController(AppFrame frame, BillboardModel model) {
         this.frame = frame;
         this.model = model;
     }

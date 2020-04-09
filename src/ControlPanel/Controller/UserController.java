@@ -2,13 +2,13 @@ package ControlPanel.Controller;
 
 import ControlPanel.Models.UserModel;
 import ControlPanel.View.LoginView;
-import ControlPanel.View.MainFrame;
+import ControlPanel.View.AppFrame;
 
 public class UserController {
     private LoginView loginView;
-    private MainFrame frame;
+    private AppFrame frame;
     private UserModel model;
-    public UserController(MainFrame frame, LoginView loginView, UserModel model) {
+    public UserController(AppFrame frame, LoginView loginView, UserModel model) {
         this.frame = frame;
         this.model = model;
         this.loginView = loginView;

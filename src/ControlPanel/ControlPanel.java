@@ -7,8 +7,8 @@ import ControlPanel.Models.BillboardModel;
 import ControlPanel.Models.ScheduleModel;
 import ControlPanel.Models.UserModel;
 import ControlPanel.View.LoginView;
-import ControlPanel.View.MainFrame;
-import ControlPanel.View.MainMenu;
+import ControlPanel.View.AppFrame;
+import ControlPanel.View.MainView;
 
 
 public class ControlPanel {
@@ -18,12 +18,12 @@ public class ControlPanel {
         {
             // Instantiate the views
             LoginView loginView = new LoginView();
-            MainMenu mainMenu = new MainMenu();
-            mainMenu.initPanel();
+            MainView mainView = new MainView();
+            mainView.initPanel();
 
             // Instantiate the view manager
-            MainFrame mainFrame = new MainFrame();
-            mainFrame.addView(mainMenu.getContainerPanel(), "mainMenu");
+            AppFrame appFrame = new AppFrame();
+            appFrame.addView(mainView.getContainerPanel(), "mainMenu");
 
             // Instantiate the models
             BillboardModel billboardModel = new BillboardModel();
@@ -31,13 +31,13 @@ public class ControlPanel {
             UserModel userModel = new UserModel();
 
             // Start the controllers
-            BillboardController billboardController = new BillboardController(mainFrame, billboardModel);
-            ScheduleController scheduleController = new ScheduleController(mainFrame, scheduleModel);
-            UserController userController = new UserController(mainFrame, loginView, userModel);
+            BillboardController billboardController = new BillboardController(appFrame, billboardModel);
+            ScheduleController scheduleController = new ScheduleController(appFrame, scheduleModel);
+            UserController userController = new UserController(appFrame, loginView, userModel);
 
             // Start the views
-            mainFrame.initialiseViews();
-            mainFrame.showPanel("login");
+            appFrame.initialiseViews();
+            appFrame.showPanel("mainView");
         }
         catch (Exception e)
         {
