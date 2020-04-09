@@ -1,10 +1,13 @@
 ControlPanel
+ControlPanel.Controller
 ControlPanel.Models
-Exceptions
+ControlPanel.Utilities
+ControlPanel.View
 Server
 Server.Controllers
 Server.Models
 Server.Utilities
+SocketWrench
 Viewer
 Viewer.Controllers
 Viewer.Models

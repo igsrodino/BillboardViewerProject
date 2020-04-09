@@ -1,6 +1,7 @@
 package ControlPanel.Models;
 
 import ControlPanel.Controller.UserController;
+import ControlPanel.Utilities.NetworkManager;
 
 import java.util.ArrayList;
 
