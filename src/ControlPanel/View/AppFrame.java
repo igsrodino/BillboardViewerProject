@@ -13,22 +13,20 @@ public class AppFrame {
     private MainNav mainNav;
 
     public AppFrame(MainNav mainNav){
+        this.mainNav = mainNav;
         this.frame = new JFrame("Control Panel");
-
-        // Setup the CardLayout and content panel
         this.cardLayout = new CardLayout();
         this.content = new JPanel(new CardLayout());
-        frame.getContentPane().setLayout(new BorderLayout());
-        frame.add(content, BorderLayout.CENTER);
-        this.mainNav = mainNav;
-        frame.getContentPane().add(mainNav.getPanel(), BorderLayout.NORTH);
-        mainNav.setVisibility(false);
+        initialiseViews();
     }
     public void addView(JPanel view, String name){
         content.add(name, view);
     }
 
     public void initialiseViews() {
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.add(content, BorderLayout.CENTER);
+        frame.getContentPane().add(mainNav.getPanel(), BorderLayout.NORTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(1280, 720));
         frame.setPreferredSize(new Dimension(1280, 720));

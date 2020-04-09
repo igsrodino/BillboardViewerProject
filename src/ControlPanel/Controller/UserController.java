@@ -11,6 +11,7 @@ public class UserController {
     private LoginView loginView;
     private AppFrame frame;
     private UserModel model;
+
     public UserController(AppFrame frame, LoginView loginView, UserModel model) {
         this.frame = frame;
         this.model = model;
@@ -35,7 +36,7 @@ public class UserController {
      * @return  true/false depending on the server response
      */
     private boolean login (String username, String password){
-        //TODO: hash the password.
+        //TODO: hash the password, call the model to send it to the server, store the accessToken
         System.out.println(username + " - " + password);
         frame.changeView("mainMenu", true);
         return false;

@@ -3,6 +3,7 @@ package ControlPanel;
 import ControlPanel.Controller.BillboardController;
 import ControlPanel.Controller.ScheduleController;
 import ControlPanel.Controller.UserController;
+import ControlPanel.Controller.ViewController;
 import ControlPanel.Models.BillboardModel;
 import ControlPanel.Models.ScheduleModel;
 import ControlPanel.Models.UserModel;
@@ -32,10 +33,10 @@ public class ControlPanel {
             BillboardController billboardController = new BillboardController(appFrame, billboardModel);
             ScheduleController scheduleController = new ScheduleController(appFrame, scheduleModel);
             UserController userController = new UserController(appFrame, loginView, userModel);
-
+            ViewController viewController = new ViewController(mainNav);
 
             // Start the views
-            appFrame.initialiseViews();
+//            appFrame.initialiseViews();
             appFrame.changeView("login");
         }
         catch (Exception e)
