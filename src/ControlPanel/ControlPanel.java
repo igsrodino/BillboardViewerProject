@@ -8,7 +8,7 @@ import ControlPanel.Models.ScheduleModel;
 import ControlPanel.Models.UserModel;
 import ControlPanel.View.LoginView;
 import ControlPanel.View.AppFrame;
-import ControlPanel.View.MainView;
+import ControlPanel.View.MainNav;
 
 
 public class ControlPanel {
@@ -18,12 +18,10 @@ public class ControlPanel {
         {
             // Instantiate the views
             LoginView loginView = new LoginView();
-            MainView mainView = new MainView();
-            mainView.initPanel();
+            MainNav mainNav = new MainNav();
 
             // Instantiate the view manager
-            AppFrame appFrame = new AppFrame();
-            appFrame.addView(mainView.getContainerPanel(), "mainMenu");
+            AppFrame appFrame = new AppFrame(mainNav);
 
             // Instantiate the models
             BillboardModel billboardModel = new BillboardModel();
@@ -35,9 +33,10 @@ public class ControlPanel {
             ScheduleController scheduleController = new ScheduleController(appFrame, scheduleModel);
             UserController userController = new UserController(appFrame, loginView, userModel);
 
+
             // Start the views
             appFrame.initialiseViews();
-            appFrame.showPanel("mainView");
+            appFrame.changeView("login");
         }
         catch (Exception e)
         {

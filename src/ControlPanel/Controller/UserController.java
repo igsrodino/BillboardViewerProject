@@ -4,6 +4,9 @@ import ControlPanel.Models.UserModel;
 import ControlPanel.View.LoginView;
 import ControlPanel.View.AppFrame;
 
+/**
+ * Manages events in the User Administration views
+ */
 public class UserController {
     private LoginView loginView;
     private AppFrame frame;
@@ -34,7 +37,7 @@ public class UserController {
     private boolean login (String username, String password){
         //TODO: hash the password.
         System.out.println(username + " - " + password);
-        frame.showPanel("mainMenu");
+        frame.changeView("mainMenu", true);
         return false;
     }
 }
