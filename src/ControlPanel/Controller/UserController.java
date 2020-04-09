@@ -4,8 +4,6 @@ import ControlPanel.Models.UserModel;
 import ControlPanel.View.LoginView;
 import ControlPanel.View.MainFrame;
 
-import javax.swing.*;
-
 public class UserController {
     private LoginView loginView;
     private MainFrame frame;
@@ -22,11 +20,11 @@ public class UserController {
      * layout. Views can be shown with frame.showPanel("panel-name")
      */
     private void initController() {
-        loginView.getLogin().addActionListener(e -> System.out.println(loginView.getUsername() +
-                " - " + loginView.getPassword()));
-        frame.addView(loginView.getLoginPanel(), "login");
+        loginView.initPanel();
+        loginView.getLogin().addActionListener(e -> this.login(loginView.getUsername(),
+                loginView.getPassword()));
+        frame.addView(loginView.getContainerPanel(), "login");
     }
-
     /**
      * Attempts to login the user
      * @param username  the username to send to the server
@@ -34,8 +32,9 @@ public class UserController {
      * @return  true/false depending on the server response
      */
     private boolean login (String username, String password){
-        //TODO: hash the password. Pull in the Server.Utilities.UserAuthentication class so you
-        // can use the helpers in it.
+        //TODO: hash the password.
+        System.out.println(username + " - " + password);
+        frame.showPanel("mainMenu");
         return false;
     }
 }

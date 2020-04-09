@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ControlPanel.View.MainMenu">
+  <grid id="27dc6" binding="containerPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="572" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="d9ca4" binding="mainMenu" layout-manager="GridBagLayout">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <maximum-size width="500" height="500"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="etched" title-justification="1" title-position="2">
+          <font size="20" style="1"/>
+          <title-color color="-15000029"/>
+        </border>
+        <children>
+          <component id="f0747" class="javax.swing.JButton" binding="manageBillboardsButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="60" bottom="0" right="60" weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <text value="Manage Billboards"/>
+            </properties>
+          </component>
+          <component id="f4500" class="javax.swing.JButton" binding="billboardSchedulingButton" default-binding="true">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="60" bottom="0" right="60" weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <text value="Billboard Scheduling"/>
+            </properties>
+          </component>
+          <component id="34d93" class="javax.swing.JButton" binding="userAdministrationButton" default-binding="true">
+            <constraints>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="60" bottom="0" right="60" weightx="1.0" weighty="1.0"/>
+            </constraints>
+            <properties>
+              <text value="User Administration"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

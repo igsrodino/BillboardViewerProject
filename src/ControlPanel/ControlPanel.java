@@ -8,6 +8,7 @@ import ControlPanel.Models.ScheduleModel;
 import ControlPanel.Models.UserModel;
 import ControlPanel.View.LoginView;
 import ControlPanel.View.MainFrame;
+import ControlPanel.View.MainMenu;
 
 
 public class ControlPanel {
@@ -17,10 +18,12 @@ public class ControlPanel {
         {
             // Instantiate the views
             LoginView loginView = new LoginView();
+            MainMenu mainMenu = new MainMenu();
+            mainMenu.initPanel();
 
             // Instantiate the view manager
             MainFrame mainFrame = new MainFrame();
-
+            mainFrame.addView(mainMenu.getContainerPanel(), "mainMenu");
 
             // Instantiate the models
             BillboardModel billboardModel = new BillboardModel();

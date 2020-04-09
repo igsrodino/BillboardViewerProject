@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b168d5a2-df0b-45a5-89ef-42db095dfb3e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/Viewer/Models/BillboardModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Viewer/Models/BillboardModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Viewer/Views/BillboardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Viewer/Views/BillboardView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Viewer/Views/XMLExample.xml" beforeDir="false" afterPath="$PROJECT_DIR$/XMLExample.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1ZtBQwofBUkfCujVLPfmgOZA6fP" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="Downloaded.Files.Path" value="$PROJECT_DIR$/.." />
+    <property name="Downloaded.Files.Path.Enabled" value="true" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/SocketWrench" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/Viewer" />
+      <recent name="$PROJECT_DIR$/src/SocketWrench" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Viewer">
+    <configuration name="ControlPanel" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ControlPanel.ControlPanel" />
+      <module name="MajorProject-Team160" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ControlPanel.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Server.Server" />
+      <module name="MajorProject-Team160" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SocketWrench" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="SocketWrench.SocketWrench" />
+      <module name="MajorProject-Team160" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="SocketWrench.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Viewer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Viewer.Viewer" />
+      <module name="MajorProject-Team160" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Viewer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="XMLRead" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Viewer.Views.XMLRead" />
+      <module name="MajorProject-Team160" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Viewer.Views.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.ControlPanel" />
+      <item itemvalue="Application.Server" />
+      <item itemvalue="Application.SocketWrench" />
+      <item itemvalue="Application.XMLRead" />
+      <item itemvalue="Application.Viewer" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Viewer" />
+        <item itemvalue="Application.Server" />
+        <item itemvalue="Application.SocketWrench" />
+        <item itemvalue="Application.ControlPanel" />
+        <item itemvalue="Application.XMLRead" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b168d5a2-df0b-45a5-89ef-42db095dfb3e" name="Default Changelist" comment="" />
+      <created>1585648497269</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1585648497269</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="298" y="199" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1585970349316">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state x="298" y="199" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.33.1680.1017@0.33.1680.1017" timestamp="1585970349316" />
+    <state x="648" y="260" width="374" height="566" key="#com.intellij.ide.util.MemberChooser" timestamp="1586063252469">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state x="648" y="260" width="374" height="566" key="#com.intellij.ide.util.MemberChooser/0.33.1680.1017@0.33.1680.1017" timestamp="1586063252469" />
+    <state x="573" y="290" width="524" height="506" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1585974419621">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state x="573" y="290" width="524" height="506" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.33.1680.1017@0.33.1680.1017" timestamp="1585974419621" />
+    <state x="584" y="388" width="502" height="310" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1585649003954">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state x="584" y="388" width="502" height="310" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.33.1680.1017@0.33.1680.1017" timestamp="1585649003954" />
+    <state x="617" y="287" width="424" height="517" key="FileChooserDialogImpl" timestamp="1586042555513">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state x="617" y="287" width="424" height="517" key="FileChooserDialogImpl/0.33.1680.1017@0.33.1680.1017" timestamp="1586042555513" />
+    <state width="1874" height="275" key="GridCell.Tab.0.bottom" timestamp="1586156230913">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state width="1634" height="265" key="GridCell.Tab.0.bottom/0.33.1680.1017@0.33.1680.1017" timestamp="1586092227962" />
+    <state width="1874" height="275" key="GridCell.Tab.0.bottom/0.34.1920.1046@0.34.1920.1046" timestamp="1586156230913" />
+    <state width="1874" height="275" key="GridCell.Tab.0.center" timestamp="1586156230912">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state width="1634" height="265" key="GridCell.Tab.0.center/0.33.1680.1017@0.33.1680.1017" timestamp="1586092227961" />
+    <state width="1874" height="275" key="GridCell.Tab.0.center/0.34.1920.1046@0.34.1920.1046" timestamp="1586156230912" />
+    <state width="1874" height="275" key="GridCell.Tab.0.left" timestamp="1586156230912">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state width="1634" height="265" key="GridCell.Tab.0.left/0.33.1680.1017@0.33.1680.1017" timestamp="1586092227961" />
+    <state width="1874" height="275" key="GridCell.Tab.0.left/0.34.1920.1046@0.34.1920.1046" timestamp="1586156230912" />
+    <state width="1874" height="275" key="GridCell.Tab.0.right" timestamp="1586156230913">
+      <screen x="0" y="34" width="1920" height="1046" />
+    </state>
+    <state width="1634" height="265" key="GridCell.Tab.0.right/0.33.1680.1017@0.33.1680.1017" timestamp="1586092227962" />
+    <state width="1874" height="275" key="GridCell.Tab.0.right/0.34.1920.1046@0.34.1920.1046" timestamp="1586156230913" />
+    <state width="1634" height="327" key="GridCell.Tab.1.bottom" timestamp="1586068921725">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state width="1634" height="327" key="GridCell.Tab.1.bottom/0.33.1680.1017@0.33.1680.1017" timestamp="1586068921725" />
+    <state width="1634" height="327" key="GridCell.Tab.1.center" timestamp="1586068921723">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state width="1634" height="327" key="GridCell.Tab.1.center/0.33.1680.1017@0.33.1680.1017" timestamp="1586068921723" />
+    <state width="1634" height="327" key="GridCell.Tab.1.left" timestamp="1586068921723">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state width="1634" height="327" key="GridCell.Tab.1.left/0.33.1680.1017@0.33.1680.1017" timestamp="1586068921723" />
+    <state width="1634" height="327" key="GridCell.Tab.1.right" timestamp="1586068921724">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state width="1634" height="327" key="GridCell.Tab.1.right/0.33.1680.1017@0.33.1680.1017" timestamp="1586068921724" />
+    <state x="323" y="119" width="1024" height="849" key="SettingsEditor" timestamp="1586042511406">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state x="323" y="119" width="1024" height="849" key="SettingsEditor/0.33.1680.1017@0.33.1680.1017" timestamp="1586042511406" />
+    <state x="543" y="437" width="583" height="212" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1586042875392">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state x="543" y="437" width="583" height="212" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.33.1680.1017@0.33.1680.1017" timestamp="1586042875392" />
+    <state x="594" y="425" width="482" height="236" key="com.intellij.uiDesigner.propertyInspector.editors.string.StringEditorDialog" timestamp="1586068449652">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state x="594" y="425" width="482" height="236" key="com.intellij.uiDesigner.propertyInspector.editors.string.StringEditorDialog/0.33.1680.1017@0.33.1680.1017" timestamp="1586068449652" />
+    <state x="504" y="247" key="run.anything.popup" timestamp="1586090600395">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state x="504" y="247" key="run.anything.popup/0.33.1680.1017@0.33.1680.1017" timestamp="1586090600395" />
+    <state x="504" y="185" width="670" height="676" key="search.everywhere.popup" timestamp="1586042994673">
+      <screen x="0" y="33" width="1680" height="1017" />
+    </state>
+    <state x="504" y="185" width="670" height="676" key="search.everywhere.popup/0.33.1680.1017@0.33.1680.1017" timestamp="1586042994673" />
+  </component>
+</project>
