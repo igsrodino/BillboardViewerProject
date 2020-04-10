@@ -25,11 +25,11 @@ public class AppFrame {
 
     public void initialiseViews() {
         frame.getContentPane().setLayout(new BorderLayout());
-        frame.add(content, BorderLayout.CENTER);
         frame.getContentPane().add(mainNav.getPanel(), BorderLayout.NORTH);
+        frame.add(content, BorderLayout.CENTER);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(1280, 720));
         frame.setPreferredSize(new Dimension(1280, 720));
+        frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -42,15 +42,5 @@ public class AppFrame {
         CardLayout cl = (CardLayout)(content.getLayout());
         cl.show(content, panelName);
         mainNav.setVisibility(navState);
-    }
-
-    public LoginView getLoginView() {
-        return loginView;
-    }
-
-    public void setLoginView(LoginView loginView) {
-        this.loginView = loginView;
-        content.revalidate();
-        frame.revalidate();
     }
 }
