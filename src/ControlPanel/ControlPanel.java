@@ -3,14 +3,10 @@ package ControlPanel;
 import ControlPanel.Controller.BillboardController;
 import ControlPanel.Controller.ScheduleController;
 import ControlPanel.Controller.UserController;
-import ControlPanel.Controller.ViewController;
 import ControlPanel.Models.BillboardModel;
 import ControlPanel.Models.ScheduleModel;
 import ControlPanel.Models.UserModel;
-import ControlPanel.View.BillboardView;
-import ControlPanel.View.LoginView;
-import ControlPanel.View.AppFrame;
-import ControlPanel.View.MainNav;
+import ControlPanel.View.*;
 
 
 public class ControlPanel {
@@ -22,6 +18,8 @@ public class ControlPanel {
             LoginView loginView = new LoginView();
             MainNav mainNav = new MainNav();
             BillboardView billboardView = new BillboardView();
+            ScheduleView scheduleView = new ScheduleView();
+            UserView userView = new UserView();
 
             // Instantiate the view manager
             AppFrame appFrame = new AppFrame(mainNav);
@@ -32,15 +30,15 @@ public class ControlPanel {
             UserModel userModel = new UserModel();
 
             // Start the controllers
-            BillboardController billboardController = new BillboardController(appFrame, billboardModel);
-            ScheduleController scheduleController = new ScheduleController(appFrame, scheduleModel);
-            UserController userController = new UserController(appFrame, loginView, userModel);
-            ViewController viewController = new ViewController(mainNav);
+            BillboardController billboardController = new BillboardController(appFrame,
+                    billboardModel, billboardView, mainNav);
+            ScheduleController scheduleController = new ScheduleController(appFrame,
+                    scheduleModel, scheduleView, mainNav);
+            UserController userController = new UserController(appFrame, userModel, loginView,
+                    userView, mainNav);
 
             // Start the views
-            mainNav.setVisibility(true);
-            appFrame.addView(billboardView.getPanel(), "billboards");
-            appFrame.changeView("billboards");
+            appFrame.changeView("login");
         }
         catch (Exception e)
         {

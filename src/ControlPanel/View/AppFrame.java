@@ -36,11 +36,15 @@ public class AppFrame {
     public void changeView(String panelName){
         CardLayout cl = (CardLayout)(content.getLayout());
         cl.show(content, panelName);
+        frame.revalidate();
+        frame.repaint();
     }
 
     public void changeView(String panelName, boolean navState){
         CardLayout cl = (CardLayout)(content.getLayout());
         cl.show(content, panelName);
         mainNav.setVisibility(navState);
+        frame.revalidate();
+        frame.repaint();
     }
 }
