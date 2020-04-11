@@ -44,7 +44,7 @@ public class ClientController implements Runnable {
             // billboardID is retrieved by using the Schedule controller to find out which billboard should
             // be displayed (Schedule.getCurrentBillboard())
             String re = bb.getBillboard(1);
-            this.sendResponse(request.toString());
+            this.sendResponse(re);
             return;
         } catch(Exception e){
             System.err.println("Client has failed differently: " + e.getMessage());

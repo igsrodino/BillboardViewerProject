@@ -26,9 +26,9 @@ public class BillboardModel {
      * */
     public BillboardModel(Database dbConnection){
         this.dbConn = dbConnection;
-        this.background = "";
+        this.background = "#0000FF";
         this.id = 0;
-        this.message = "";
+        this.message = "Hello WOrld";
         this.message_color = "";
         this.url = "";
         this.data = "";
