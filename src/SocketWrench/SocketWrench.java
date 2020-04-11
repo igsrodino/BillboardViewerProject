@@ -10,7 +10,7 @@ public class SocketWrench {
             JFrame frame = new JFrame("Socket Wrench");
             frame.setContentPane(wrench.getRootPanel());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.pack();
+            frame.setSize(700, 500);
             frame.setVisible(true);
         }
         catch (Exception e)

@@ -54,6 +54,7 @@ The `test` folder should already be marked as 'Test Sources Root'. Organise your
 * Controllers connect models and views together, and control the flow of data through the app. 
 
 ## Request Routes
+These routes are what is put in the `<type></type>` tags in a request. See below for an example
 ### Billboards
 * getBillboard
 * listBillboards
@@ -76,13 +77,15 @@ The `test` folder should already be marked as 'Test Sources Root'. Organise your
 * setSchedule
 * deleteSchedule
 
+
+## Request/response formats
 Request without payload
 
 ```xml
 <request>
-	<type>Billboard</type>
-	<task>GetBillboard</task>
+	<type>getBillboard</type>
 	<data></data>
+    <token>CB2D1B97A1D8C4AAECCE3EE348DC7FFA53D50193</token>
 </request>
 ```
 
@@ -90,18 +93,18 @@ Request with payload
 
 ```xml
 <request>
-	<type>User</type>
-	<task>Login</task>
+	<type>login</type>
 	<data>
 		<username>bob</username>
 		<password>password-hash</password>
 	</data>
+        <token></token>
 </request>
 ```
 
-Acknowledgement response
+Acknowledgement response. Type can be `success` or `failure` depending
 
-```
+```xml
 <response>
 	<type>success</type>
 	<data></data>
@@ -110,7 +113,7 @@ Acknowledgement response
 
 Payload bearing response
 
-```
+```xml
 <response>
 	<type>success</type>
 	<data>
