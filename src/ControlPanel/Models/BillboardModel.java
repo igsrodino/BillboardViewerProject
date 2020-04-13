@@ -2,8 +2,10 @@ package ControlPanel.Models;
 
 import ControlPanel.Controller.UserController;
 import ControlPanel.Utilities.NetworkManager;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.ArrayList;
 
 /**
@@ -49,5 +51,17 @@ public class BillboardModel {
      */
     public boolean deleteCurrentBillboard() {
         return false;
+    }
+
+    /**
+     * Gets the current billboard
+     */
+    public Document getCurrentBillboard(){
+        try{
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element billboard = doc.createElement("billboard");
+            // TODO: Add checks to create a Document with tags that are in use, ie length > 0
+        }catch(Exception e){}
+        return null;
     }
 }

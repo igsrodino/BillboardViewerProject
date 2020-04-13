@@ -55,6 +55,15 @@ public class BillboardController {
         // Add views to the card layout
         frame.addView(billboardView.getPanel(), "billboards");
     }
+    // TODO: Add event handler methods for list events
+
+    /**
+     * Saves the current billboard as an xml file
+     */
+    private void saveBillboardXML(){
+        String xml = XMLParser.documentToString(this.model.getCurrentBillboard());
+        // TODO: Add file creation and save. Show a dialog.
+    }
     /**
      * Resets the view
      */
