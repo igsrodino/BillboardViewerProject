@@ -64,10 +64,10 @@ public class NetworkManager {
             Document request = generateRequest(type);
 
             // Send the request, listen for response.
-            Document response = getResponse(documentToString(request));
+            Document response = getResponse(XMLParser.documentToString(request));
 
             // Extract and return the data from the response
-            responseData = response.getDocumentElement().getElementsByTagName("data").item(0);
+            responseData = request.getDocumentElement();
 
         } catch(Exception e){
             System.err.println(e.getMessage());
@@ -89,10 +89,11 @@ public class NetworkManager {
             Document request = generateRequest(type, data);
 
             // Send the request, listen for response.
-            Document response = getResponse(documentToString(request));
+            Document response = getResponse(XMLParser.documentToString(request));
 
             // Extract and return the data from the response
-            responseData = response.getDocumentElement().getElementsByTagName("data").item(0);
+            responseData = request.getDocumentElement();
+
         } catch(Exception e){
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
@@ -191,26 +192,6 @@ public class NetworkManager {
             return null;
         }
         return reqToken;
-    }
-
-    /**
-     * Converts a document to a string
-     * @param request  the Document to convert
-     * @return  the request as a string
-     */
-    private static String documentToString(Document request){
-        String result;
-        try{
-            Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            StringWriter writer = new StringWriter();
-            transformer.transform(new DOMSource(request), new StreamResult(writer));
-            result = writer.getBuffer().toString();
-        }catch(Exception e){
-            System.err.println(e.getMessage());
-            System.err.println(e.getStackTrace());
-            return null;
-        }
-        return result;
     }
 
     /**

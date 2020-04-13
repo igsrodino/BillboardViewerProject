@@ -2,6 +2,7 @@ package ControlPanel.Models;
 
 import ControlPanel.Controller.UserController;
 import ControlPanel.Utilities.NetworkManager;
+import org.w3c.dom.Element;
 
 import java.util.ArrayList;
 
@@ -22,4 +23,31 @@ public class BillboardModel {
     public void getBillboardList(){
     }
 
+    /**
+     * Sends the currently open billboard to the server
+     */
+    public boolean saveCurrentBillboard(){
+        ArrayList<Element> elements = new ArrayList<Element>();
+        // TODO: Call NetworkManager.generateElement(type, value) for each field, and add the
+        //  result to elements.
+        // TODO: Call NetworkManager.makeRequest(type, elements.toArray());
+        // TODO: Check the returned type tag and return true/false on success/failure
+        return false;
+    }
+
+    /**
+     * Creates a new billboard object and adds it to the Arraylist of billboards
+     * @param creator  the creator's name
+     * @param owner  the creator's user id
+     * @return returns true/false on the success of the operation
+     */
+    public void createBillboard(String creator, int owner) {
+    }
+
+    /**
+     * Sends a request to delete the billboard. Removes the current billboard from the ArrayList
+     */
+    public boolean deleteCurrentBillboard() {
+        return false;
+    }
 }

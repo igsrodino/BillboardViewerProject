@@ -20,6 +20,12 @@ public class BillboardView {
     private JButton uploadImageButton;
     private JButton setBackgroundColourButton;
     private JLabel imageData;
+    private JTextField billboardName;
+    private JButton newBillboardButton;
+
+    public String getBillboardName() {
+        return billboardName.getText();
+    }
 
     public void setImageData(String imageData) {
         this.imageData.setText(imageData);
@@ -45,26 +51,27 @@ public class BillboardView {
         return downloadXMLButton;
     }
 
-    public JTextField getMessage() {
-        return message;
+    public String getMessage() {
+        return message.getText();
     }
 
     public JButton getSetMessageTextColourButton() {
         return setMessageTextColourButton;
     }
 
-    public JTextField getInformation() {
-        return information;
+    public String getInformation() {
+        return information.getText();
     }
 
     public JButton getSetInformationTextColourButton() {
         return setInformationTextColourButton;
     }
 
-    public JTextField getImageUrl() {
-        return imageUrl;
+    public String getImageUrl() {
+        return imageUrl.getText();
     }
-    public void setImageURL(String url){
+
+    public void setImageURL(String url) {
         this.imageUrl.setText(url);
     }
 
@@ -80,11 +87,27 @@ public class BillboardView {
         return billboardPanel;
     }
 
-    public void setMessageColor(String hex){
-            this.message.setForeground(Color.decode(hex));
-    }
-    public void setInformationColor(String hex){
-            this.information.setForeground(Color.decode(hex));
+    public void setMessageColor(String hex) {
+        this.message.setForeground(Color.decode(hex));
     }
 
+    public void setInformationColor(String hex) {
+        this.information.setForeground(Color.decode(hex));
+    }
+
+    public JButton getNewBillboardButton() {
+        return this.newBillboardButton;
+    }
+
+    public void setInformation(String s) {
+        this.information.setText(s);
+    }
+
+    public void setMessage(String s) {
+        this.message.setText(s);
+    }
+
+    public void setName(String s) {
+        this.billboardName.setText(s);
+    }
 }

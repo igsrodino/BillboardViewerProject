@@ -1,11 +1,13 @@
 package ControlPanel.Controller;
 
 import ControlPanel.Models.BillboardModel;
+import ControlPanel.Models.UserModel;
 import ControlPanel.Utilities.XMLParser;
 import ControlPanel.View.AppFrame;
 import ControlPanel.View.BillboardView;
 import ControlPanel.View.MainNav;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -17,21 +19,26 @@ import java.util.Base64;
  * Manages events in the Billboard Management views
  */
 public class BillboardController {
+    private UserModel userModel;
     private BillboardView billboardView;
     private AppFrame frame;
     private BillboardModel model;
     private MainNav mainNav;
     private String imageName;
 
-    public BillboardController(AppFrame frame, BillboardModel model, BillboardView billboardView, MainNav mainNav) {
+    public BillboardController(AppFrame frame, BillboardModel model, BillboardView billboardView, MainNav mainNav, UserModel userModel) {
         this.frame = frame;
         this.model = model;
         this.billboardView = billboardView;
         this.mainNav = mainNav;
         imageName = "";
+        this.userModel = userModel;
         this.initController();
     }
 
+    /**
+     * Initialises the event listeners for billboard related ui elements
+     */
     private void initController() {
         // Add event listeners
         mainNav.getBillboard().addActionListener(e -> this.frame.changeView("billboards"));
@@ -41,11 +48,61 @@ public class BillboardController {
         billboardView.getSetBackgroundColourButton().addActionListener(e -> this.setBackgroundColor(this.getColor()));
         billboardView.getUploadXMLButton().addActionListener(e -> this.getXML());
         billboardView.getUploadImageButton().addActionListener(e -> this.setUploadImage(this.getImageBase64()));
+        billboardView.getSaveChangesButton().addActionListener(e -> this.saveCurrentBillboard());
+        billboardView.getNewBillboardButton().addActionListener(e -> this.newBillboard(userModel.getCreator(), userModel.getUserID()));
+        billboardView.getDeleteBillboardButton().addActionListener(e -> this.deleteCurrentBillboard());
 
         // Add views to the card layout
         frame.addView(billboardView.getPanel(), "billboards");
     }
+    /**
+     * Resets the view
+     */
+    private void resetView(){
+        billboardView.setMessageColor("#000000");
+        billboardView.setInformationColor("#000000");
+        billboardView.setMessage("");
+        billboardView.setInformation("");
+        billboardView.setImageURL("");
+        billboardView.setImageData("");
+        billboardView.setName("");
+    }
+    /**
+     * Deletes the current billboard
+     */
+    private void deleteCurrentBillboard(){
+        boolean status = this.alertUser("This is permanent, are you sure?");
+        if(status){
+            boolean modelStatus = this.model.deleteCurrentBillboard();
+            if(!modelStatus)
+                this.alertUser("Network error, billboard may still exist on server", "Error");
+            this.resetView();
+        }
+    }
+    /**
+     * Creates a new billboard
+     * @param creator
+     * @param owner
+     */
+    private void newBillboard(String creator, int owner){
+        boolean status = this.alertUser("You'll lose any unsaved changes, are you sure?");
+        if(status){
+            this.model.createBillboard(creator, owner);
+            this.resetView();
+        }
+    }
 
+    /**
+     * Saves the currently open billboard to the server.
+     */
+    private void saveCurrentBillboard(){
+        boolean status = this.model.saveCurrentBillboard();
+        if(status){
+            this.alertUser("Billboard saved successfully", "Success");
+        } else {
+            this.alertUser("Network error, billboard not saved", "Error");
+        }
+    }
     /**
      * Sets a label to notify the user of the status of the image upload.
      *
@@ -73,6 +130,7 @@ public class BillboardController {
             this.billboardView.setMessageColor(hex);
         }
     }
+
     /**
      * Updates the model and sets the information textbox color
      * @param hex  the color to set
@@ -83,6 +141,7 @@ public class BillboardController {
             this.billboardView.setInformationColor(hex);
         }
     }
+
     /**
      * Updates the model
      * @param hex  the color to set
@@ -92,6 +151,7 @@ public class BillboardController {
 //            this.model.setBackgroundColor(hex);
         }
     }
+
     /**
      * Allows the user to choose an image.
      *
@@ -174,12 +234,14 @@ public class BillboardController {
             System.err.println(e.getStackTrace());
         }
         String xmlString = xml.toString();
-        if (XMLParser.isValidBillboard(xmlString)) {
-            this.alertUser("XML is valid", "Upload success");
-            // Parse xml and update model
-            this.processBillboardXML(xmlString);
-        } else {
-            this.alertUser("XML is malformed", "Upload error");
+        if(xmlString.length() > 0){
+            if (XMLParser.isValidBillboard(xmlString)) {
+                this.alertUser("XML is valid", "Upload success");
+                // Parse xml and update model
+                this.processBillboardXML(xmlString);
+            } else {
+                this.alertUser("XML is malformed", "Upload error");
+            }
         }
     }
 
@@ -228,5 +290,19 @@ public class BillboardController {
     private void alertUser(String message, String title) {
         JOptionPane.showMessageDialog(null, message, title,
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Creates a confirmation dialog
+     * @param message  the message to display to the user
+     * @return  returns true if the user clicked yes, false if they clicked no.
+     */
+    private boolean alertUser(String message){
+        int x = JOptionPane.showConfirmDialog(null, message, "Are you sure?",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(x == 0){
+            return true;
+        }
+        return false;
     }
 }

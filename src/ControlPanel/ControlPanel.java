@@ -31,7 +31,7 @@ public class ControlPanel {
 
             // Start the controllers
             BillboardController billboardController = new BillboardController(appFrame,
-                    billboardModel, billboardView, mainNav);
+                    billboardModel, billboardView, mainNav, userModel);
             ScheduleController scheduleController = new ScheduleController(appFrame,
                     scheduleModel, scheduleView, mainNav);
             UserController userController = new UserController(appFrame, userModel, loginView,
