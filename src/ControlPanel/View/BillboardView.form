@@ -51,7 +51,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <grid id="9b17e" layout-manager="GridLayoutManager" row-count="11" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="9b17e" layout-manager="GridLayoutManager" row-count="12" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="20" left="20" bottom="20" right="20"/>
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="6" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -78,7 +78,10 @@
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <font size="14" style="0"/>
+                          <foreground color="-4473925"/>
+                        </properties>
                       </component>
                       <component id="a9d0f" class="javax.swing.JLabel">
                         <constraints>
@@ -94,21 +97,26 @@
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <font size="14" style="0"/>
+                          <foreground color="-4473925"/>
+                        </properties>
                       </component>
                       <component id="d7462" class="javax.swing.JTextField" binding="imageUrl">
                         <constraints>
-                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
                         <properties>
+                          <font size="14" style="0"/>
+                          <foreground color="-4473925"/>
                           <toolTipText value="Add picture url"/>
                         </properties>
                       </component>
                       <component id="c2f8a" class="javax.swing.JLabel">
                         <constraints>
-                          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Billboard background"/>
@@ -116,7 +124,7 @@
                       </component>
                       <component id="26b13" class="javax.swing.JButton" binding="setBackgroundColourButton" default-binding="true">
                         <constraints>
-                          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Set background colour"/>
@@ -140,7 +148,7 @@
                       </component>
                       <component id="f03e8" class="javax.swing.JButton" binding="uploadImageButton" default-binding="true">
                         <constraints>
-                          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Upload image"/>
@@ -152,6 +160,15 @@
                         </constraints>
                         <properties>
                           <text value="Add an image URL or upload an existing image"/>
+                        </properties>
+                      </component>
+                      <component id="ed701" class="javax.swing.JLabel" binding="imageData">
+                        <constraints>
+                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <enabled value="true"/>
+                          <text value="   "/>
                         </properties>
                       </component>
                     </children>

@@ -47,4 +47,8 @@ public class AppFrame {
         frame.revalidate();
         frame.repaint();
     }
+
+    public Frame getFrame() {
+        return this.frame;
+    }
 }

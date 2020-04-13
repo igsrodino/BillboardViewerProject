@@ -1,6 +1,7 @@
 package ControlPanel.View;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class BillboardView {
     private JPanel containerPanel;
@@ -18,6 +19,11 @@ public class BillboardView {
     private JTextField imageUrl;
     private JButton uploadImageButton;
     private JButton setBackgroundColourButton;
+    private JLabel imageData;
+
+    public void setImageData(String imageData) {
+        this.imageData.setText(imageData);
+    }
 
     public JList getBillboardList() {
         return billboardList;
@@ -58,6 +64,9 @@ public class BillboardView {
     public JTextField getImageUrl() {
         return imageUrl;
     }
+    public void setImageURL(String url){
+        this.imageUrl.setText(url);
+    }
 
     public JButton getUploadImageButton() {
         return uploadImageButton;
@@ -70,4 +79,12 @@ public class BillboardView {
     public JPanel getPanel() {
         return billboardPanel;
     }
+
+    public void setMessageColor(String hex){
+            this.message.setForeground(Color.decode(hex));
+    }
+    public void setInformationColor(String hex){
+            this.information.setForeground(Color.decode(hex));
+    }
+
 }
