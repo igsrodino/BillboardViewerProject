@@ -127,12 +127,7 @@ public class BillboardController {
             }
 
             //Transform document to XML string
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            StringWriter writer = new StringWriter();
-
-            transformer.transform(new DOMSource(doc), new StreamResult(writer));
-            billboardXMLStringValue = writer.getBuffer().toString();
+            billboardXMLStringValue = this.convertDocumentToString(doc);
 
         }catch(Exception e){
             System.out.println("Something went wrong.");}
@@ -142,7 +137,15 @@ public class BillboardController {
 
 
 
+    private String convertDocumentToString(Document doc){
+            // TODO: add error handling
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        StringWriter writer = new StringWriter();
 
+        transformer.transform(new DOMSource(doc), new StreamResult(writer));
+        return writer.getBuffer().toString();
+    }
 
     /**
      * Gets a list of all the billboards in the system
