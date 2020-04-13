@@ -20,6 +20,6 @@ public class BillboardModel {
 
     // TODO: create methods that request and receive data from the server.
     public void getBillboardList(){
-
     }
+
 }

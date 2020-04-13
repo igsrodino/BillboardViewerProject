@@ -188,7 +188,7 @@ public class BillboardController {
      * @param xml
      */
     private void processBillboardXML(String xml){
-        Element bb = XMLParser.getBillboard(xml);
+        Element bb = XMLParser.getDocument(xml);
         if(bb.getAttribute("background").length() > 0){
             System.out.println(bb.getAttribute("background"));
         }

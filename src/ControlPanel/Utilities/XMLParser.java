@@ -22,7 +22,7 @@ public class XMLParser {
             return false;
         }
     }
-    public static Element getBillboard(String xml){
+    public static Element getDocument(String xml){
         try{
             return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xml))).getDocumentElement();
         }catch(IOException | ParserConfigurationException | SAXException  e){
