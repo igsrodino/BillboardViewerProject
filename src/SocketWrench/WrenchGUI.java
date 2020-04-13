@@ -7,12 +7,20 @@ import java.awt.event.ActionListener;
 public class WrenchGUI {
     private JPanel rootPanel;
     private JButton sendItButton;
-    private JTextPane response;
+    private JTextArea response;
     private JTextField address;
     private JTextField port;
     private JTextArea requestData;
     private SocketClient conn = new SocketClient();
+    private String request;
+
     public WrenchGUI() {
+        this.requestData.setText("<request>\n    <type>getBillboard</type>\n    " +
+                "<data></data>\n</request" +
+                ">");
+        this.request = "<request>\n    <type>getBillboard</type>\n    " +
+                "<data></data>\n</request" +
+                ">";
         sendItButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -23,7 +31,8 @@ public class WrenchGUI {
                     System.err.println(ex.getMessage());
                 }
 
-                String request = requestData.getText();
+               request = requestData.getText();
+
                 if(portNum<=0 ) {
                     response.setText(
                             "Invalid port, try 5050");
@@ -35,7 +44,7 @@ public class WrenchGUI {
         });
     }
 
-    public void setResponse(JTextPane response) {
+    public void setResponse(JTextArea response) {
         this.response = response;
     }
 
