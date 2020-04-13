@@ -35,7 +35,7 @@ public class BillboardController {
 
     /**
      * Gets the billboard to be displayed at the current time
-     * Useful for providing the viewer with a billboard, and to return a specific billboard to the control panel on
+     *      * Useful for providing the viewer with a billboard, and to return a specific billboard to the control panel on
      * request
      * @param billboardID  the id of the billboard to retrieve
      * @return string containing the full XML response
@@ -149,8 +149,21 @@ public class BillboardController {
      */
     public String getBillboardList(){
         // The BillboardModel listBillboards method will return a Document containing the billboard objects.
+        //Get all Elements and
+
         // Build a new Document with it, adding in the proper response elements.
         // Return a stringified version of that.
+       /* DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        //Creating the new document
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+        Element resp = doc.createElement("response");
+        Element data = doc.createElement("data");
+        Element type = doc.createElement("type");
+        type.appendChild(doc.createTextNode("success"));
+        doc.appendChild(resp);
+        resp.appendChild(type);
+        resp.appendChild(data); */
         return "XML String";
         //Will need while loop
 

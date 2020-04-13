@@ -1,8 +1,19 @@
 package Server.Models;
 import Server.Utilities.Database;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Attr;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringWriter;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 /**
@@ -116,7 +127,95 @@ public class BillboardModel {
      * data element
      * */
     public Document listBillboards(){
-        return null;
+        boolean status = false;
+        ResultSet rs =
+                this.dbConn.runSelectQuery("select * from billboards");
+        try{
+            //Creating the document
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            //Creating the new document
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+            Element resp = doc.createElement("response");
+            Element data = doc.createElement("data");
+            Element type = doc.createElement("type");
+            type.appendChild(doc.createTextNode("success"));
+            doc.appendChild(resp);
+            resp.appendChild(type);
+            resp.appendChild(data);
+            //Creating a root element
+            Element rootElement = doc.createElement("rootElement");
+            data.appendChild(rootElement);
+            while(rs.next()) {
+                if (rs.getString("background")) {
+                    Attr attr = doc.createAttribute("background");
+                    attr.setValue(this.model.getBackground());
+                    billboard.setAttributeNode(attr);
+
+                }
+
+            }
+            status = true;
+
+//            //Create message elements
+            if(model.getMessage().length() >0){
+                Element messageElement = doc.createElement("message");
+                if(model.getMessage_color().length()>0){
+                    Attr attrType = doc.createAttribute("colour");
+                    attrType.setValue(this.model.getMessage_color());
+                    messageElement.setAttributeNode(attrType);
+                }
+                messageElement.appendChild(doc.createTextNode(this.model.getMessage()));
+                billboard.appendChild(messageElement);
+
+            }
+
+
+
+//            //Create picture elements
+            if(model.getUrl().length() >0){
+                Element pictureElement = doc.createElement("picture");
+                Attr attrType1 = doc.createAttribute("url");
+                attrType1.setValue(this.model.getUrl());
+                pictureElement.setAttributeNode(attrType1);
+
+                billboard.appendChild(pictureElement);
+
+            } else if(model.getData().length() > 0){
+                Element pictureElement = doc.createElement("picture");
+                Attr attrType1 = doc.createAttribute("data");
+                attrType1.setValue(this.model.getData());
+                pictureElement.setAttributeNode(attrType1);
+
+                billboard.appendChild(pictureElement);
+            }
+//
+//            //Create information element
+            if(model.getInformation().length() > 0){
+                Element informationElement = doc.createElement("information");
+
+                if(model.getInformation_color().length() > 0){
+                    Attr attrType2 = doc.createAttribute("colour");
+                    attrType2.setValue(this.model.getInformation_color());
+                    informationElement.setAttributeNode(attrType2);
+                }
+                informationElement.appendChild(doc.createTextNode(this.model.getInformation()));
+                billboard.appendChild(informationElement);
+
+            }
+
+            //Transform document to XML string
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            StringWriter writer = new StringWriter();
+
+            transformer.transform(new DOMSource(doc), new StreamResult(writer));
+            billboardXMLStringValue = writer.getBuffer().toString();
+
+        } catch (ParserConfigurationException | SQLException e) {
+            e.printStackTrace();
+        }
+        // return null;
     }
 
     /**
