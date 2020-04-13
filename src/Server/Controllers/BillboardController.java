@@ -13,6 +13,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import Server.Models.BillboardModel;
+import org.w3c.dom.NodeList;
 
 import java.sql.ResultSet;
 
@@ -163,7 +164,26 @@ public class BillboardController {
         type.appendChild(doc.createTextNode("success"));
         doc.appendChild(resp);
         resp.appendChild(type);
-        resp.appendChild(data); */
+        resp.appendChild(data);*/
+        try {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element resp = doc.createElement("response");
+            Element data = doc.createElement("data");
+            Element type = doc.createElement("type");
+            type.appendChild(doc.createTextNode("success"));
+            doc.appendChild(resp);
+            resp.appendChild(type);
+            resp.appendChild(data);
+            NodeList billboardList = this.model.listBillboards().getDocumentElement().getChildNodes();
+            for(int i = 0; i < billboardList.getLength(); i++){
+                Element bb = (Element) billboardList.item(i);
+                data.appendChild(bb);
+            }
+            // TODO: convert doc to string and return it
+            return "";
+        }catch(Exception e){
+
+        }
         return "XML String";
         //Will need while loop
 
