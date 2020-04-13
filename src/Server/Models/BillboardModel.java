@@ -135,6 +135,16 @@ public class BillboardModel {
             Element data = doc.createElement("root");
             while(rs.next()) {
                 Element billboard = doc.createElement("billboard");
+                if(rs.getInt("id") > 0){
+                    Attr attr = doc.createAttribute("id");
+                    attr.setValue(Integer.toString(rs.getInt("id")));
+                    billboard.setAttributeNode(attr);
+                }
+                if(rs.getInt("owner") > 0){
+                    Attr attr = doc.createAttribute("owner");
+                    attr.setValue(Integer.toString(rs.getInt("owner")));
+                    billboard.setAttributeNode(attr);
+                }
                 if (rs.getString("background").length() > 0) {
                     Attr attr = doc.createAttribute("background");
                     attr.setValue(rs.getString("background"));
