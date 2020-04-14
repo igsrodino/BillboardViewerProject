@@ -1,4 +1,4 @@
 package ControlPanel.Models;
 
-public class Billboard {
+public class ScheduleModel {
 }
