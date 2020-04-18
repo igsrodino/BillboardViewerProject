@@ -2,12 +2,11 @@ package ControlPanel.Controller;
 
 import ControlPanel.Models.BillboardModel;
 import ControlPanel.Models.UserModel;
-import ControlPanel.Utilities.XMLParser;
+import ControlPanel.Utilities.XMLHelpers;
 import ControlPanel.View.AppFrame;
 import ControlPanel.View.BillboardView;
 import ControlPanel.View.MainNav;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -51,17 +50,27 @@ public class BillboardController {
         billboardView.getSaveChangesButton().addActionListener(e -> this.saveCurrentBillboard());
         billboardView.getNewBillboardButton().addActionListener(e -> this.newBillboard(userModel.getCreator(), userModel.getUserID()));
         billboardView.getDeleteBillboardButton().addActionListener(e -> this.deleteCurrentBillboard());
-
+        billboardView.getBillboardList().addListSelectionListener(e-> this.selectBillboard());
         // Add views to the card layout
         frame.addView(billboardView.getPanel(), "billboards");
     }
-    // TODO: Add event handler methods for list events
+
+    /**
+     * Handles on click events for the list of billboards
+     */
+    private void selectBillboard() {
+        if(this.alertUser("Do you want to save changes to the server?")){
+            model.saveCurrentBillboard();
+        }
+        model.loadBillboard(billboardView.getBillboardList().getSelectedIndex());
+        // TODO: call all the set methods to change the view
+    }
 
     /**
      * Saves the current billboard as an xml file
      */
     private void saveBillboardXML(){
-        String xml = XMLParser.documentToString(this.model.getCurrentBillboard());
+        String xml = XMLHelpers.documentToString(this.model.getCurrentBillboard());
         // TODO: Add file creation and save. Show a dialog.
     }
     /**
@@ -124,8 +133,6 @@ public class BillboardController {
             // this.model.setImageURL("");
             this.billboardView.setImageURL("");
             this.billboardView.setImageData("Image " + this.imageName + " uploaded successfully");
-        } else {
-            this.billboardView.setImageData("Image upload failed");
         }
     }
 
@@ -164,7 +171,8 @@ public class BillboardController {
     /**
      * Allows the user to choose an image.
      *
-     * @return returns the chosen image in Base64 format.
+     * @return returns the chosen image in Base64 format or an empty string if they didn't select
+     * a file.
      */
     private String getImageBase64() {
         String base64Image = "";
@@ -179,18 +187,20 @@ public class BillboardController {
             file = fileChooser.getSelectedFile();
             this.imageName = file.getName();
         }
-
-        try (FileInputStream imageInFile = new FileInputStream(file)) {
-            byte imageData[] = new byte[(int) file.length()];
-            imageInFile.read(imageData);
-            base64Image = Base64.getEncoder().encodeToString(imageData);
-        } catch (FileNotFoundException e) {
-            this.alertUser("Image not found", "Error");
-            System.out.println("Image not found" + e);
-        } catch (IOException ioe) {
-            this.alertUser("Something went wrong", "Error");
-            System.out.println("Exception while reading the Image " + ioe);
+        if(file != null){
+            try (FileInputStream imageInFile = new FileInputStream(file)) {
+                byte imageData[] = new byte[(int) file.length()];
+                imageInFile.read(imageData);
+                base64Image = Base64.getEncoder().encodeToString(imageData);
+            } catch (FileNotFoundException e) {
+                this.alertUser("Image not found", "Error");
+                System.out.println("Image not found" + e);
+            } catch (IOException ioe) {
+                this.alertUser("Something went wrong", "Error");
+                System.out.println("Exception while reading the Image " + ioe);
+            }
         }
+
         return base64Image;
     }
 
@@ -244,7 +254,7 @@ public class BillboardController {
         }
         String xmlString = xml.toString();
         if(xmlString.length() > 0){
-            if (XMLParser.isValidBillboard(xmlString)) {
+            if (XMLHelpers.isValidBillboard(xmlString)) {
                 this.alertUser("XML is valid", "Upload success");
                 // Parse xml and update model
                 this.processBillboardXML(xmlString);
@@ -259,7 +269,7 @@ public class BillboardController {
      * @param xml
      */
     private void processBillboardXML(String xml){
-        Element bb = XMLParser.getDocument(xml);
+        Element bb = XMLHelpers.getDocument(xml);
         if(bb.getAttribute("background").length() > 0){
             System.out.println(bb.getAttribute("background"));
         }

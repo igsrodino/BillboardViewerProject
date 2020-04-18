@@ -22,7 +22,7 @@ public class BillboardModel {
     }
 
     public void parseXML(){
-        File xmlFile = new File("src\\Viewer\\Views\\XMLExample.xml");
+        File xmlFile = new File("src/Viewer/Views/XMLExample.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
 

@@ -1,27 +1,27 @@
 package ControlPanel.Models;
 
-import ControlPanel.Controller.UserController;
-import ControlPanel.Utilities.NetworkManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.util.ArrayList;
 
+import Viewer.Models.BillboardPOJO;
 /**
  * Contains methods to request and receive data from the server.
  */
 public class BillboardModel {
-    // TODO: extend the billboard viewer POJO. Create an ArrayList of POJO objects to keep the
-    //  billboard list in. Create get/set methods that allow the user to create, edit, delete
-    //  billboards from the list
+    private int currentBillboardIndex;
+    private ArrayList<BillboardPOJO> billboards;
 
-    // TODO: Add a way to track the currently open billboard internally, so a basic set of
-    //  get/set methods can be exposed to the user. - currently open bb is loaded into the
-    //  billboardPOJO fields, get/set methods are exposed automatically. This class adds network
-    //  access, an array of bbs, and a loadBillboard(int id) method to open a billboard
+    public BillboardModel(){
+        this.currentBillboardIndex = 0;
+        this.billboards = new ArrayList<BillboardPOJO>();
+    }
 
-    // TODO: create methods that request and receive data from the server.
+    /**
+     * Requests the list of billboards from the server and loads them into the array
+     */
     public void getBillboardList(){
     }
 
@@ -36,6 +36,12 @@ public class BillboardModel {
         // TODO: Check the returned type tag and return true/false on success/failure
         return false;
     }
+    /**
+     * Sends a request to delete the billboard. Removes the current billboard from the ArrayList
+     */
+    public boolean deleteCurrentBillboard() {
+        return false;
+    }
 
     /**
      * Creates a new billboard object and adds it to the Arraylist of billboards
@@ -46,22 +52,24 @@ public class BillboardModel {
     public void createBillboard(String creator, int owner) {
     }
 
-    /**
-     * Sends a request to delete the billboard. Removes the current billboard from the ArrayList
-     */
-    public boolean deleteCurrentBillboard() {
-        return false;
-    }
 
     /**
-     * Gets the current billboard
+     * Gets the current billboard as a Document
      */
-    public Document getCurrentBillboard(){
+    public Element getCurrentBillboard(){
         try{
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element billboard = doc.createElement("billboard");
-            // TODO: Add checks to create a Document with tags that are in use, ie length > 0
-        }catch(Exception e){}
+            // TODO: Using XMLHelpers.generateElement, create a full billboard object. Use checks
+            //  to only add elements that are in use(
+
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
         return null;
+    }
+
+    public void loadBillboard(int selectedIndex) {
+        // TODO: change current billboard to the one in the index
     }
 }

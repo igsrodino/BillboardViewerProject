@@ -1,20 +1,13 @@
 package ControlPanel.Utilities;
 
-import ControlPanel.ControlPanel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.net.Socket;
 
 /**
@@ -33,26 +26,7 @@ public class NetworkManager {
         return accessToken.length() > 0;
     }
 
-    /**
-     * Generates an element with a specified type and text value
-     * @param type  the tag name of the element
-     * @param value  the value of the element
-     * @return  the element
-     */
-    public static Element generateElement(String type, String value){
-        Element result = null;
-        try{
-            Document doc =
-                    DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-            result = doc.createElement(type);
-            result.appendChild(doc.createTextNode(value));
-        }catch(Exception e){
-            System.err.println(e.getMessage());
-            System.err.println(e.getStackTrace());
-            return null;
-        }
-        return result;
-    }
+
     /**
      * Makes a request that doesn't require a data payload and returns the response
      * @param type  the type of request to make
@@ -64,7 +38,7 @@ public class NetworkManager {
             Document request = generateRequest(type);
 
             // Send the request, listen for response.
-            Document response = getResponse(XMLParser.documentToString(request));
+            Document response = getResponse(XMLHelpers.documentToString(request));
 
             // Extract and return the data from the response
             responseData = request.getDocumentElement();
@@ -89,7 +63,7 @@ public class NetworkManager {
             Document request = generateRequest(type, data);
 
             // Send the request, listen for response.
-            Document response = getResponse(XMLParser.documentToString(request));
+            Document response = getResponse(XMLHelpers.documentToString(request));
 
             // Extract and return the data from the response
             responseData = request.getDocumentElement();
