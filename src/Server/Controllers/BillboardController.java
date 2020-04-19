@@ -2,19 +2,12 @@ package Server.Controllers;
 import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.w3c.dom.*;
 import Server.Models.BillboardModel;
-
-import java.sql.ResultSet;
 
 /**
  * Provides access to billboards
@@ -35,7 +28,7 @@ public class BillboardController {
 
     /**
      * Gets the billboard to be displayed at the current time
-     * Useful for providing the viewer with a billboard, and to return a specific billboard to the control panel on
+     *      * Useful for providing the viewer with a billboard, and to return a specific billboard to the control panel on
      * request
      * @param billboardID  the id of the billboard to retrieve
      * @return string containing the full XML response
@@ -66,13 +59,16 @@ public class BillboardController {
             resp.appendChild(type);
             resp.appendChild(data);
             //Create billboard root elements
+
             Element billboard = doc.createElement("billboard");
             data.appendChild(billboard);
+
 
             if(model.getBackground().length()>0 ){
                 Attr attr = doc.createAttribute("background");
                 attr.setValue(this.model.getBackground());
                 billboard.setAttributeNode(attr);
+
             }
 
 //            //Create message elements
@@ -85,6 +81,7 @@ public class BillboardController {
                 }
                 messageElement.appendChild(doc.createTextNode(this.model.getMessage()));
                 billboard.appendChild(messageElement);
+
             }
 
 
@@ -95,18 +92,22 @@ public class BillboardController {
                 Attr attrType1 = doc.createAttribute("url");
                 attrType1.setValue(this.model.getUrl());
                 pictureElement.setAttributeNode(attrType1);
+
                 billboard.appendChild(pictureElement);
+
             } else if(model.getData().length() > 0){
                 Element pictureElement = doc.createElement("picture");
                 Attr attrType1 = doc.createAttribute("data");
                 attrType1.setValue(this.model.getData());
                 pictureElement.setAttributeNode(attrType1);
+
                 billboard.appendChild(pictureElement);
             }
 //
 //            //Create information element
             if(model.getInformation().length() > 0){
                 Element informationElement = doc.createElement("information");
+
                 if(model.getInformation_color().length() > 0){
                     Attr attrType2 = doc.createAttribute("colour");
                     attrType2.setValue(this.model.getInformation_color());
@@ -114,15 +115,11 @@ public class BillboardController {
                 }
                 informationElement.appendChild(doc.createTextNode(this.model.getInformation()));
                 billboard.appendChild(informationElement);
+
             }
 
             //Transform document to XML string
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
-            StringWriter writer = new StringWriter();
-
-            transformer.transform(new DOMSource(doc), new StreamResult(writer));
-            billboardXMLStringValue = writer.getBuffer().toString();
+            billboardXMLStringValue = this.convertDocumentToString(doc);
 
         }catch(Exception e){
             System.out.println("Something went wrong.");}
@@ -132,17 +129,60 @@ public class BillboardController {
 
 
 
+    private String convertDocumentToString(Document doc){
+            // TODO: add error handling
+        String result = "";
+        try {
+            StringWriter sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+            return sw.toString();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+            return result;
+        }
+
+    }
 
     /**
      * Gets a list of all the billboards in the system
      * @return string containing a full xml response, with the data element containing one or more billboard objects
      */
     public String getBillboardList(){
-        // The BillboardModel listBillboards method will return a Document containing the billboard objects.
-        // Build a new Document with it, adding in the proper response elements.
-        // Return a stringified version of that.
-        return "XML String";
+        String list_xml = "response";
+        try {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element resp = doc.createElement("response");
+            Element data = doc.createElement("data");
+            Element type = doc.createElement("type");
+
+
+            Document billboard = this.model.listBillboards();
+            if(billboard != null) {
+                NodeList billboardList = billboard.getDocumentElement().getChildNodes();
+                for (int i = 0; i < billboardList.getLength(); i++) {
+                    Node bb = doc.importNode(billboardList.item(i), true);
+                    data.appendChild(bb);
+                }
+                type.appendChild(doc.createTextNode("success"));
+            }else{
+                type.appendChild(doc.createTextNode("failure"));
+            }
+            doc.appendChild(resp);
+            resp.appendChild(data);
+            resp.appendChild(type);
+             list_xml = this.convertDocumentToString(doc);
+        }catch(Exception e){
+            e.printStackTrace();
+
+        }
+        return list_xml;
     }
 
     /**

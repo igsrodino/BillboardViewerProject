@@ -1,8 +1,19 @@
 package Server.Models;
 import Server.Utilities.Database;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Attr;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringWriter;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 /**
@@ -26,9 +37,9 @@ public class BillboardModel {
      * */
     public BillboardModel(Database dbConnection){
         this.dbConn = dbConnection;
-        this.background = "";
+        this.background = "#0000FF";
         this.id = 0;
-        this.message = "";
+        this.message = "Hello WOrld";
         this.message_color = "";
         this.url = "";
         this.data = "";
@@ -115,8 +126,75 @@ public class BillboardModel {
     * @return a Document object with the list of billboard objects contained in a root
      * data element
      * */
-    public Document listBillboards(){
-        return null;
+    public Document listBillboards() {
+        ResultSet rs =
+                this.dbConn.runSelectQuery("select * from billboards");
+        try {
+            //Creating the new document
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element data = doc.createElement("root");
+            while (rs.next()) {
+                Element billboard = doc.createElement("billboard");
+                if (rs.getInt("id") > 0) {
+                    Attr attr = doc.createAttribute("id");
+                    attr.setValue(Integer.toString(rs.getInt("id")));
+                    billboard.setAttributeNode(attr);
+                }
+                if (rs.getInt("owner") > 0) {
+                    Attr attr = doc.createAttribute("owner");
+                    attr.setValue(Integer.toString(rs.getInt("owner")));
+                    billboard.setAttributeNode(attr);
+                }
+                if (rs.getString("background") != null) {
+                    Attr attr = doc.createAttribute("background");
+                    attr.setValue(rs.getString("background"));
+                    billboard.setAttributeNode(attr);
+                }
+                if (rs.getString("message") != null) {
+                    Element messageElement = doc.createElement("message");
+                    if (rs.getString("message_color") != null) {
+                        Attr attrType = doc.createAttribute("colour");
+                        attrType.setValue(rs.getString("message_color"));
+                        messageElement.setAttributeNode(attrType);
+                    }
+                    messageElement.appendChild(doc.createTextNode(rs.getString("message")));
+                    billboard.appendChild(messageElement);
+
+                }
+                if (rs.getString("url") != null && rs.getString("url").length() > 0) {
+                    Element pictureElement = doc.createElement("picture");
+                    Attr attrType1 = doc.createAttribute("url");
+                    attrType1.setValue(rs.getString("url"));
+                    pictureElement.setAttributeNode(attrType1);
+                    billboard.appendChild(pictureElement);
+                } else if (rs.getString("data") != null && rs.getString("data").length() > 0) {
+                    Element pictureElement = doc.createElement("picture");
+                    Attr attrType1 = doc.createAttribute("data");
+                    attrType1.setValue(rs.getString("data"));
+                    pictureElement.setAttributeNode(attrType1);
+
+                    billboard.appendChild(pictureElement);
+                }
+                if (rs.getString("information") != null) {
+                    Element informationElement = doc.createElement("information");
+
+                    if (rs.getString("information_color") != null) {
+                        Attr attrType2 = doc.createAttribute("colour");
+                        attrType2.setValue(rs.getString("information_color"));
+                        informationElement.setAttributeNode(attrType2);
+                    }
+                    informationElement.appendChild(doc.createTextNode(rs.getString("information")));
+                    billboard.appendChild(informationElement);
+                }
+
+                data.appendChild(billboard);
+            }
+            doc.appendChild(data);
+            return doc;
+        } catch (ParserConfigurationException | SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

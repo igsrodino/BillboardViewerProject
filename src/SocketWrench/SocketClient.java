@@ -14,9 +14,10 @@ public class SocketClient {
         try {
             Socket clientSocket = new Socket("localhost", port);
             DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            outToServer.writeBytes(request.replace("\n", " ") + '\n');
-            response = inFromServer.readLine();
+            DataInputStream inFromServer = new DataInputStream(clientSocket.getInputStream());
+            outToServer.writeUTF(request);
+
+            response = inFromServer.readUTF();
             clientSocket.close();
         } catch(Exception e){
             System.err.println(e.getMessage());
@@ -26,6 +27,6 @@ public class SocketClient {
 
     public static String getResponse(){
         if(response == null) return "Error: No data received";
-        return response.substring(2);
+        return response;
     }
 }
