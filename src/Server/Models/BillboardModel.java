@@ -126,21 +126,22 @@ public class BillboardModel {
     * @return a Document object with the list of billboard objects contained in a root
      * data element
      * */
-    public Document listBillboards(){
+    public Document listBillboards() {
         ResultSet rs =
                 this.dbConn.runSelectQuery("select * from billboards");
-        try{
+        //string billboardListXML = null;
+        try {
             //Creating the new document
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element data = doc.createElement("root");
-            while(rs.next()) {
+            while (rs.next()) {
                 Element billboard = doc.createElement("billboard");
-                if(rs.getInt("id") > 0){
+                if (rs.getInt("id") > 0) {
                     Attr attr = doc.createAttribute("id");
                     attr.setValue(Integer.toString(rs.getInt("id")));
                     billboard.setAttributeNode(attr);
                 }
-                if(rs.getInt("owner") > 0){
+                if (rs.getInt("owner") > 0) {
                     Attr attr = doc.createAttribute("owner");
                     attr.setValue(Integer.toString(rs.getInt("owner")));
                     billboard.setAttributeNode(attr);
@@ -150,9 +151,9 @@ public class BillboardModel {
                     attr.setValue(rs.getString("background"));
                     billboard.setAttributeNode(attr);
                 }
-                if(rs.getString("message").length() >0){
+                if (rs.getString("message").length() > 0) {
                     Element messageElement = doc.createElement("message");
-                    if(rs.getString("message_color").length()>0){
+                    if (rs.getString("message_color").length() > 0) {
                         Attr attrType = doc.createAttribute("colour");
                         attrType.setValue(rs.getString("message_color"));
                         messageElement.setAttributeNode(attrType);
@@ -161,7 +162,32 @@ public class BillboardModel {
                     billboard.appendChild(messageElement);
 
                 }
-                // TODO: Add remaining if statements
+                if (rs.getString("url").length() > 0) {
+                    Element pictureElement = doc.createElement("picture");
+                    Attr attrType1 = doc.createAttribute("url");
+                    attrType1.setValue(rs.getString("url"));
+                    pictureElement.setAttributeNode(attrType1);
+                    billboard.appendChild(pictureElement);
+                } else if (rs.getString("data").length() > 0) {
+                    Element pictureElement = doc.createElement("picture");
+                    Attr attrType1 = doc.createAttribute("data");
+                    attrType1.setValue(rs.getString("data"));
+                    pictureElement.setAttributeNode(attrType1);
+
+                    billboard.appendChild(pictureElement);
+                }
+                if (rs.getString("information").length() > 0) {
+                    Element informationElement = doc.createElement("information");
+
+                    if (rs.getString("information_color").length() > 0) {
+                        Attr attrType2 = doc.createAttribute("colour");
+                        attrType2.setValue(rs.getString("information_color"));
+                        informationElement.setAttributeNode(attrType2);
+                    }
+                    informationElement.appendChild(doc.createTextNode(rs.getString("information")));
+                    billboard.appendChild(informationElement);
+                }
+
                 data.appendChild(billboard);
             }
             doc.appendChild(data);
@@ -170,42 +196,18 @@ public class BillboardModel {
 //            //Create message elements
 
 
-
-
 //            //Create picture elements
-            if(model.getUrl().length() >0){
-                Element pictureElement = doc.createElement("picture");
-                Attr attrType1 = doc.createAttribute("url");
-                attrType1.setValue(this.model.getUrl());
-                pictureElement.setAttributeNode(attrType1);
 
-                billboard.appendChild(pictureElement);
-
-            } else if(model.getData().length() > 0){
-                Element pictureElement = doc.createElement("picture");
-                Attr attrType1 = doc.createAttribute("data");
-                attrType1.setValue(this.model.getData());
-                pictureElement.setAttributeNode(attrType1);
-
-                billboard.appendChild(pictureElement);
-            }
 //
 //            //Create information element
-            if(model.getInformation().length() > 0){
-                Element informationElement = doc.createElement("information");
 
-                if(model.getInformation_color().length() > 0){
-                    Attr attrType2 = doc.createAttribute("colour");
-                    attrType2.setValue(this.model.getInformation_color());
-                    informationElement.setAttributeNode(attrType2);
-                }
-                informationElement.appendChild(doc.createTextNode(this.model.getInformation()));
-                billboard.appendChild(informationElement);
-            }
         } catch (ParserConfigurationException | SQLException e) {
             e.printStackTrace();
+            return null;
         }
         // return null;
+       // return
+        //return "doc";
     }
 
     /**

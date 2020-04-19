@@ -4,6 +4,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -140,10 +141,19 @@ public class BillboardController {
     private String convertDocumentToString(Document doc){
             // TODO: add error handling
         TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
+        Transformer transformer = null;
+        try {
+            transformer = tf.newTransformer();
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        }
         StringWriter writer = new StringWriter();
 
-        transformer.transform(new DOMSource(doc), new StreamResult(writer));
+        try {
+            transformer.transform(new DOMSource(doc), new StreamResult(writer));
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        }
         return writer.getBuffer().toString();
     }
 
@@ -173,17 +183,27 @@ public class BillboardController {
             Element resp = doc.createElement("response");
             Element data = doc.createElement("data");
             Element type = doc.createElement("type");
-            type.appendChild(doc.createTextNode("success"));
+
+
+            Document billboard = this.model.listBillboards();
+            if(billboard != null) {
+                type.appendChild(doc.createTextNode("success"));
+                NodeList billboardList = billboard.getDocumentElement().getChildNodes();
+                for (int i = 0; i < billboardList.getLength(); i++) {
+                    Element bb = (Element) billboardList.item(i);
+                    data.appendChild(bb);
+                }
+                resp.appendChild(data);
+            }
+            else{
+                type.appendChild(doc.createTextNode("failure"));
+            }
             doc.appendChild(resp);
             resp.appendChild(type);
-            resp.appendChild(data);
-            NodeList billboardList = this.model.listBillboards().getDocumentElement().getChildNodes();
-            for(int i = 0; i < billboardList.getLength(); i++){
-                Element bb = (Element) billboardList.item(i);
-                data.appendChild(bb);
-            }
+
             // TODO: convert doc to string and return it
-            return "";
+            String list_xml  = convertDocumentToString(doc);
+            return list_xml;
         }catch(Exception e){
 
         }
