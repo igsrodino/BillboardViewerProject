@@ -161,13 +161,13 @@ public class BillboardModel {
                     billboard.appendChild(messageElement);
 
                 }
-                if (rs.getString("url") != null) {
+                if (rs.getString("url") != null && rs.getString("url").length() > 0) {
                     Element pictureElement = doc.createElement("picture");
                     Attr attrType1 = doc.createAttribute("url");
                     attrType1.setValue(rs.getString("url"));
                     pictureElement.setAttributeNode(attrType1);
                     billboard.appendChild(pictureElement);
-                } else if (rs.getString("data") != null) {
+                } else if (rs.getString("data") != null && rs.getString("data").length() > 0) {
                     Element pictureElement = doc.createElement("picture");
                     Attr attrType1 = doc.createAttribute("data");
                     attrType1.setValue(rs.getString("data"));
