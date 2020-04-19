@@ -18,9 +18,7 @@ public class WrenchGUI {
         this.requestData.setText("<request>\n    <type>getBillboard</type>\n    " +
                 "<data></data>\n</request" +
                 ">");
-        this.request = "<request>\n    <type>getBillboard</type>\n    " +
-                "<data></data>\n</request" +
-                ">";
+        this.request = "<request><type>getBillboard</type><data></data></request>";
         sendItButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -37,7 +35,7 @@ public class WrenchGUI {
                     response.setText(
                             "Invalid port, try 5050");
                 } else {
-                    conn.sendRequest(portNum, request);
+                    conn.sendRequest(portNum, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+request);
                     response.setText(SocketClient.getResponse());
                 }
             }

@@ -129,7 +129,6 @@ public class BillboardModel {
     public Document listBillboards() {
         ResultSet rs =
                 this.dbConn.runSelectQuery("select * from billboards");
-        //string billboardListXML = null;
         try {
             //Creating the new document
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
@@ -146,14 +145,14 @@ public class BillboardModel {
                     attr.setValue(Integer.toString(rs.getInt("owner")));
                     billboard.setAttributeNode(attr);
                 }
-                if (rs.getString("background").length() > 0) {
+                if (rs.getString("background") != null) {
                     Attr attr = doc.createAttribute("background");
                     attr.setValue(rs.getString("background"));
                     billboard.setAttributeNode(attr);
                 }
-                if (rs.getString("message").length() > 0) {
+                if (rs.getString("message") != null) {
                     Element messageElement = doc.createElement("message");
-                    if (rs.getString("message_color").length() > 0) {
+                    if (rs.getString("message_color") != null) {
                         Attr attrType = doc.createAttribute("colour");
                         attrType.setValue(rs.getString("message_color"));
                         messageElement.setAttributeNode(attrType);
@@ -162,13 +161,13 @@ public class BillboardModel {
                     billboard.appendChild(messageElement);
 
                 }
-                if (rs.getString("url").length() > 0) {
+                if (rs.getString("url") != null) {
                     Element pictureElement = doc.createElement("picture");
                     Attr attrType1 = doc.createAttribute("url");
                     attrType1.setValue(rs.getString("url"));
                     pictureElement.setAttributeNode(attrType1);
                     billboard.appendChild(pictureElement);
-                } else if (rs.getString("data").length() > 0) {
+                } else if (rs.getString("data") != null) {
                     Element pictureElement = doc.createElement("picture");
                     Attr attrType1 = doc.createAttribute("data");
                     attrType1.setValue(rs.getString("data"));
@@ -176,10 +175,10 @@ public class BillboardModel {
 
                     billboard.appendChild(pictureElement);
                 }
-                if (rs.getString("information").length() > 0) {
+                if (rs.getString("information") != null) {
                     Element informationElement = doc.createElement("information");
 
-                    if (rs.getString("information_color").length() > 0) {
+                    if (rs.getString("information_color") != null) {
                         Attr attrType2 = doc.createAttribute("colour");
                         attrType2.setValue(rs.getString("information_color"));
                         informationElement.setAttributeNode(attrType2);
@@ -192,22 +191,10 @@ public class BillboardModel {
             }
             doc.appendChild(data);
             return doc;
-
-//            //Create message elements
-
-
-//            //Create picture elements
-
-//
-//            //Create information element
-
         } catch (ParserConfigurationException | SQLException e) {
             e.printStackTrace();
             return null;
         }
-        // return null;
-       // return
-        //return "doc";
     }
 
     /**

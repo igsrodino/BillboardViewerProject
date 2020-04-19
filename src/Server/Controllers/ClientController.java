@@ -39,17 +39,11 @@ public class ClientController implements Runnable {
     public void run() {
         try {
             // Read the request from the client
-            StringBuilder request = new StringBuilder();
-            BufferedReader clientRequest = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            while (clientRequest.ready() && (line = clientRequest.readLine()) != null) {
-                request.append(line);
-            }
-            Document parsedRequest = processRequestString(request.toString());
+            String request = inputStream.readUTF();
 
-
+            Document parsedRequest = processRequestString(request);
             this.sendResponse(this.processRequest(parsedRequest));
-            clientRequest.close();
+            inputStream.close();
 
             return;
         } catch (ParserConfigurationException e) {
@@ -77,9 +71,9 @@ public class ClientController implements Runnable {
     private void sendResponse(String response) {
         try {
             this.outputStream.writeUTF(response);
-            this.socket.close();
             this.inputStream.close();
             this.outputStream.close();
+            this.socket.close();
         } catch (IOException e) {
             System.err.println("Client handler failed: " + e.getMessage());
         }
@@ -149,6 +143,7 @@ public class ClientController implements Runnable {
                 switch (route) {
                     case "getBillboard":
                         response = billboard.getBillboard(scheduleController.getCurrentBillboard());
+
                         break;
                     case "listBillboards":
                         response = billboard.getBillboardList();
