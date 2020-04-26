@@ -6,6 +6,7 @@ import ControlPanel.Utilities.XMLHelpers;
 import ControlPanel.View.AppFrame;
 import ControlPanel.View.BillboardView;
 import ControlPanel.View.MainNav;
+import Viewer.Models.BillboardPOJO;
 import org.w3c.dom.Element;
 
 import javax.swing.*;
@@ -62,15 +63,17 @@ public class BillboardController {
         if(this.alertUser("Do you want to save changes to the server?")){
             model.saveCurrentBillboard();
         }
-        model.loadBillboard(billboardView.getBillboardList().getSelectedIndex());
+        BillboardPOJO bb =
+                model.getBillboardPOJO(billboardView.getBillboardList().getSelectedIndex());
         // TODO: call all the set methods to change the view
+
     }
 
     /**
      * Saves the current billboard as an xml file
      */
     private void saveBillboardXML(){
-        String xml = XMLHelpers.documentToString(this.model.getCurrentBillboard());
+        String xml = XMLHelpers.documentToString(this.model.getCurrentBillboard().getOwnerDocument());
         // TODO: Add file creation and save. Show a dialog.
     }
     /**
