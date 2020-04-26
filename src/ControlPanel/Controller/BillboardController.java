@@ -1,12 +1,14 @@
 package ControlPanel.Controller;
 
 import ControlPanel.Models.BillboardModel;
+import ControlPanel.Models.BillboardModelOld;
 import ControlPanel.Models.UserModel;
 import ControlPanel.Utilities.XMLHelpers;
 import ControlPanel.View.AppFrame;
 import ControlPanel.View.BillboardView;
 import ControlPanel.View.MainNav;
 import Viewer.Models.BillboardPOJO;
+import com.sun.tools.javac.Main;
 import org.w3c.dom.Element;
 
 import javax.swing.*;
@@ -15,165 +17,115 @@ import java.awt.*;
 import java.io.*;
 import java.util.Base64;
 
-/**
- * Manages events in the Billboard Management views
- */
 public class BillboardController {
     private UserModel userModel;
     private BillboardView billboardView;
     private AppFrame frame;
     private BillboardModel model;
-    private MainNav mainNav;
     private String imageName;
+    private BillboardPOJO currentBillboard;
+    private MainNav mainNav;
 
-    public BillboardController(AppFrame frame, BillboardModel model, BillboardView billboardView, MainNav mainNav, UserModel userModel) {
+    public BillboardController(AppFrame frame, BillboardModel model, BillboardView billboardView
+            , MainNav mainNav, UserModel userModel) {
+        this.mainNav = mainNav;
         this.frame = frame;
         this.model = model;
         this.billboardView = billboardView;
-        this.mainNav = mainNav;
-        imageName = "";
+        this.imageName = "";
         this.userModel = userModel;
+        this.currentBillboard = new BillboardPOJO();
         this.initController();
     }
 
     /**
-     * Initialises the event listeners for billboard related ui elements
+     * Sets up the event listeners for the gui
      */
     private void initController() {
-        // Add event listeners
+        // Event listeners
         mainNav.getBillboard().addActionListener(e -> this.frame.changeView("billboards"));
-        // These will all call a set method on the model
-        billboardView.getSetMessageTextColourButton().addActionListener(e -> this.setMessageColor(this.getColor()));
-        billboardView.getSetInformationTextColourButton().addActionListener(e -> this.setInformationColor(this.getColor()));
-        billboardView.getSetBackgroundColourButton().addActionListener(e -> this.setBackgroundColor(this.getColor()));
-        billboardView.getUploadXMLButton().addActionListener(e -> this.getXML());
-        billboardView.getUploadImageButton().addActionListener(e -> this.setUploadImage(this.getImageBase64()));
-        billboardView.getSaveChangesButton().addActionListener(e -> this.saveCurrentBillboard());
-        billboardView.getNewBillboardButton().addActionListener(e -> this.newBillboard(userModel.getCreator(), userModel.getUserID()));
-        billboardView.getDeleteBillboardButton().addActionListener(e -> this.deleteCurrentBillboard());
+        billboardView.getNewBillboardButton().addActionListener(e -> this.addBillboard(userModel.getCreator(), userModel.getUserID()));
         billboardView.getBillboardList().addListSelectionListener(e-> this.selectBillboard());
-        // Add views to the card layout
+        billboardView.getSaveChangesButton().addActionListener(e -> this.saveBillboard());
+        billboardView.getSetMessageTextColourButton().addActionListener(e -> this.currentBillboard.setMessageColour(this.getColor()));
+        billboardView.getSetInformationTextColourButton().addActionListener(e -> this.currentBillboard.setInformationColour(this.getColor()));
+        billboardView.getSetBackgroundColourButton().addActionListener(e -> this.currentBillboard.setBackgroundColour(this.getColor()));
+
+        // Add the view to the card layout
         frame.addView(billboardView.getPanel(), "billboards");
     }
-
     /**
-     * Handles on click events for the list of billboards
+     * Fetches the selected billboard from the model
      */
-    private void selectBillboard() {
-        if(this.alertUser("Do you want to save changes to the server?")){
-            model.saveCurrentBillboard();
-        }
-        BillboardPOJO bb =
-                model.getBillboardPOJO(billboardView.getBillboardList().getSelectedIndex());
-        // TODO: call all the set methods to change the view
-
-    }
-
-    /**
-     * Saves the current billboard as an xml file
-     */
-    private void saveBillboardXML(){
-        String xml = XMLHelpers.documentToString(this.model.getCurrentBillboard().getOwnerDocument());
-        // TODO: Add file creation and save. Show a dialog.
-    }
-    /**
-     * Resets the view
-     */
-    private void resetView(){
-        billboardView.setMessageColor("#000000");
-        billboardView.setInformationColor("#000000");
-        billboardView.setMessage("");
-        billboardView.setInformation("");
-        billboardView.setImageURL("");
-        billboardView.setImageData("");
-        billboardView.setName("");
-    }
-    /**
-     * Deletes the current billboard
-     */
-    private void deleteCurrentBillboard(){
-        boolean status = this.alertUser("This is permanent, are you sure?");
-        if(status){
-            boolean modelStatus = this.model.deleteCurrentBillboard();
-            if(!modelStatus)
-                this.alertUser("Network error, billboard may still exist on server", "Error");
-            this.resetView();
+    private void selectBillboard(){
+        int idx = billboardView.getBillboardList().getSelectedIndex();
+        if(idx >= 0){
+            this.currentBillboard =
+                    model.getBillboard(billboardView.getBillboardList().getSelectedIndex());
+            this.updateView();
         }
     }
+
     /**
-     * Creates a new billboard
+     * Updates the view with the contents of currentBillboard;
+     */
+    private void updateView(){
+        this.billboardView.setName(currentBillboard.getName());
+        this.billboardView.setImageURL(currentBillboard.getPictureURL());
+        this.billboardView.setInformation(currentBillboard.getInformation());
+        this.billboardView.setMessage(currentBillboard.getMessage());
+    }
+    /**
+     * Adds a billboard to the model, and updates the view
      * @param creator
      * @param owner
      */
-    private void newBillboard(String creator, int owner){
-        boolean status = this.alertUser("You'll lose any unsaved changes, are you sure?");
-        if(status){
-            this.model.createBillboard(creator, owner);
-            this.resetView();
-        }
+    private void addBillboard(String creator, int owner){
+        BillboardPOJO bb = new BillboardPOJO();
+        bb.setName("New Billboard");
+        bb.setCreator(creator);
+        bb.setOwner(owner);
+        this.currentBillboard = bb;
+        int index = this.model.setBillboard(bb);
+        this.billboardView.getBillboardList().setModel(this.model.getLocalList());
+        this.billboardView.getBillboardList().setSelectedIndex(index);
     }
-
     /**
-     * Saves the currently open billboard to the server.
+     * Saves the current billboard
      */
-    private void saveCurrentBillboard(){
-        boolean status = this.model.saveCurrentBillboard();
-        if(status){
-            this.alertUser("Billboard saved successfully", "Success");
+    private void saveBillboard(){
+        currentBillboard.setName(billboardView.getBillboardName());
+        currentBillboard.setInformation(billboardView.getInformation());
+        currentBillboard.setMessage(billboardView.getMessage());
+        currentBillboard.setPictureURL(billboardView.getImageUrl());
+
+        // Check if we need to create a billboard or update an existing one.
+        if(billboardView.getBillboardList().getSelectedIndex() < 0){
+            this.model.setBillboard(currentBillboard);
+            this.billboardView.getBillboardList().setModel(model.getLocalList());
         } else {
-            this.alertUser("Network error, billboard not saved", "Error");
+            this.model.setBillboard(this.billboardView.getBillboardList().getSelectedIndex(),
+                    currentBillboard);
         }
+        // TODO: Call model.saveBillboard to send to server
     }
     /**
-     * Sets a label to notify the user of the status of the image upload.
-     *
-     * @param imageBase64
+     * Creates a colour picker and sets the message color
      */
-    private void setUploadImage(String imageBase64) {
-        if (imageBase64.length() > 0) {
-            // Calls the model to set the image data, and erase the URL field
-            // this.model.setImageData(imageBase64);
-            // this.model.setImageURL("");
-            this.billboardView.setImageURL("");
-            this.billboardView.setImageData("Image " + this.imageName + " uploaded successfully");
-        }
-    }
+    private void setMessageColour(){
 
-    /**
-     * Updates the model and sets the message textbox color
-     * @param hex  the color to set
-     */
-    private void setMessageColor(String hex){
-        if(hex.length() > 0){
-//            this.model.setMessageColour(hex);
-            this.billboardView.setMessageColor(hex);
-        }
     }
-
     /**
-     * Updates the model and sets the information textbox color
-     * @param hex  the color to set
+     * Creates a colour picker and sets the information color
      */
-    private void setInformationColor(String hex){
-        if(hex.length() > 0){
-//            this.model.setInformationColour(hex);
-            this.billboardView.setInformationColor(hex);
-        }
-    }
-
+    private void setInformationColour(){}
     /**
-     * Updates the model
-     * @param hex  the color to set
+     * Creates a colour picker and sets the background color
      */
-    private void setBackgroundColor(String hex){
-        if(hex.length() > 0){
-//            this.model.setBackgroundColor(hex);
-        }
-    }
+    private void setBackgroundColour(){}
 
     /**
      * Allows the user to choose an image.
-     *
      * @return returns the chosen image in Base64 format or an empty string if they didn't select
      * a file.
      */
@@ -206,10 +158,14 @@ public class BillboardController {
 
         return base64Image;
     }
+    /**
+     * Handles image file to base64 data.
+     * @param imageBase64
+     */
+    private void setUploadImage(String imageBase64){}
 
     /**
      * Opens a color chooser dialog and returns the chosen color in hex format
-     *
      * @return the color in hex format
      */
     private String getColor() {
@@ -229,10 +185,8 @@ public class BillboardController {
             return "";
         }
     }
-
     /**
      * Allows the user to choose an xml file. Will notify the user if the xml file is invalid
-     *
      * @return a string containing the valid xml file contents.
      */
     private void getXML() {
@@ -260,58 +214,39 @@ public class BillboardController {
             if (XMLHelpers.isValidBillboard(xmlString)) {
                 this.alertUser("XML is valid", "Upload success");
                 // Parse xml and update model
-                this.processBillboardXML(xmlString);
+                Element bb = XMLHelpers.getDocument(xmlString);
+                if(bb.getAttribute("background").length() > 0){
+                    System.out.println(bb.getAttribute("background"));
+                }
+                // Message tag
+                Element currentElement = (Element) bb.getElementsByTagName("message").item(0);
+                if(currentElement.getTextContent().length() > 0){
+                    String message = currentElement.getTextContent();
+                    System.out.println(message);
+                    if(currentElement.getAttribute("colour").length() > 0){
+                        String messageColor = currentElement.getAttribute("colour");
+                        System.out.println(messageColor);
+                    }
+                }
+                // Information tag
+                currentElement = (Element) bb.getElementsByTagName("information").item(0);
+                if(currentElement.getTextContent().length() > 0){
+                    System.out.println(currentElement.getTextContent());
+                    if(currentElement.getAttribute("colour").length() > 0){
+                        System.out.println(currentElement.getAttribute("colour"));
+                    }
+                }
+                // Picture tag
+                currentElement = (Element) bb.getElementsByTagName("picture").item(0);
+                if(currentElement.getAttribute("url").length() > 0){
+                    System.out.println(currentElement.getAttribute("url"));
+                } else if (currentElement.getAttribute("data").length() > 0){
+                    System.out.println(currentElement.getAttribute("data"));
+                }
             } else {
                 this.alertUser("XML is malformed", "Upload error");
             }
         }
-    }
-
-    /**
-     * Updates the billboard model with the contents of the xml string
-     * @param xml
-     */
-    private void processBillboardXML(String xml){
-        Element bb = XMLHelpers.getDocument(xml);
-        if(bb.getAttribute("background").length() > 0){
-            System.out.println(bb.getAttribute("background"));
-        }
-        // Message tag
-        Element currentElement = (Element) bb.getElementsByTagName("message").item(0);
-        if(currentElement.getTextContent().length() > 0){
-            String message = currentElement.getTextContent();
-            System.out.println(message);
-            if(currentElement.getAttribute("colour").length() > 0){
-                String messageColor = currentElement.getAttribute("colour");
-                System.out.println(messageColor);
-            }
-        }
-        // Information tag
-        currentElement = (Element) bb.getElementsByTagName("information").item(0);
-        if(currentElement.getTextContent().length() > 0){
-            System.out.println(currentElement.getTextContent());
-            if(currentElement.getAttribute("colour").length() > 0){
-                System.out.println(currentElement.getAttribute("colour"));
-            }
-        }
-        // Picture tag
-        currentElement = (Element) bb.getElementsByTagName("picture").item(0);
-        if(currentElement.getAttribute("url").length() > 0){
-            System.out.println(currentElement.getAttribute("url"));
-        } else if (currentElement.getAttribute("data").length() > 0){
-            System.out.println(currentElement.getAttribute("data"));
-        }
-    }
-
-    /**
-     * Creates an alert dialog with a custom title and message
-     *
-     * @param message the message to display
-     * @param title   the title of the dialog
-     */
-    private void alertUser(String message, String title) {
-        JOptionPane.showMessageDialog(null, message, title,
-                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -326,5 +261,15 @@ public class BillboardController {
             return true;
         }
         return false;
+    }
+    /**
+     * Creates an alert dialog with a custom title and message
+     *
+     * @param message the message to display
+     * @param title   the title of the dialog
+     */
+    private void alertUser(String message, String title) {
+        JOptionPane.showMessageDialog(null, message, title,
+                JOptionPane.INFORMATION_MESSAGE);
     }
 }

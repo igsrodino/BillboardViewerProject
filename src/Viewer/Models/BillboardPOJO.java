@@ -53,7 +53,7 @@ public BillboardPOJO(){
     }
 
     public void setMessage(String message) {
-        this.message = ("<html><center>" + message + "</center></html>");
+        this.message = message;
     }
 
     public String getPictureURL() {
@@ -77,7 +77,7 @@ public BillboardPOJO(){
     }
 
     public void setInformation(String information) {
-        this.information = ("<html><center>" + information + "</center></html>");
+        this.information = information;
     }
 
     public String getPictureData() {

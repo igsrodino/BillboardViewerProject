@@ -24,10 +24,7 @@
               </grid>
             </constraints>
             <properties>
-              <model>
-                <item value="Billboard 1"/>
-                <item value="Billboard 2"/>
-              </model>
+              <model/>
               <selectionMode value="0"/>
             </properties>
           </component>
