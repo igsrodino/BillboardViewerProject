@@ -61,7 +61,7 @@ public class BillboardModel {
 
     public void saveBillboard(int index) {
         if (index < 0) return;
-        //TODO: Network request to save the billboard;
+        //TODO: Network request to save the billboard.
     }
 
     public void getBillboardList() {

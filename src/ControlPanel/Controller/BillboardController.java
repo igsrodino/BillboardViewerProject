@@ -7,14 +7,17 @@ import ControlPanel.View.AppFrame;
 import ControlPanel.View.BillboardView;
 import ControlPanel.View.MainNav;
 import Viewer.Models.BillboardPOJO;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Base64;
 
 public class BillboardController {
@@ -62,6 +65,59 @@ public class BillboardController {
      */
     private void downloadXML(){
         // TODO: Stringify currentBillboard and download
+        try {
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element bb = doc.createElement("billboard");
+            if(currentBillboard.getBackgroundColour().length() > 0){
+                bb.setAttribute("background", currentBillboard.getBackgroundColour());
+            }
+            if(currentBillboard.getMessage().length() > 0){
+                Element mesg =
+                        doc.createElement("message");
+                mesg.setTextContent(currentBillboard.getMessage());
+                if(currentBillboard.getMessageColour().length() > 0){
+                    mesg.setAttribute("colour", currentBillboard.getMessageColour());
+                }
+                bb.appendChild(mesg);
+            }
+            if(currentBillboard.getInformation().length() > 0){
+                Element info = doc.createElement("information");
+                info.setTextContent(currentBillboard.getInformation());
+                if(currentBillboard.getInformationColour().length() > 0){
+                    info.setAttribute("colour", currentBillboard.getInformationColour());
+                }
+                bb.appendChild(info);
+            }
+            Element pic = null;
+            if(currentBillboard.getPictureURL() != null || currentBillboard.getPictureData() != null){
+                pic = doc.createElement("picture");
+            }
+            if(currentBillboard.getPictureURL() != null && currentBillboard.getPictureURL().length() > 0){
+                pic.setAttribute("url", currentBillboard.getPictureURL());
+                bb.appendChild(pic);
+            } else if (currentBillboard.getPictureData() != null && currentBillboard.getPictureData().length() > 0){
+                pic.setAttribute("data", currentBillboard.getPictureData());
+                bb.appendChild(pic);
+            }
+            doc.appendChild(bb);
+            String xml = XMLHelpers.documentToString(doc);
+            try {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                fileChooser.setFileFilter(new FileNameExtensionFilter("XML Files", "xml"));
+                int dialogResult = fileChooser.showSaveDialog(this.billboardView.getPanel());
+                if (dialogResult == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    Files.write(Paths.get(selectedFile.getAbsolutePath()), xml.getBytes());
+                }
+            } catch (Exception e) {
+                this.alertUser("XML is malformed", "Upload error");
+                System.err.println(e.getMessage());
+                System.err.println(e.getStackTrace());
+            }
+        } catch (ParserConfigurationException e){
+            alertUser("Something went wrong", "Error");
+        }
     }
     /**
      * Deletes the current billboard
