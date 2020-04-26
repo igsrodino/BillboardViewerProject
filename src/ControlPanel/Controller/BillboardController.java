@@ -1,15 +1,15 @@
 package ControlPanel.Controller;
 
 import ControlPanel.Models.BillboardModel;
-import ControlPanel.Models.BillboardModelOld;
 import ControlPanel.Models.UserModel;
 import ControlPanel.Utilities.XMLHelpers;
 import ControlPanel.View.AppFrame;
 import ControlPanel.View.BillboardView;
 import ControlPanel.View.MainNav;
 import Viewer.Models.BillboardPOJO;
-import com.sun.tools.javac.Main;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -50,9 +50,54 @@ public class BillboardController {
         billboardView.getSetMessageTextColourButton().addActionListener(e -> this.currentBillboard.setMessageColour(this.getColor()));
         billboardView.getSetInformationTextColourButton().addActionListener(e -> this.currentBillboard.setInformationColour(this.getColor()));
         billboardView.getSetBackgroundColourButton().addActionListener(e -> this.currentBillboard.setBackgroundColour(this.getColor()));
-
+        billboardView.getUploadImageButton().addActionListener(e -> this.setUploadImage(this.getImageBase64()));
+        billboardView.getDeleteBillboardButton().addActionListener(e -> this.deleteBillboard());
+        billboardView.getDownloadXMLButton().addActionListener(e-> this.downloadXML());
+        billboardView.getUploadXMLButton().addActionListener(e -> this.getXML());
         // Add the view to the card layout
         frame.addView(billboardView.getPanel(), "billboards");
+    }
+    /**
+     * Downloads the current billboard in xml form
+     */
+    private void downloadXML(){
+        // TODO: Stringify currentBillboard and download
+    }
+    /**
+     * Deletes the current billboard
+     */
+    private void deleteBillboard() {
+        int idx = billboardView.getBillboardList().getSelectedIndex();
+        this.currentBillboard = new BillboardPOJO();
+        if(idx >= 0){
+            this.model.deleteBillboard(idx);
+        }
+        this.updateView();
+        // TODO: Call model to delete billboard from server
+    }
+
+    /**
+     * Sets the color
+     * @param hex  the hex string to set
+     * @param item  the billboard item to set color for
+     */
+    private void setColor(String hex, String item){
+        if(hex.length() > 1) {
+            switch (item){
+                case "message":
+                    this.currentBillboard.setMessageColour(hex);
+                    break;
+                case "information":
+                    this.currentBillboard.setInformationColour(hex);
+                    break;
+                case "background":
+                    this.currentBillboard.setBackgroundColour(hex);
+                    break;
+                default:
+                    break;
+            }
+            this.updateView();
+        }
     }
     /**
      * Fetches the selected billboard from the model
@@ -73,7 +118,15 @@ public class BillboardController {
         this.billboardView.setName(currentBillboard.getName());
         this.billboardView.setImageURL(currentBillboard.getPictureURL());
         this.billboardView.setInformation(currentBillboard.getInformation());
+        this.billboardView.setInformationColor(currentBillboard.getInformationColour().length() > 0 ?
+                currentBillboard.getInformationColour() :
+                "#1B1E23" );
         this.billboardView.setMessage(currentBillboard.getMessage());
+        this.billboardView.setMessageColor(currentBillboard.getMessageColour().length() > 0 ?
+                currentBillboard.getMessageColour() :
+                "#1B1E23" );
+
+        this.billboardView.getBillboardList().setModel(this.model.getLocalList());
     }
     /**
      * Adds a billboard to the model, and updates the view
@@ -94,6 +147,10 @@ public class BillboardController {
      * Saves the current billboard
      */
     private void saveBillboard(){
+        if(billboardView.getBillboardName().trim().length() <=0){
+            this.alertUser("Billboard name cannot be empty", "Error");
+            return;
+        }
         currentBillboard.setName(billboardView.getBillboardName());
         currentBillboard.setInformation(billboardView.getInformation());
         currentBillboard.setMessage(billboardView.getMessage());
@@ -109,20 +166,6 @@ public class BillboardController {
         }
         // TODO: Call model.saveBillboard to send to server
     }
-    /**
-     * Creates a colour picker and sets the message color
-     */
-    private void setMessageColour(){
-
-    }
-    /**
-     * Creates a colour picker and sets the information color
-     */
-    private void setInformationColour(){}
-    /**
-     * Creates a colour picker and sets the background color
-     */
-    private void setBackgroundColour(){}
 
     /**
      * Allows the user to choose an image.
@@ -162,7 +205,13 @@ public class BillboardController {
      * Handles image file to base64 data.
      * @param imageBase64
      */
-    private void setUploadImage(String imageBase64){}
+    private void setUploadImage(String imageBase64){
+        if(imageBase64.length() > 0){
+            currentBillboard.setPictureData(imageBase64);
+            this.billboardView.setImageURL("");
+            this.billboardView.setImageData("Using image: "+this.imageName);
+        }
+    }
 
     /**
      * Opens a color chooser dialog and returns the chosen color in hex format
@@ -213,40 +262,50 @@ public class BillboardController {
         if(xmlString.length() > 0){
             if (XMLHelpers.isValidBillboard(xmlString)) {
                 this.alertUser("XML is valid", "Upload success");
+                this.currentBillboard = new BillboardPOJO();
                 // Parse xml and update model
                 Element bb = XMLHelpers.getDocument(xmlString);
-                if(bb.getAttribute("background").length() > 0){
-                    System.out.println(bb.getAttribute("background"));
+                if(bb.getAttribute("background") != null){
+                    currentBillboard.setBackgroundColour(bb.getAttribute("background"));
                 }
-                // Message tag
-                Element currentElement = (Element) bb.getElementsByTagName("message").item(0);
-                if(currentElement.getTextContent().length() > 0){
-                    String message = currentElement.getTextContent();
-                    System.out.println(message);
-                    if(currentElement.getAttribute("colour").length() > 0){
-                        String messageColor = currentElement.getAttribute("colour");
-                        System.out.println(messageColor);
+                if(bb.getAttribute("owner") != null && bb.getAttribute("owner").length() > 0){
+                    currentBillboard.setOwner(Integer.parseInt(bb.getAttribute("owner")));
+                }
+                if(bb.getAttribute("creator") != null){
+                    currentBillboard.setCreator(bb.getAttribute("creator"));
+                }
+                NodeList children = bb.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    Node child = children.item(i);
+                    if(child.getNodeName() == "message"){
+                        currentBillboard.setMessage(child.getTextContent());
+                        if(child.getAttributes().getNamedItem("colour") != null){
+                            currentBillboard.setMessageColour(child.getAttributes().getNamedItem(
+                                    "colour").getTextContent());
+                        }
                     }
-                }
-                // Information tag
-                currentElement = (Element) bb.getElementsByTagName("information").item(0);
-                if(currentElement.getTextContent().length() > 0){
-                    System.out.println(currentElement.getTextContent());
-                    if(currentElement.getAttribute("colour").length() > 0){
-                        System.out.println(currentElement.getAttribute("colour"));
+                    if(child.getNodeName() == "information"){
+                        currentBillboard.setInformation(child.getTextContent());
+                        if(child.getAttributes().getNamedItem("colour") != null){
+                            currentBillboard.setInformationColour(child.getAttributes().getNamedItem(
+                                    "colour").getTextContent());
+                        }
                     }
-                }
-                // Picture tag
-                currentElement = (Element) bb.getElementsByTagName("picture").item(0);
-                if(currentElement.getAttribute("url").length() > 0){
-                    System.out.println(currentElement.getAttribute("url"));
-                } else if (currentElement.getAttribute("data").length() > 0){
-                    System.out.println(currentElement.getAttribute("data"));
+                    if(child.getNodeName() == "picture"){
+                        if(child.getAttributes().getNamedItem("url") != null){
+                            currentBillboard.setPictureURL(child.getAttributes().getNamedItem(
+                                    "url").getTextContent());
+                        }else if (child.getAttributes().getNamedItem("data") != null){
+                            currentBillboard.setPictureData(child.getAttributes().getNamedItem(
+                                    "data").getTextContent());
+                        }
+                    }
                 }
             } else {
                 this.alertUser("XML is malformed", "Upload error");
             }
         }
+        this.updateView();
     }
 
     /**
