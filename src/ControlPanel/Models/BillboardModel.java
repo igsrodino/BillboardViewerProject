@@ -46,6 +46,11 @@ public class BillboardModel {
         return index;
     }
 
+    /**
+     * Gets the billboard object at the specified index
+     * @param index  the index to retrieve
+     * @return  a billboard object
+     */
     public BillboardPOJO getBillboard(int index) {
         if (index < 0) {
             return null;
@@ -53,17 +58,28 @@ public class BillboardModel {
         return billboards.get(index);
     }
 
+    /**
+     * Deletes the billboard at the specified index
+     * @param index  the index to delete
+     */
     public void deleteBillboard(int index) {
         if (index < 0) return;
         this.billboards.remove(index);
         // TODO: Network request to delete the billboard
     }
 
+    /**
+     * Saves the billboard at the index to the server
+     * @param index  the index to save
+     */
     public void saveBillboard(int index) {
         if (index < 0) return;
         //TODO: Network request to save the billboard.
     }
 
+    /**
+     * Fetches a list of billboards from the server
+     */
     public void getBillboardList() {
         // TODO: Network request to get list of billboards
         // TODO: Replace contents of billboards with list from server

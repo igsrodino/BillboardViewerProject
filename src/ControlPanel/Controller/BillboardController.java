@@ -64,7 +64,6 @@ public class BillboardController {
      * Downloads the current billboard in xml form
      */
     private void downloadXML(){
-        // TODO: Stringify currentBillboard and download
         try {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             Element bb = doc.createElement("billboard");
@@ -111,7 +110,6 @@ public class BillboardController {
                     Files.write(Paths.get(selectedFile.getAbsolutePath()), xml.getBytes());
                 }
             } catch (Exception e) {
-                this.alertUser("XML is malformed", "Upload error");
                 System.err.println(e.getMessage());
                 System.err.println(e.getStackTrace());
             }
