@@ -192,10 +192,9 @@ public class BillboardController {
      */
     public String deleteBillboard(int billboardID) {
 //      Use the model.deleteBillboard() method
-        int status = this.model.deleteBillboard(billboardID);
+        this.model.deleteBillboard(billboardID);
 
         String xmlString = "response";
-        if (status > 0) {
             try {
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -223,13 +222,6 @@ public class BillboardController {
             }catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        else if (status == 0) {
-                return "<response>\n" +
-                        "    <type>billboard-not-found</type>\n" +
-                        "    <data></data>\n" +
-                        "</response>";
-        }
         return xmlString;
     }
 

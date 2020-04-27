@@ -116,8 +116,8 @@ public class BillboardModel {
     * @param billboardID  the id of the billboard to delete
     * @return the number of rows affected by the delete (should always = either 1 or 0)
     * */
-    public int deleteBillboard(int billboardID){
-        return this.dbConn.runUpdateQuery("delete * from billboards where id = "+billboardID);
+    public void deleteBillboard(int billboardID){
+        this.dbConn.runUpdateQuery("delete from billboards where id = "+billboardID);
     }
 
 

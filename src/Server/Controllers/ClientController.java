@@ -160,11 +160,11 @@ public class ClientController implements Runnable {
 
                         break;
                     case "deleteBillboard":
-                        if (userController.checkPermission(userID, "edit_permission")) {
+                       // if (userController.checkPermission(userID, "edit_permission")) {
                             billboardID =
                                     Integer.parseInt(request.getElementsByTagName("data").item(0).getTextContent());
                             response = billboard.deleteBillboard(billboardID);
-                        }
+                        //}
                         break;
                     case "login":
                         username =
