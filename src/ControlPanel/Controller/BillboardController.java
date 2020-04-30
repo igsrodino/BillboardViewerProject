@@ -50,9 +50,9 @@ public class BillboardController {
         billboardView.getNewBillboardButton().addActionListener(e -> this.addBillboard(userModel.getCreator(), userModel.getUserID()));
         billboardView.getBillboardList().addListSelectionListener(e-> this.selectBillboard());
         billboardView.getSaveChangesButton().addActionListener(e -> this.saveBillboard());
-        billboardView.getSetMessageTextColourButton().addActionListener(e -> this.currentBillboard.setMessageColour(this.getColor()));
-        billboardView.getSetInformationTextColourButton().addActionListener(e -> this.currentBillboard.setInformationColour(this.getColor()));
-        billboardView.getSetBackgroundColourButton().addActionListener(e -> this.currentBillboard.setBackgroundColour(this.getColor()));
+        billboardView.getSetMessageTextColourButton().addActionListener(e -> this.setColor(this.getColor(), "message"));
+        billboardView.getSetInformationTextColourButton().addActionListener(e -> this.setColor(this.getColor(), "information"));
+        billboardView.getSetBackgroundColourButton().addActionListener(e -> this.setColor(this.getColor(), "background"));
         billboardView.getUploadImageButton().addActionListener(e -> this.setUploadImage(this.getImageBase64()));
         billboardView.getDeleteBillboardButton().addActionListener(e -> this.deleteBillboard());
         billboardView.getDownloadXMLButton().addActionListener(e-> this.downloadXML());
