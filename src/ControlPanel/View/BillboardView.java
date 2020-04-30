@@ -111,7 +111,4 @@ public class BillboardView {
         this.billboardName.setText(s);
     }
 
-    public void setBillboardName(String name) {
-        this.billboardName.setText(name);
-    }
 }

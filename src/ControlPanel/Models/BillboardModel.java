@@ -11,14 +11,20 @@ public class BillboardModel {
     public BillboardModel() {
         this.billboards = new ArrayList<BillboardPOJO>();
     }
-
-    public ListModel getLocalList() {
+    public DefaultListModel getLocalList(){
         DefaultListModel model = new DefaultListModel();
         for (BillboardPOJO el : this.billboards) {
             model.addElement(el.getName());
         }
         return model;
     }
+//    public String[] getLocalList() {
+//        String[] model = new String[billboards.size()];
+//        for(int i = 0; i<billboards.size(); i++){
+//            model[i] = billboards.get(i).getName();
+//        }
+//        return model;
+//    }
 
     /**
      * Adds a new billboard
@@ -28,7 +34,7 @@ public class BillboardModel {
      */
     public int setBillboard(BillboardPOJO bb) {
         this.billboards.add(bb);
-        return this.billboards.lastIndexOf(bb);
+        return this.billboards.indexOf(bb);
     }
 
     /**
@@ -39,9 +45,10 @@ public class BillboardModel {
      * @return  the index of the billboard
      */
     public int setBillboard(int index, BillboardPOJO bb) {
-        if (index < 0) {
+        if (index == -1) {
             return -1;
         }
+        System.out.println("Model, set: " + index);
         this.billboards.set(index, bb);
         return index;
     }
@@ -52,7 +59,7 @@ public class BillboardModel {
      * @return  a billboard object
      */
     public BillboardPOJO getBillboard(int index) {
-        if (index < 0) {
+        if (index == -1) {
             return null;
         }
         return billboards.get(index);

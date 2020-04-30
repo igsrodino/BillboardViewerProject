@@ -9,7 +9,9 @@ import ControlPanel.View.MainNav;
 import Viewer.Models.BillboardPOJO;
 import org.w3c.dom.*;
 
+import javax.sound.midi.SysexMessage;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,6 +30,7 @@ public class BillboardController {
     private String imageName;
     private BillboardPOJO currentBillboard;
     private MainNav mainNav;
+    private DefaultListModel list;
 
     public BillboardController(AppFrame frame, BillboardModel model, BillboardView billboardView
             , MainNav mainNav, UserModel userModel) {
@@ -38,6 +41,7 @@ public class BillboardController {
         this.imageName = "";
         this.userModel = userModel;
         this.currentBillboard = new BillboardPOJO();
+        this.list = new DefaultListModel();
         this.initController();
     }
 
@@ -45,10 +49,11 @@ public class BillboardController {
      * Sets up the event listeners for the gui
      */
     private void initController() {
+        this.billboardView.getBillboardList().setModel(list);
         // Event listeners
         mainNav.getBillboard().addActionListener(e -> this.frame.changeView("billboards"));
         billboardView.getNewBillboardButton().addActionListener(e -> this.addBillboard(userModel.getCreator(), userModel.getUserID()));
-        billboardView.getBillboardList().addListSelectionListener(e-> this.selectBillboard());
+        billboardView.getBillboardList().addListSelectionListener(e->this.selectBillboard(e));
         billboardView.getSaveChangesButton().addActionListener(e -> this.saveBillboard());
         billboardView.getSetMessageTextColourButton().addActionListener(e -> this.setColor(this.getColor(), "message"));
         billboardView.getSetInformationTextColourButton().addActionListener(e -> this.setColor(this.getColor(), "information"));
@@ -126,7 +131,7 @@ public class BillboardController {
         if(idx >= 0){
             this.model.deleteBillboard(idx);
         }
-        this.updateView();
+        this.updateView(true);
         // TODO: Call model to delete billboard from server
     }
 
@@ -150,25 +155,27 @@ public class BillboardController {
                 default:
                     break;
             }
-            this.updateView();
+            this.updateView(false);
         }
     }
     /**
      * Fetches the selected billboard from the model
      */
-    private void selectBillboard(){
-        int idx = billboardView.getBillboardList().getSelectedIndex();
-        if(idx >= 0){
-            this.currentBillboard =
-                    model.getBillboard(billboardView.getBillboardList().getSelectedIndex());
-            this.updateView();
+    private void selectBillboard(ListSelectionEvent evt){
+        if(!evt.getValueIsAdjusting()) {
+            int idx = this.billboardView.getBillboardList().getSelectedIndex();
+            if (idx > -1) {
+                this.currentBillboard =
+                        this.model.getBillboard(this.billboardView.getBillboardList().getSelectedIndex());
+            }
+            this.updateView(false);
         }
     }
 
     /**
      * Updates the view with the contents of currentBillboard;
      */
-    private void updateView(){
+    private void updateView(boolean updateList){
         this.billboardView.setName(currentBillboard.getName());
         this.billboardView.setImageURL(currentBillboard.getPictureURL());
         this.billboardView.setInformation(currentBillboard.getInformation());
@@ -179,8 +186,15 @@ public class BillboardController {
         this.billboardView.setMessageColor(currentBillboard.getMessageColour().length() > 0 ?
                 currentBillboard.getMessageColour() :
                 "#1B1E23" );
-
-        this.billboardView.getBillboardList().setModel(this.model.getLocalList());
+        if(updateList){
+            int idx = this.billboardView.getBillboardList().getSelectedIndex();
+            DefaultListModel newModel = model.getLocalList();
+            list.clear();
+            for(int i = 0; i < newModel.size(); i++){
+                list.add(i, newModel.getElementAt(i));
+            }
+            this.billboardView.getBillboardList().setSelectedIndex(idx);
+        }
     }
     /**
      * Adds a billboard to the model, and updates the view
@@ -194,8 +208,8 @@ public class BillboardController {
         bb.setOwner(owner);
         this.currentBillboard = bb;
         int index = this.model.setBillboard(bb);
-        this.billboardView.getBillboardList().setModel(this.model.getLocalList());
         this.billboardView.getBillboardList().setSelectedIndex(index);
+        this.updateView(true);
     }
     /**
      * Saves the current billboard
@@ -211,13 +225,16 @@ public class BillboardController {
         currentBillboard.setPictureURL(billboardView.getImageUrl());
 
         // Check if we need to create a billboard or update an existing one.
+
         if(billboardView.getBillboardList().getSelectedIndex() < 0){
-            this.model.setBillboard(currentBillboard);
-            this.billboardView.getBillboardList().setModel(model.getLocalList());
+            int index = this.model.setBillboard(this.currentBillboard);
+            this.billboardView.getBillboardList().setSelectedIndex(index);
+
         } else {
             this.model.setBillboard(this.billboardView.getBillboardList().getSelectedIndex(),
                     currentBillboard);
         }
+        this.updateView(true);
         // TODO: Call model.saveBillboard to send to server
     }
 
@@ -359,7 +376,7 @@ public class BillboardController {
                 this.alertUser("XML is malformed", "Upload error");
             }
         }
-        this.updateView();
+        this.updateView(false);
     }
 
     /**
