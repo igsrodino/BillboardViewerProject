@@ -190,9 +190,39 @@ public class BillboardController {
      * @param billboardID  the id of the billboard to be deleted
      * @return string containing a response object that has an empty data element.
      */
-    public String deleteBillboard(int billboardID){
-//         Use the model.deleteBillboard() method
-        return "Response";
+    public String deleteBillboard(int billboardID) {
+//      Use the model.deleteBillboard() method
+        this.model.deleteBillboard(billboardID);
+
+        String xmlString = "response";
+            try {
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.newDocument();
+
+                // root element (response)
+                Element rootElement = doc.createElement("response");
+                doc.appendChild(rootElement);
+
+                // type element
+                Element type = doc.createElement("type");
+                type.appendChild(doc.createTextNode("success"));
+
+                TransformerFactory tf = TransformerFactory.newInstance();
+                Transformer transformer = tf.newTransformer();
+                StringWriter writer = new StringWriter();
+                transformer.transform(new DOMSource(doc), new StreamResult(writer));
+                xmlString = writer.getBuffer().toString();
+
+                return "<response>\n" +
+                        "    <type>billboard-deleted</type>\n" +
+                        "    <data></data>\n" +
+                        "</response>";
+
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        return xmlString;
     }
 
     /**
