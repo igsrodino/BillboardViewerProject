@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
-import java.util.concurrent.Flow;
 
 /* Gui stuff goes in this classes
  * Exposes several methods so the controller can update the view
@@ -71,14 +70,15 @@ public class BillboardView {
             int height = image.getIconHeight();
             int width = image.getIconWidth();
             int newSize = 275;
+            double rectangleRatio = 3.1;
             ImageIcon imageResized;
             if (height > width) {
                 // If image is a standing rectangle (height larger than width)
-                imageResized = new ImageIcon(new ImageIcon(imgUrl).getImage().getScaledInstance((int) (newSize/3.1), newSize, Image.SCALE_DEFAULT));
+                imageResized = new ImageIcon(new ImageIcon(imgUrl).getImage().getScaledInstance((int) (newSize/rectangleRatio), newSize, Image.SCALE_DEFAULT));
             }
             else if (height < width) {
                 // If image is a rectangle
-                imageResized = new ImageIcon(new ImageIcon(imgUrl).getImage().getScaledInstance((int) (newSize*3.1), newSize, Image.SCALE_DEFAULT));
+                imageResized = new ImageIcon(new ImageIcon(imgUrl).getImage().getScaledInstance((int) (newSize*rectangleRatio), newSize, Image.SCALE_DEFAULT));
             }
             else {
                 // If image is a square
