@@ -154,9 +154,12 @@ public class ClientController implements Runnable {
                         response = billboard.getBillboard(billboardID);
                         break;
                     case "createBillboard":
-                        if (userController.checkPermission(userID, "edit_permission")) {
-                            //                response = billboard.createBillboard();
-                        }
+                        //if (userController.checkPermission(userID, "edit_permission")) {
+                                           response = billboard.createBillboard("102","#0000FF", "Babolat AeroPro","#FFFF00"," ", "url",
+                                                   "Wilson RF97","#00FFFF", 6);
+                           //String background, String message, String message_color, String image,
+                            //                                   String imageType, String information, String information_color, int owner
+                       // }
 
                         break;
                     case "deleteBillboard":
