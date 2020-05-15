@@ -36,7 +36,7 @@ public class BillboardController {
             view.setUrl(bb.getPictureURL());
         }
         else if (bb.getPictureData().length() > 0) {
-            view.setUrl(bb.getPictureData());
+            view.setData(bb.getPictureData());
         }
 
 
