@@ -50,6 +50,9 @@ public class BillboardView {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.ipadx = 1000;
+
+        //gbc.insets = new Insets(0,-500,0,-250);
         container.add(welcomeLabel, gbc); // Places label on top part of Billboard (Y axis)
     }
 
@@ -62,6 +65,7 @@ public class BillboardView {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 1;
+        gbc.ipady = 250;
         container.add(imageLabel, gbc); // Places label on middle part of Billboard (Y axis)
     }
 
@@ -74,32 +78,26 @@ public class BillboardView {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 2;
+        gbc.ipadx = 1000;
         container.add(checkoutLabel, gbc); // Places label on bottom part of Billboard (Y axis)
     }
 
     private void createLabels() throws IOException {
-         frame.setLayout(new GridBagLayout());
-        // LINE ABOVE IS CORRECT LAYOUT, THOUGH IT LAYS EVERYTHING HORIZONTALLY,
-        // NOT VERTICALLY...NEED TO FIX AND DELETE LINE BELOW THIS COMMENT.
-     //   frame.setLayout(new GridLayout(2, 1)); // THIS WORKS NOW BUT IF XML
-        // IS MISSING INFORMATION, URL, OR MESSAGE TAG THEN ROWS DO NOT MOVE CLOSER TO THE CENTER
-
-//        BillboardController BC = new BillboardController(model, view <<< dunno which ones to use);
-////        System.out.println(BC.getMessageLength());
-
+        // Set up billboard layout
+        frame.setLayout(new GridBagLayout());
         frame.getContentPane().setBackground(Color.WHITE); // Change background colour
 
+        // Add labels
         welcomeLabel();
         imageLabel();
         checkoutLabel();
-
     }
 
     public void setUrl (String url){
         try {
             URL imgUrl = new URL(url);
             ImageIO.read(imgUrl); // Checks to see if image exists, if not it displays
-            ImageIcon image = new ImageIcon(new ImageIcon(imgUrl).getImage()); // Get image if it
+            ImageIcon image = new ImageIcon(new ImageIcon(imgUrl).getImage()); // Get image if it exists
             int height = image.getIconHeight();
             int width = image.getIconWidth();
             int newSize = 275;
@@ -133,7 +131,7 @@ public class BillboardView {
             byte[] decodedByteArray = decoder.decode(imgData);
 
             // Checks to see if image exists, if not it displays
-            ImageIcon image = new ImageIcon(decodedByteArray); // Get image if it
+            ImageIcon image = new ImageIcon(decodedByteArray); // Get image if it exists
             int height = image.getIconHeight();
             int width = image.getIconWidth();
 
