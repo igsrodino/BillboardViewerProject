@@ -71,18 +71,20 @@ public class Database {
                                     "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
                                     "  `username` varchar(255) UNIQUE NOT NULL,\n" +
                                     "  `password` varchar(255) NOT NULL,\n" +
+                                    "  `name` varchar(255) NOT NULL,\n" +
                                     "  `salt` varchar(255) NOT NULL\n" +
                                     ");");
                             break;
                         case "billboards":
                             createTable.executeUpdate("CREATE TABLE `billboards` (\n" +
                                     "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
+                                    "  `name` varchar(255) NOT NULL,\n" +
                                     "  `background` varchar(255),\n" +
-                                    "  `message` varchar(255),\n" +
+                                    "  `message` varchar(1000),\n" +
                                     "  `message_color` varchar(255),\n" +
                                     "  `url` varchar(255),\n" +
-                                    "  `data` varchar(255),\n" +
-                                    "  `information` varchar(255),\n" +
+                                    "  `data` mediumtext,\n" +
+                                    "  `information` varchar(4000),\n" +
                                     "  `information_color` varchar(255),\n" +
                                     "  `owner` int\n" +
                                     ");");
@@ -91,11 +93,12 @@ public class Database {
                         case "schedule":
                             createTable.executeUpdate("CREATE TABLE `schedule` (\n" +
                                     "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
-                                    "  `start_time` time,\n" +
-                                    "  `end_time` time,\n" +
-                                    "  `duration` int,\n" +
-                                    "  `recurs` int,\n" +
-                                    "  `billboard` int\n" +
+                                    "  `start_time` time NOT NULL,\n" +
+                                    "  `end_time` time NOT NULL,\n" +
+                                    "  `duration` int NOT NULL,\n" +
+                                    "  `weekday` int NOT NULL,\n" +
+                                    "  `recurs` int DEFAULT 0,\n" +
+                                    "  `billboard` int NOT NULL\n" +
                                     ");");
                             break;
                         case "permissions":
