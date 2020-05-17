@@ -119,7 +119,7 @@ public class BillboardController {
             }
 
             //Transform document to XML string
-            billboardXMLStringValue = this.convertDocumentToString(doc);
+            billboardXMLStringValue = convertDocumentToString(doc);
 
         }catch(Exception e){
             System.out.println("Something went wrong.");}
@@ -129,7 +129,7 @@ public class BillboardController {
 
 
 
-    private String convertDocumentToString(Document doc){
+    public static String convertDocumentToString(Document doc){
             // TODO: add error handling
         String result = "";
         try {
@@ -177,7 +177,7 @@ public class BillboardController {
             doc.appendChild(resp);
             resp.appendChild(data);
             resp.appendChild(type);
-             list_xml = this.convertDocumentToString(doc);
+             list_xml = convertDocumentToString(doc);
         }catch(Exception e){
             e.printStackTrace();
 
