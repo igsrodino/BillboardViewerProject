@@ -18,13 +18,6 @@ public class BillboardModel {
         }
         return model;
     }
-//    public String[] getLocalList() {
-//        String[] model = new String[billboards.size()];
-//        for(int i = 0; i<billboards.size(); i++){
-//            model[i] = billboards.get(i).getName();
-//        }
-//        return model;
-//    }
 
     /**
      * Adds a new billboard

@@ -33,12 +33,12 @@ public class ControlPanel {
             BillboardController billboardController = new BillboardController(appFrame,
                     billboardModel, billboardView, mainNav, userModel);
             ScheduleController scheduleController = new ScheduleController(appFrame,
-                    scheduleModel, scheduleView, mainNav);
+                    scheduleModel, scheduleView, mainNav, billboardModel);
             UserController userController = new UserController(appFrame, userModel, loginView,
                     userView, mainNav);
 
             // Start the views
-            appFrame.changeView("login");
+            appFrame.changeView("schedule");
         }
         catch (Exception e)
         {

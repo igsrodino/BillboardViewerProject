@@ -23,6 +23,7 @@ CREATE TABLE `schedule` (
   `end_time` time,
   `duration` int,
   `recurs` int,
+  `weekday` ENUM ('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday') not null,
   `billboard` int
 );
 

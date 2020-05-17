@@ -7,13 +7,14 @@ import ControlPanel.View.AppFrame;
 import ControlPanel.View.BillboardView;
 import ControlPanel.View.MainNav;
 import Viewer.Models.BillboardPOJO;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
@@ -144,9 +145,11 @@ public class BillboardController {
         if(hex.length() > 1) {
             switch (item){
                 case "message":
+                    this.currentBillboard.setMessage(this.billboardView.getMessage());
                     this.currentBillboard.setMessageColour(hex);
                     break;
                 case "information":
+                    this.currentBillboard.setInformation(this.billboardView.getInformation());
                     this.currentBillboard.setInformationColour(hex);
                     break;
                 case "background":
@@ -186,6 +189,7 @@ public class BillboardController {
         this.billboardView.setMessageColor(currentBillboard.getMessageColour().length() > 0 ?
                 currentBillboard.getMessageColour() :
                 "#1B1E23" );
+        this.billboardView.setPreview();
         if(updateList){
             int idx = this.billboardView.getBillboardList().getSelectedIndex();
             DefaultListModel newModel = model.getLocalList();
@@ -281,6 +285,7 @@ public class BillboardController {
             currentBillboard.setPictureData(imageBase64);
             this.billboardView.setImageURL("");
             this.billboardView.setImageData("Using image: "+this.imageName);
+            this.billboardView.setImageSrcData(currentBillboard.getPictureData());
         }
     }
 
