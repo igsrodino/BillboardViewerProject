@@ -1,7 +1,14 @@
 package Server.Models;
 
 import Server.Utilities.Database;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
 * Allows access to scheduling data.
@@ -33,7 +40,59 @@ public class ScheduleModel {
      * @return  a Document xml object containing the schedules inside a root data element
      */
     public Document getSchedule(){
-        return null;
+        ResultSet rs =
+                this.dbConn.runSelectQuery("select * from schedule");
+        try {
+            //Creating the new document
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element data = doc.createElement("root");
+            while (rs.next()) {
+                Element schedule = doc.createElement("schedule");
+
+                if (rs.getInt("id") != 0) {
+                    Element id = doc.createElement("id");
+                    id.appendChild(doc.createTextNode(Integer.toString(rs.getInt("id"))));
+                    schedule.appendChild(id);
+                }
+                if (rs.getTime("start_time") != null) {
+                    Element start = doc.createElement("start_time");
+                    start.appendChild(doc.createTextNode(rs.getTime("start_time").toString()));
+                    schedule.appendChild(start);
+                }
+                if (rs.getTime("end_time") != null) {
+                    Element end = doc.createElement("end_time");
+                    end.appendChild(doc.createTextNode(rs.getTime("end_time").toString()));
+                    schedule.appendChild(end);
+                }
+                if (rs.getInt("duration") != 0) {
+                    Element duration = doc.createElement("duration");
+                    duration.appendChild(doc.createTextNode(Integer.toString(rs.getInt("duration"))));
+                    schedule.appendChild(duration);
+                }
+                if (rs.getInt("recurs") != 0) {
+                    Element recurs = doc.createElement("recurs");
+                    recurs.appendChild(doc.createTextNode(Integer.toString(rs.getInt("recurs"))));
+                    schedule.appendChild(recurs);
+                }
+                if (rs.getInt("billboard") != 0) {
+                    Element bb = doc.createElement("billboard");
+                    bb.appendChild(doc.createTextNode(Integer.toString(rs.getInt("billboard"))));
+                    schedule.appendChild(bb);
+                }
+                if (rs.getInt("weekday") != 0){
+                    Element weekday = doc.createElement("weekday");
+                    weekday.appendChild(doc.createTextNode(Integer.toString(rs.getInt("weekday"))));
+                    schedule.appendChild(weekday);
+                }
+
+                data.appendChild(schedule);
+            }
+            doc.appendChild(data);
+            return doc;
+        } catch (ParserConfigurationException | SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

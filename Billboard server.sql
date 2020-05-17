@@ -28,11 +28,12 @@ CREATE TABLE `billboards` (
 
 CREATE TABLE `schedule` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `start_time` time,
-  `end_time` time,
-  `duration` int,
-  `recurs` int,
-  `billboard` int
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `duration` int NOT NULL,
+  `weekday` int NOT NULL,
+  `recurs` int DEFAULT 0,
+  `billboard` int NOT NULL
 );
 
 CREATE TABLE `permissions` (
