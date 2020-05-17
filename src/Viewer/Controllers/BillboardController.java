@@ -35,6 +35,10 @@ public class BillboardController {
         if (bb.getPictureURL().length() > 0) {
             view.setUrl(bb.getPictureURL());
         }
+        else if (bb.getPictureData().length() > 0) {
+            view.setData(bb.getPictureData());
+        }
+
 
         // TODO: Create a while loop that calls model.getBillboard() every 15 seconds. Assign the
         //  return value to this.bb

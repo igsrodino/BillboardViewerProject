@@ -1,6 +1,5 @@
 package Viewer.Models;
 
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -55,7 +54,6 @@ public class BillboardModel {
                     }
                 }
                 if (element.getTagName() == "information" ) {
-                    System.out.println(element.getTextContent());
                     billboardInfo.setInformation(element.getTextContent());
                     if(element.getAttribute("colour").length() > 0){
                         billboardInfo.setInformationColour(element.getAttribute("colour"));
