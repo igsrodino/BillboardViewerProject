@@ -1,4 +1,4 @@
 package ControlPanel.Models;
 
-public class Users {
+public class UserModel {
 }

@@ -1,5 +1,10 @@
 package ControlPanel;
 
+import ControlPanel.Controller.MasterController;
+import ControlPanel.Models.BillboardModel;
+import ControlPanel.Models.ScheduleModel;
+import ControlPanel.Models.UserModel;
+import ControlPanel.View.MainFrame;
 
 public class ControlPanel {
     
@@ -7,7 +12,20 @@ public class ControlPanel {
 
         try
         {
-            //statements that may cause an exception
+            BillboardModel billboardModel = new BillboardModel();
+            ScheduleModel scheduleModel = new ScheduleModel();
+            UserModel userModel = new UserModel();
+            MainFrame frame = new MainFrame();
+            MasterController masterController = new MasterController(billboardModel,
+                    scheduleModel, userModel, frame);
+            masterController.init();
+
+            // Assemble all the pieces of the MVC
+//            Model m = new Model("Sylvain", "Saurel");
+//            View v = new View("MVC with SSaurel");
+//            Controller c = new Controller(m, v);
+//            c.initController();
+
         }
         catch (Exception e)
         {

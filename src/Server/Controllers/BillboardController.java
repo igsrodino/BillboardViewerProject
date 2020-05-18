@@ -2,7 +2,6 @@ package Server.Controllers;
 import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -121,7 +120,7 @@ public class BillboardController {
             }
 
             //Transform document to XML string
-            billboardXMLStringValue = this.convertDocumentToString(doc);
+            billboardXMLStringValue = convertDocumentToString(doc);
 
         }catch(Exception e){
             System.out.println("Something went wrong.");}
@@ -131,7 +130,7 @@ public class BillboardController {
 
 
 
-    private String convertDocumentToString(Document doc){
+    public static String convertDocumentToString(Document doc){
             // TODO: add error handling
         String result = "";
         try {
@@ -179,7 +178,7 @@ public class BillboardController {
             doc.appendChild(resp);
             resp.appendChild(data);
             resp.appendChild(type);
-             list_xml = this.convertDocumentToString(doc);
+             list_xml = convertDocumentToString(doc);
         }catch(Exception e){
             e.printStackTrace();
 
@@ -192,9 +191,39 @@ public class BillboardController {
      * @param billboardID  the id of the billboard to be deleted
      * @return string containing a response object that has an empty data element.
      */
-    public String deleteBillboard(int billboardID){
-//         Use the model.deleteBillboard() method
-        return null;
+    public String deleteBillboard(int billboardID) {
+//      Use the model.deleteBillboard() method
+        this.model.deleteBillboard(billboardID);
+
+        String xmlString = "response";
+            try {
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.newDocument();
+
+                // root element (response)
+                Element rootElement = doc.createElement("response");
+                doc.appendChild(rootElement);
+
+                // type element
+                Element type = doc.createElement("type");
+                type.appendChild(doc.createTextNode("success"));
+
+                TransformerFactory tf = TransformerFactory.newInstance();
+                Transformer transformer = tf.newTransformer();
+                StringWriter writer = new StringWriter();
+                transformer.transform(new DOMSource(doc), new StreamResult(writer));
+                xmlString = writer.getBuffer().toString();
+
+                return "<response>\n" +
+                        "    <type>billboard-deleted</type>\n" +
+                        "    <data></data>\n" +
+                        "</response>";
+
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        return xmlString;
     }
 
     /**
@@ -209,14 +238,9 @@ public class BillboardController {
      * @param owner  the id of the user creating the billboard
      * @return a stringified Document object containing a proper Response object.
      */
-    public String createBillboard(String name, String background, String message, String message_color, String image,
-                                String imageType, String information, String information_color, int owner) throws ParserConfigurationException {
-        this.model.createBillboard(name, background, message, message_color, image, imageType,information, information_color, owner);
-        return "<response>\n" +
-                "    <type>success</type>\n" +
-                "    <data></data>\n" +
-                "</response>";
-
+    public String createBillboard(String background, String message, String message_color, String image,
+                                String imageType, String information, String information_color, int owner){
+        return "Response";
     }
 }
 
