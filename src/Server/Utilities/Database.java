@@ -25,7 +25,7 @@ public class Database {
             props = new Properties();
             props.load(getClass().getResourceAsStream("../db.props"));
             this.dbConn = DriverManager.getConnection(props.getProperty("jdbc.url")+"/"+props.getProperty("jdbc" +
-                            ".schema")+"?useLegacyDatetimeCode=false&serverTimezone=UTC",
+                            ".schema")+"?useLegacyDatetimeCode=false&serverTimezone=Australia/Brisbane",
                     props.getProperty("jdbc.username"), props.getProperty("jdbc.password"));
             System.out.println("Database connected\nChecking for existing tables");
             this.createTables();
