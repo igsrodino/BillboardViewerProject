@@ -97,6 +97,21 @@ public class ScheduleController {
      * @return a Response string.
      */
     public String removeSchedule(int billboardID, int startTime) {
-        return "Response";
+        String response = "";
+        try {
+            model.removeSchedule(billboardID, startTime);
+
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            Element resp = doc.createElement("response");
+            Element type = doc.createElement("type");
+
+            type.appendChild(doc.createTextNode("success"));
+            doc.appendChild(resp);
+            resp.appendChild(type);
+            response = BillboardController.convertDocumentToString(doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 }
