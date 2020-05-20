@@ -2,6 +2,7 @@ package Server.Models;
 
 import Server.Utilities.Database;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +32,17 @@ public class UserModel {
      * Gets the username
      * @return username
      */
-    public String getUsername(){
+    public String getUsername(int ID){
+
+        //return this.username;
+        ResultSet rs = this.dbConn.runSelectQuery("select username from users where id =" + ID+")");
+        try{
+            while(rs.next()){
+                this.username = rs.getString("username");
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return this.username;
     }
 
@@ -39,7 +50,15 @@ public class UserModel {
      * Gets the password hash
      * @return password hash
      */
-    public String getPassword(){
+    public String getPassword(int ID){
+        ResultSet rs = this.dbConn.runSelectQuery("select password from users where id =" + ID+")");
+        try{
+            while(rs.next()){
+                this.password = rs.getString("password");
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return this.password;
     }
 
@@ -47,7 +66,16 @@ public class UserModel {
      * Gets the salt
      * @return the salt
      */
-    public String getSalt(){
+    public String getSalt(int ID){
+        //return this.salt;
+        ResultSet rs = this.dbConn.runSelectQuery("select salt from users where id =" + ID+")");
+        try{
+            while(rs.next()){
+                this.salt = rs.getString("password");
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return this.salt;
     }
 
@@ -55,15 +83,37 @@ public class UserModel {
      * Gets the user id of the current user
      * @return  the user id or -1 if it wasn't found
      */
-    public int getUserID(){
+    public int getUserID(int ID){
         return this.userID;
+//        ResultSet rs = this.dbConn.runSelectQuery("select * from users where id =" +ID);
+//        //this.dbConn.runSelectQuery("select * from billboards where id = "+billboardID +" " + "order by id limit 1");
+//        try{
+//            while(rs.next()){
+//                this. = rs.get
+//            }
+//        }catch(Exception e){
+//            System.out.println(e.getMessage());
+//        }
+
     }
     /**
      * Gets the permissions
      * @return list of permissions
+     * @param userID
      */
-    public ArrayList<String> getPermissions(){
-        return this.permissions;
+    public ArrayList<String> getPermissions(int userID){
+        //return this.permissions;
+        //String name = getUsername(UserID)
+       // int UserId =
+        ResultSet rs = this.dbConn.runSelectQuery("select permission from permissions where id = "+userID);
+        try{
+            while(rs.next()){
+                this.permissions.add(rs.getString("permission"));
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return permissions;
     }
 
     /**

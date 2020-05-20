@@ -117,9 +117,10 @@ public class UserController {
     /**
      * Gets the permissions for the given user
      * @param username  the username to retrieve permissions for
+     * @param requestedUserID
      * @return  a Response string
      */
-    public String getUserPermissions(String username){
+    public String getUserPermissions(String username, int requestedUserID){
         String permissionsXMLString= "response";
         try{
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -129,13 +130,12 @@ public class UserController {
             Element data = doc.createElement("data");
             Element type = doc.createElement("type");
 
-            ArrayList<String> permissions = this.model.getPermissions();
-            if(permissions != null){
+            ArrayList<String> permissions = this.model.getPermissions(requestedUserID);
+            if(permissions != null && permissions.size() > 0){
                 for (String permission : permissions){
                     data.appendChild(doc.createTextNode(permission));
                 }
                 type.appendChild(doc.createTextNode("success"));
-                //NodeList permissionslist = permissions.getChildNodes();
             }
             else
             {
@@ -192,5 +192,6 @@ public class UserController {
      */
     public int getUserID(String username) {
         return -1;
+        //return this.model.getUserID();
     }
 }
