@@ -62,7 +62,7 @@ public class UserModel {
      * Gets the permissions
      * @return list of permissions
      */
-    public ArrayList getPermissions(){
+    public ArrayList<String> getPermissions(){
         return this.permissions;
     }
 

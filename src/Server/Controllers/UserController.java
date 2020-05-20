@@ -2,6 +2,22 @@ package Server.Controllers;
 
 import Server.Models.UserModel;
 import Server.Utilities.UserAuthentication;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
+import java.util.ArrayList;
+
 /**
  * Provides access to user operations
  */
@@ -12,6 +28,7 @@ public class UserController {
      * Constructor
      * @param model  the UserModel object to use for data access
      */
+
     public UserController(UserModel model){
         this.model = model;
     }
@@ -76,6 +93,26 @@ public class UserController {
     public String listUsers(){
         return "Response";
     }
+    public static String convertDocumentToString(Document doc){
+        // TODO: add error handling
+        String result = "";
+        try {
+            StringWriter sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+            return sw.toString();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+            return result;
+        }
+
+    }
 
     /**
      * Gets the permissions for the given user
@@ -83,7 +120,36 @@ public class UserController {
      * @return  a Response string
      */
     public String getUserPermissions(String username){
-        return "Response";
+        String permissionsXMLString= "response";
+        try{
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+            Element resp = doc.createElement("response");
+            Element data = doc.createElement("data");
+            Element type = doc.createElement("type");
+
+            ArrayList<String> permissions = this.model.getPermissions();
+            if(permissions != null){
+                for (String permission : permissions){
+                    data.appendChild(doc.createTextNode(permission));
+                }
+                type.appendChild(doc.createTextNode("success"));
+                //NodeList permissionslist = permissions.getChildNodes();
+            }
+            else
+            {
+                type.appendChild(doc.createTextNode("failure"));
+            }
+            doc.appendChild(resp);
+            resp.appendChild(data);
+            resp.appendChild(type);
+            permissionsXMLString = convertDocumentToString(doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return permissionsXMLString;
     }
 
     /**
