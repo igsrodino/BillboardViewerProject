@@ -90,7 +90,7 @@ public class ScheduleController {
                                        int weekday) {
         // End time is start time + duration
         // StartTime is in 24 hour time to make the math easier.
-        if(startTime%2400>0){
+        if(startTime>2400){
             return "<response>\n" +
                     "\t<type>error</type>\n" +
                     "\t<data>Start time cannot be greater than 2400</data>\n"+
