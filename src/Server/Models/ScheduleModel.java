@@ -121,22 +121,13 @@ public class ScheduleModel {
      * @param weekday     the weekday to show it on, 1 = sunday, ...,  7 = saturday
      * @return an int containing the number of rows affected by the operation
      */
-    public boolean setSchedule(int billboardID, int startTime, int duration, int recurs,
-                               int weekday) {
+    public boolean setSchedule(int billboardID, int startTime, int endTime, int duration,
+                               int recurs, int weekday) {
         // Needs to a) add 00 to the startTime before inserting (startTime * 100), and b) calculate
         // end_time (startTime + duration)*100
-        int endTime = 0;
-        if(duration < 60){
-            endTime = (startTime + duration)*100;
-        } else {
-            int count = duration / 60;
-            endTime += (startTime + ((duration%60) + (count *100)))*100;
-        }
-        if (weekday <=0){
-            weekday = 1;
-        }
+
         int res = dbConn.runUpdateQuery("insert into schedule (start_time, end_time, duration, weekday, recurs, billboard) \n" +
-                "values (" + (startTime * 100) + "," + endTime + "," + duration + "," + (weekday%7) +
+                "values (" + (startTime * 100) + "," + endTime + "," + duration + "," + weekday +
                 "," + recurs + "," + billboardID + ")\n");
         return res > 0;
     }
