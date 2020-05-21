@@ -132,7 +132,9 @@ public class ScheduleModel {
             int count = duration / 60;
             endTime += (startTime + ((duration%60) + (count *100)))*100;
         }
-
+        if (weekday <=0){
+            weekday = 1;
+        }
         int res = dbConn.runUpdateQuery("insert into schedule (start_time, end_time, duration, weekday, recurs, billboard) \n" +
                 "values (" + (startTime * 100) + "," + endTime + "," + duration + "," + (weekday%7) +
                 "," + recurs + "," + billboardID + ")\n");
