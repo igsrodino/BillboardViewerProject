@@ -223,18 +223,20 @@ public class ClientController implements Runnable {
 //                        }
                         break;
                     case "setSchedule":
-                        if (userController.checkPermission(userID, "schedule_billboards")) {
+//                        if (userController.checkPermission(userID, "schedule_billboards")) {
                             billboardID =
                                     Integer.parseInt(request.getElementsByTagName("billboard").item(0).getTextContent());
                             startTime =
                                     Integer.parseInt(request.getElementsByTagName("startTime").item(0).getTextContent());
-                            int endTime =
-                                    Integer.parseInt(request.getElementsByTagName("endTime").item(0).getTextContent());
+                            int duration =
+                                    Integer.parseInt(request.getElementsByTagName("duration").item(0).getTextContent());
                             int recurs =
                                     Integer.parseInt(request.getElementsByTagName("recurs").item(0).getTextContent());
+                            int weekday =
+                                    Integer.parseInt(request.getElementsByTagName("weekday").item(0).getTextContent());
                             response = scheduleController.setBillboardSchedule(billboardID,
-                                    startTime, endTime, recurs);
-                        }
+                                    startTime, duration, recurs, weekday);
+//                        }
                         break;
                     case "deleteSchedule":
 //                        if (userController.checkPermission(userID, "schedule_billboards")) {

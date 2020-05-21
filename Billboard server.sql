@@ -38,7 +38,10 @@ CREATE TABLE `schedule` (
 
 CREATE TABLE `permissions` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `permission` ENUM ('create_billboards', 'edit_billboards', 'schedule_billboards', 'edit_users') NOT NULL,
+  `create_billboards` boolean DEFAULT false,
+  `edit_billboards` boolean DEFAULT false,
+  `schedule_billboards` boolean DEFAULT false,
+  `edit_users` boolean DEFAULT false,
   `user` int
 );
 
