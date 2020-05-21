@@ -4,6 +4,8 @@ import Viewer.Models.BillboardModel;
 import Viewer.Models.BillboardPOJO;
 import Viewer.Views.BillboardView;
 
+import java.io.IOException;
+
 public class BillboardController {
     private BillboardModel model;
     private BillboardView view;
@@ -14,7 +16,7 @@ public class BillboardController {
         this.view = view;
         this.bb = null;
     }
-    public void startViewer() {
+    public void startViewer() throws IOException {
         bb = model.getBillboard();
 
         if (bb.getMessage().length() > 0) {

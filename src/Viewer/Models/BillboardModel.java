@@ -9,18 +9,40 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.Socket;
 
 // Contains methods to call the server and return the response in an appropriate format
 public class BillboardModel {
     private BillboardPOJO info;
-
+    private static String response;
     public BillboardModel(){
         this.info = new BillboardPOJO();
     }
 
-    public void parseXML(){
+    public void requestBillboard() throws IOException {
+
+
+    }
+
+    public void parseXML() throws IOException {
+
+        Socket clientSocket = new Socket("localhost", 5050);
+        OutputStream outputStream = clientSocket.getOutputStream();
+        InputStream inputStream = clientSocket.getInputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+        ObjectInputStream ois = new ObjectInputStream(inputStream);
+        //Thread.sleep(15000);
+        oos.writeUTF("getBillboard");
+        oos.flush();
+        String response = ois.readUTF();
+        System.out.println("Server: "+ response);
+        oos.close();
+        ois.close();
+
+
+
+
         File xmlFile = new File("src\\Viewer\\Views\\XMLExample.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
@@ -84,7 +106,7 @@ public class BillboardModel {
 
 
 
-    public BillboardPOJO getBillboard(){
+    public BillboardPOJO getBillboard() throws IOException {
         parseXML();
         return info;
     }

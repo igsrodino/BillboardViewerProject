@@ -35,34 +35,59 @@ public class ClientController implements Runnable {
      * Requests must have their access token verified (if one is needed), and user permissions
      * validated before calling the requisite controller method.
      */
+
     @Override
     public void run() {
+        BillboardModel billboardModel = new BillboardModel(dbConn);
+        BillboardController billboard = new BillboardController(billboardModel);
+        ScheduleModel scheduleModel = new ScheduleModel(dbConn);
+        ScheduleController scheduleController = new ScheduleController(scheduleModel);
+
         try {
             // Read the request from the client
-            String request = inputStream.readUTF();
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            System.out.println(ois.readUTF());
+            String response = billboard.getBillboard(scheduleController.getCurrentBillboard());
+            System.out.println(response);
 
-            Document parsedRequest = processRequestString(request);
-            this.sendResponse(this.processRequest(parsedRequest));
+            oos.writeUTF(response);
+            oos.flush();
             inputStream.close();
 
             return;
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            this.sendResponse("Error: " + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            this.sendResponse("Error: " + e.getMessage());
-        } catch (SAXException e) {
-            e.printStackTrace();
-            this.sendResponse("Error: " + e.getMessage());
-        } catch (Exception e) {
-            System.err.println("Client has failed differently: " + e.getMessage());
-            e.printStackTrace();
-            this.sendResponse("Error: " + e.getMessage());
         }
-
     }
 
+//        @Override
+//        public void run() {
+//            try {
+//                // Read the request from the client
+//                String request = inputStream.readUTF();
+//
+//                Document parsedRequest = processRequestString(request);
+//                this.sendResponse(this.processRequest(parsedRequest));
+//                inputStream.close();
+//
+//                return;
+//            } catch (ParserConfigurationException e) {
+//                e.printStackTrace();
+//                this.sendResponse("Error: " + e.getMessage());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                this.sendResponse("Error: " + e.getMessage());
+//            } catch (SAXException e) {
+//                e.printStackTrace();
+//                this.sendResponse("Error: " + e.getMessage());
+//            } catch (Exception e) {
+//                System.err.println("Client has failed differently: " + e.getMessage());
+//                e.printStackTrace();
+//                this.sendResponse("Error: " + e.getMessage());
+//            }
+//
+//        }
     /**
      * Sends the Response string and closes the stream, ending the connection
      *
@@ -143,7 +168,6 @@ public class ClientController implements Runnable {
                 switch (route) {
                     case "getBillboard":
                         response = billboard.getBillboard(scheduleController.getCurrentBillboard());
-
                         break;
                     case "listBillboards":
                         response = billboard.getBillboardList();
