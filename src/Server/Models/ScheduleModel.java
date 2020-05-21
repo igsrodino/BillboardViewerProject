@@ -134,7 +134,7 @@ public class ScheduleModel {
         }
 
         int res = dbConn.runUpdateQuery("insert into schedule (start_time, end_time, duration, weekday, recurs, billboard) \n" +
-                "values (" + (startTime * 100) + "," + endTime + "," + duration + "," + weekday +
+                "values (" + (startTime * 100) + "," + endTime + "," + duration + "," + (weekday%7) +
                 "," + recurs + "," + billboardID + ")\n");
         return res > 0;
     }
