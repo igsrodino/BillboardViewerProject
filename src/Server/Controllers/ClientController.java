@@ -35,59 +35,34 @@ public class ClientController implements Runnable {
      * Requests must have their access token verified (if one is needed), and user permissions
      * validated before calling the requisite controller method.
      */
-
     @Override
     public void run() {
-        BillboardModel billboardModel = new BillboardModel(dbConn);
-        BillboardController billboard = new BillboardController(billboardModel);
-        ScheduleModel scheduleModel = new ScheduleModel(dbConn);
-        ScheduleController scheduleController = new ScheduleController(scheduleModel);
-
         try {
             // Read the request from the client
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            System.out.println(ois.readUTF());
-            String response = billboard.getBillboard(scheduleController.getCurrentBillboard());
-            System.out.println(response);
+            String request = inputStream.readUTF();
 
-            oos.writeUTF(response);
-            oos.flush();
+            Document parsedRequest = processRequestString(request);
+            this.sendResponse(this.processRequest(parsedRequest));
             inputStream.close();
 
             return;
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            this.sendResponse("Error: " + e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            this.sendResponse("Error: " + e.getMessage());
+        } catch (SAXException e) {
+            e.printStackTrace();
+            this.sendResponse("Error: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Client has failed differently: " + e.getMessage());
+            e.printStackTrace();
+            this.sendResponse("Error: " + e.getMessage());
         }
+
     }
 
-//        @Override
-//        public void run() {
-//            try {
-//                // Read the request from the client
-//                String request = inputStream.readUTF();
-//
-//                Document parsedRequest = processRequestString(request);
-//                this.sendResponse(this.processRequest(parsedRequest));
-//                inputStream.close();
-//
-//                return;
-//            } catch (ParserConfigurationException e) {
-//                e.printStackTrace();
-//                this.sendResponse("Error: " + e.getMessage());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                this.sendResponse("Error: " + e.getMessage());
-//            } catch (SAXException e) {
-//                e.printStackTrace();
-//                this.sendResponse("Error: " + e.getMessage());
-//            } catch (Exception e) {
-//                System.err.println("Client has failed differently: " + e.getMessage());
-//                e.printStackTrace();
-//                this.sendResponse("Error: " + e.getMessage());
-//            }
-//
-//        }
     /**
      * Sends the Response string and closes the stream, ending the connection
      *
@@ -168,6 +143,7 @@ public class ClientController implements Runnable {
                 switch (route) {
                     case "getBillboard":
                         response = billboard.getBillboard(scheduleController.getCurrentBillboard());
+
                         break;
                     case "listBillboards":
                         response = billboard.getBillboardList();
@@ -184,10 +160,10 @@ public class ClientController implements Runnable {
 
                         break;
                     case "deleteBillboard":
-                       // if (userController.checkPermission(userID, "edit_permission")) {
-                            billboardID =
-                                    Integer.parseInt(request.getElementsByTagName("data").item(0).getTextContent());
-                            response = billboard.deleteBillboard(billboardID);
+                        // if (userController.checkPermission(userID, "edit_permission")) {
+                        billboardID =
+                                Integer.parseInt(request.getElementsByTagName("data").item(0).getTextContent());
+                        response = billboard.deleteBillboard(billboardID);
                         //}
                         break;
                     case "login":
@@ -243,7 +219,7 @@ public class ClientController implements Runnable {
                         break;
                     case "getSchedule":
 //                        if (userController.checkPermission(userID, "schedule_billboards")) {
-                            response = scheduleController.getSchedule();
+                        response = scheduleController.getSchedule();
 //                        }
                         break;
                     case "setSchedule":
@@ -262,12 +238,12 @@ public class ClientController implements Runnable {
                         break;
                     case "deleteSchedule":
 //                        if (userController.checkPermission(userID, "schedule_billboards")) {
-                            billboardID =
-                                    Integer.parseInt(request.getElementsByTagName("billboard").item(0).getTextContent());
-                            startTime =
-                                    Integer.parseInt(request.getElementsByTagName("startTime").item(0).getTextContent());
-                            response = scheduleController.removeSchedule(billboardID,
-                                    startTime*100);
+                        billboardID =
+                                Integer.parseInt(request.getElementsByTagName("billboard").item(0).getTextContent());
+                        startTime =
+                                Integer.parseInt(request.getElementsByTagName("startTime").item(0).getTextContent());
+                        response = scheduleController.removeSchedule(billboardID,
+                                startTime*100);
 //                        }
                         break;
                     default:

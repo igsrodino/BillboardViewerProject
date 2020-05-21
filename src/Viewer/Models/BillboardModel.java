@@ -1,11 +1,10 @@
 package Viewer.Models;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,61 +15,48 @@ import java.net.Socket;
 public class BillboardModel {
     private BillboardPOJO info;
     private static String response;
+    private static Document responseXML;
     public BillboardModel(){
         this.info = new BillboardPOJO();
     }
-
-    public void requestBillboard() throws IOException {
-
-
+    private String requestBillboard() throws IOException {
+        Socket clientSocket = new Socket("localhost", 5050);
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        DataInputStream inFromServer = new DataInputStream(clientSocket.getInputStream());
+        outToServer.writeUTF("<request>\n" +
+                "    <type>getBillboard</type>\n" +
+                "</request>");
+        response = inFromServer.readUTF();
+       // System.out.println("Server: "+ response);
+        clientSocket.close();
+        return response;
     }
 
-    public void parseXML() throws IOException {
-
-        Socket clientSocket = new Socket("localhost", 5050);
-        OutputStream outputStream = clientSocket.getOutputStream();
-        InputStream inputStream = clientSocket.getInputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(outputStream);
-        ObjectInputStream ois = new ObjectInputStream(inputStream);
-        //Thread.sleep(15000);
-        oos.writeUTF("getBillboard");
-        oos.flush();
-        String response = ois.readUTF();
-        System.out.println("Server: "+ response);
-        oos.close();
-        ois.close();
-
-
-
-
-        File xmlFile = new File("src\\Viewer\\Views\\XMLExample.xml");
+    public void parseXML(String response) throws IOException {
+        //File xmlFile = new File("src\\Viewer\\Views\\XMLExample.xml");
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
-
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(xmlFile);
+
+            Document doc = dBuilder.parse(new InputSource(new StringReader(response)));
             doc.getDocumentElement().normalize();
 //          NodeList nodeList = doc.getElementsByTagName("billboard");
             info = getInfo(doc.getElementsByTagName("billboard").item(0));
-
+            System.out.println(doc.getElementsByTagName("billboard").item(0));
         } catch (SAXException | ParserConfigurationException | IOException e1) {
             e1.printStackTrace();
         }
     }
-
     public static BillboardPOJO getInfo(Node node){
         BillboardPOJO billboardInfo = new BillboardPOJO();
         NodeList childNodes = node.getChildNodes();
-
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node nodeItem = childNodes.item(i);
             if (nodeItem.getNodeType() == nodeItem.ELEMENT_NODE) {
                 Element element = (Element) nodeItem;
-
                 if (element.getTagName() == "message" ) {
                     billboardInfo.setMessage(element.getTextContent());
-
                     if(element.getAttribute("colour").length() > 0){
                         billboardInfo.setMessageColour(element.getAttribute("colour"));
                     }
@@ -103,11 +89,10 @@ public class BillboardModel {
         Node nodeValue = nodeList.item(0);
         return nodeValue.getNodeValue();
     }
-
-
-
     public BillboardPOJO getBillboard() throws IOException {
-        parseXML();
+
+        this.parseXML(this.requestBillboard());
+
         return info;
     }
 }
