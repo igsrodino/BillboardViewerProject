@@ -101,7 +101,10 @@ public class Database {
                         case "permissions":
                             createTable.executeUpdate("CREATE TABLE `permissions` (\n" +
                                     "  `id` int PRIMARY KEY AUTO_INCREMENT,\n" +
-                                    "  `permission` ENUM ('create_billboards', 'edit_billboards', 'schedule_billboards', 'edit_users') NOT NULL,\n" +
+                                    "  `create_billboards` boolean DEFAULT false,\n" +
+                                    "  `edit_billboards` boolean DEFAULT false,\n" +
+                                    "  `schedule_billboards` boolean DEFAULT false,\n" +
+                                    "  `edit_users` boolean DEFAULT false,\n" +
                                     "  `user` int\n" +
                                     ");");
                             break;

@@ -196,9 +196,12 @@ public class ClientController implements Runnable {
                         break;
                     case "getPermissions":
                         requestedUserID = userController.getUserID(request.getElementsByTagName("username").item(0).getTextContent());
+
+                        //requestedUserID = userController.getUserID()
                         //if (userController.checkPermission(userID, "edit_users") || requestedUserID == userID) {
                             username = request.getElementsByTagName("username").item(0).getTextContent();
-                            response = userController.getUserPermissions(username,requestedUserID);
+                            //response = userController.getUserPermissions(username,requestedUserID);
+                        response = userController.getUserPermissions(requestedUserID);
                         //}
                         break;
                     case "setPermissions":
