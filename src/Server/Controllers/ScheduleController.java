@@ -81,12 +81,17 @@ public class ScheduleController {
      * @param duration    the duration to show it in minutes
      * @param recurs      the number of minutes to wait before reshowing the billboard. Set to 0 to display once, 60 for
      *                    every hour, and 1440 for every day.
+     * @param weekday
      * @return a Response string
      */
-    public String setBillboardSchedule(int billboardID, int startTime, int duration, int recurs) {
+    public String setBillboardSchedule(int billboardID, int startTime, int duration, int recurs, int weekday) {
         // End time is start time + duration
         // StartTime is in 24 hour time to make the math easier.
-        return "Response";
+        boolean result =  this.model.setSchedule(billboardID,startTime,duration, recurs,weekday);
+
+        return "<response>\n" +
+                "\t<type>"+result+"</type>\n" +
+                "</response>";
     }
 
     /**
