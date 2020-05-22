@@ -115,13 +115,6 @@ public class UserModel {
      */
     public boolean setUserPassword(String Username, String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
 
-        String Usernamecheck = "";
-        ResultSet rs = this.dbConn.runSelectQuery("SELECT username FROM cab302.users where users.username ='" +Username+"'");
-        while ( rs.next() ) {
-             Usernamecheck = rs.getString("username");
-            System.out.println(Usernamecheck);
-        }
-
 
         if(getUser(Username)) {
             this.dbConn.runUpdateQuery("update users set users.password = '" + password + "' where users.username = '" + Username + "'");
