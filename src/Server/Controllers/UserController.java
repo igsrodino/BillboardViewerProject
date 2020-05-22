@@ -2,6 +2,13 @@ package Server.Controllers;
 
 import Server.Models.UserModel;
 import Server.Utilities.UserAuthentication;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import static Server.Utilities.UserAuthentication.getSalt;
+
 /**
  * Provides access to user operations
  */
@@ -53,9 +60,7 @@ public class UserController {
      * @return  a Response string
      */
     public String createUser(String username, String password){
-        // Use UserAuthentication.generateHash(password, some random salt) to generate the
-        // password hash
-        // Use the model to store the details.
+
         return "Response";
     }
 
@@ -115,8 +120,11 @@ public class UserController {
      * @param password  the password hash from the client
      * @return  a Response object
      */
-    public String setUserPassword(String username, String password){
-        return "Response";
+    public String setUserPassword(String username, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException {
+        String salt = UserAuthentication.getSalt();
+        String hashedpass = UserAuthentication.generateHash(password,salt);
+        this.model.setUserPassword("detty0",hashedpass,salt );
+        return "JIM";
     }
 
     /**

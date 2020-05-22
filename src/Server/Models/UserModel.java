@@ -2,6 +2,9 @@ package Server.Models;
 
 import Server.Utilities.Database;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 
 /**
@@ -89,13 +92,51 @@ public class UserModel {
      * This just writes the record into the database. The provided password must already be
      * hashed in the UserController.setUserPassword() method before calling this method
      * Will update the internal user fields (username, password, etc)
-     * @param userID the user id of the user to update
+     * @param Username the username of the user to update
      * @param password  the password hash to store in the database
      * @return  true if the update was a success, or false if it was not
      */
-    public boolean setUserPassword(int userID, String password){
-        return false;
+    public boolean setUserPassword(String Username, String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException {
+
+
+            this.dbConn.runUpdateQuery("update users set users.password = '"+password+ "' where users.username = '" + Username +"'");
+            this.dbConn.runUpdateQuery("update users set users.salt = '"+salt+ "' where users.username = '" + Username +"'");
+            return(true);
+
+
+
+
     }
+
+
+    /**
+     *
+     * @param username the username of the new user
+     * @param password unshased new password
+     * @param Name name of new user
+     * @return if sucsessfull returns 1
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     * @throws UnsupportedEncodingException
+     */
+    public boolean createuser(String username , String Name , String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException {
+
+
+        try {
+
+            int updatednumber = this.dbConn.runUpdateQuery("INSERT INTO users (username, password, name, salt) VALUES" + (username + "," + password + "," + Name + "," + salt));
+            return updatednumber > 0;
+
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return(false);
+
+        }
+
+
+    }
+
 
     /**
      * Sets the user permissions for the given user.
