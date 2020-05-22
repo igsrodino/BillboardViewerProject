@@ -2,6 +2,7 @@ package Server.Controllers;
 import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -238,9 +239,14 @@ public class BillboardController {
      * @param owner  the id of the user creating the billboard
      * @return a stringified Document object containing a proper Response object.
      */
-    public String createBillboard(String background, String message, String message_color, String image,
-                                String imageType, String information, String information_color, int owner){
-        return "Response";
+    public String createBillboard(int ID, String name, String background, String message, String message_color, String image,
+                                  String imageType, String information, String information_color, int owner) throws ParserConfigurationException {
+        this.model.createBillboard(ID,name, background, message, message_color, image, imageType,information, information_color, owner);
+        return "<response>\n" +
+                "    <type>success</type>\n" +
+                "    <data></data>\n" +
+                "</response>";
+
     }
 }
 
