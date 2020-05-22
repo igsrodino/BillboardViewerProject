@@ -85,23 +85,8 @@ public class UserModel {
      * @param username  the username of the user to retrieve
      * @return  true if the record was loaded successfully, or false if it wasn't found
      */
-    public boolean getUser(String username) throws SQLException {
-
-
-        String Usernamecheck = "";
-        ResultSet rs = this.dbConn.runSelectQuery("SELECT username FROM cab302.users where users.username ='" +username+"'");
-        while ( rs.next() ) {
-            Usernamecheck = rs.getString("username");
-            System.out.println(Usernamecheck);
-        }
-        if(username.equals(Usernamecheck)) {
-
-            return(true);
-        }
-        else
-        {
-            return(false);
-        }
+    public boolean getUser(String username){
+        return false;
     }
 
     /**
@@ -123,7 +108,7 @@ public class UserModel {
         }
 
 
-        if(getUser(Username)) {
+        if(Username.equals(Usernamecheck)) {
             this.dbConn.runUpdateQuery("update users set users.password = '" + password + "' where users.username = '" + Username + "'");
             this.dbConn.runUpdateQuery("update users set users.salt = '" + salt + "' where users.username = '" + Username + "'");
             return (true);
@@ -151,7 +136,8 @@ public class UserModel {
      * @throws InvalidKeySpecException
      * @throws UnsupportedEncodingException
      */
-    public boolean createuser(String username , String Name , String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
+    public boolean createuser(String username , String Name , String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException {
+
 
 
 
