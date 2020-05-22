@@ -147,13 +147,16 @@ public class UserModel {
     public boolean createuser(String username , String Name , String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
 
 
+        if(!getUser(username)) {
+            this.dbConn.runUpdateQuery("INSERT INTO users (username, password, name, salt) VALUES" + (username + "," + password + "," + Name + "," + salt));
+            return (true);
 
-           this.dbConn.runUpdateQuery("INSERT INTO users (username, password, name, salt) VALUES" + (username + "," + password + "," + Name + "," + salt));
-            return(true);
+        }
+        else
+            {
+                return (false);
 
-
-
-
+            }
 
 
 
