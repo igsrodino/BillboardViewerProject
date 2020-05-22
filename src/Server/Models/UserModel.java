@@ -2,6 +2,7 @@ package Server.Models;
 
 import Server.Utilities.Database;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 /**
@@ -55,7 +56,18 @@ public class UserModel {
      * Gets the user id of the current user
      * @return  the user id or -1 if it wasn't found
      */
-    public int getUserID(){
+    public int getUserID(String username){
+
+        ResultSet rs = this.dbConn.runSelectQuery("select * from users where username =\""+username+"\"");
+
+        try{
+            while(rs.next()){
+                this.userID = rs.getInt("id");
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println(this.userID);
         return this.userID;
     }
     /**

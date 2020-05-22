@@ -125,6 +125,7 @@ public class UserController {
      * @return int  the userID, or -1 if user not found
      */
     public int getUserID(String username) {
-        return -1;
+        //return -1;
+        return this.model.getUserID(username);
     }
 }

@@ -203,12 +203,12 @@ public class ClientController implements Runnable {
                         break;
                     case "setPermissions":
                         requestedUserID = userController.getUserID(request.getElementsByTagName("username").item(0).getTextContent());
-                        if (userController.checkPermission(userID, "edit_users") && requestedUserID != userID) {
+                        //if (userController.checkPermission(userID, "edit_users") && requestedUserID != userID) {
                             username = request.getElementsByTagName("username").item(0).getTextContent();
                             String[] permissions =
                                     request.getElementsByTagName("permissions").item(0).getTextContent().split(",");
                             response = userController.setPermissions(username, permissions);
-                        }
+                       // }
                         break;
                     case "setPassword":
                         if (userController.checkPermission(userID, "edit_users") || requestedUserID == userID) {
