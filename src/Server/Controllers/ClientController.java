@@ -115,6 +115,7 @@ public class ClientController implements Runnable {
             int userID = -1;
             String username = "";
             String password = "";
+            String name = "";
             int requestedUserID = -1;
             String token = "";
             int startTime = -1;

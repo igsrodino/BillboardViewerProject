@@ -5,6 +5,8 @@ import Server.Utilities.Database;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -96,12 +98,27 @@ public class UserModel {
      * @param password  the password hash to store in the database
      * @return  true if the update was a success, or false if it was not
      */
-    public boolean setUserPassword(String Username, String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException {
+    public boolean setUserPassword(String Username, String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
+
+        String Usernamecheck = "";
+        ResultSet rs = this.dbConn.runSelectQuery("SELECT username FROM cab302.users where users.username ='" +Username+"'");
+        while ( rs.next() ) {
+             Usernamecheck = rs.getString("username");
+            System.out.println(Usernamecheck);
+        }
 
 
-            this.dbConn.runUpdateQuery("update users set users.password = '"+password+ "' where users.username = '" + Username +"'");
-            this.dbConn.runUpdateQuery("update users set users.salt = '"+salt+ "' where users.username = '" + Username +"'");
-            return(true);
+        if(Username.equals(Usernamecheck)) {
+            this.dbConn.runUpdateQuery("update users set users.password = '" + password + "' where users.username = '" + Username + "'");
+            this.dbConn.runUpdateQuery("update users set users.salt = '" + salt + "' where users.username = '" + Username + "'");
+            return (true);
+
+        }
+        else
+            {
+                return (false);
+
+            }
 
 
 
@@ -122,17 +139,14 @@ public class UserModel {
     public boolean createuser(String username , String Name , String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException {
 
 
-        try {
 
-            int updatednumber = this.dbConn.runUpdateQuery("INSERT INTO users (username, password, name, salt) VALUES" + (username + "," + password + "," + Name + "," + salt));
-            return updatednumber > 0;
+           this.dbConn.runUpdateQuery("INSERT INTO users (username, password, name, salt) VALUES" + (username + "," + password + "," + Name + "," + salt));
+            return(true);
 
 
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return(false);
 
-        }
+
+
 
 
     }

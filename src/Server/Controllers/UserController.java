@@ -3,9 +3,11 @@ package Server.Controllers;
 import Server.Models.UserModel;
 import Server.Utilities.UserAuthentication;
 
+import javax.swing.*;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.SQLException;
 
 import static Server.Utilities.UserAuthentication.getSalt;
 
@@ -60,6 +62,10 @@ public class UserController {
      * @return  a Response string
      */
     public String createUser(String username, String password){
+       //this.model.createuser()
+
+
+
 
         return "Response";
     }
@@ -120,11 +126,26 @@ public class UserController {
      * @param password  the password hash from the client
      * @return  a Response object
      */
-    public String setUserPassword(String username, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException {
+    public String setUserPassword(String username, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
         String salt = UserAuthentication.getSalt();
         String hashedpass = UserAuthentication.generateHash(password,salt);
-        this.model.setUserPassword("detty0",hashedpass,salt );
-        return "JIM";
+       // System.out.println(username);
+        if(this.model.setUserPassword(username,hashedpass,salt ))
+        { return("<response>\n" +
+                "    <type>success</type>\n" +
+                "    <data></data>\n" +
+                "</response>");
+
+        }
+        else
+            {return ("<response>\n" +
+                    "    <type>fail</type>\n" +
+                    "    <data></data>\n" +
+                    "</response>");
+
+            }
+
+
     }
 
     /**
