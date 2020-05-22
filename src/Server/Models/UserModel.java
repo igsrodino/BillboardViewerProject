@@ -140,6 +140,7 @@ public class UserModel {
 
 
 
+
            this.dbConn.runUpdateQuery("INSERT INTO users (username, password, name, salt) VALUES" + (username + "," + password + "," + Name + "," + salt));
             return(true);
 
