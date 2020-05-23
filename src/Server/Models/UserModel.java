@@ -92,7 +92,7 @@ public class UserModel {
         ResultSet rs = this.dbConn.runSelectQuery("SELECT username FROM cab302.users where users.username ='" +username+"'");
         while ( rs.next() ) {
             Usernamecheck = rs.getString("username");
-            System.out.println(Usernamecheck);
+           // System.out.println(Usernamecheck);
         }
         if(username.equals(Usernamecheck)) {
 
@@ -138,17 +138,17 @@ public class UserModel {
      *
      * @param username the username of the new user
      * @param password unshased new password
-     * @param Name name of new user
+     * @param name name of new user
      * @return if sucsessfull returns 1
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      * @throws UnsupportedEncodingException
      */
-    public boolean createuser(String username , String Name , String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
+    public boolean createuser(String username , String name , String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
 
 
         if(!getUser(username)) {
-            this.dbConn.runUpdateQuery("INSERT INTO users (username, password, name, salt) VALUES" + (username + "," + password + "," + Name + "," + salt));
+            this.dbConn.runUpdateQuery("INSERT INTO users (username, password, name, salt) VALUES("+"'"+username+"',"+"'"+password+"',"+"'"+name+"','"+salt+"')");
             return (true);
 
         }

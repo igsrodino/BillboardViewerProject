@@ -180,10 +180,12 @@ public class ClientController implements Runnable {
                         }
                         break;
                     case "createUser":
-                        if (userController.checkPermission(userID, "edit_users")) {
+                        //(userController.checkPermission(userID, "edit_users"))
+                         {
                             username = request.getElementsByTagName("username").item(0).getTextContent();
                             password = request.getElementsByTagName("password").item(0).getTextContent();
-                            response = userController.createUser(username, password);
+                            name = request.getElementsByTagName("name").item(0).getTextContent();
+                            response = userController.createUser(username, password, name);
                         }
                         break;
                     case "deleteUser":

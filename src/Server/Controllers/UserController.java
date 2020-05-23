@@ -61,13 +61,32 @@ public class UserController {
      * @param password  the password hash from the client
      * @return  a Response string
      */
-    public String createUser(String username, String password){
-       //this.model.createuser()
+    public String createUser(String username, String password, String Name) throws NoSuchAlgorithmException, InvalidKeySpecException, SQLException, UnsupportedEncodingException {
+        String salt = UserAuthentication.getSalt();
+        String hashedpass = UserAuthentication.generateHash(password,salt);
+
+
+      if(this.model.createuser(username, Name, hashedpass, salt))
+      {
+          return "<response>\n" +
+                  "    <type>success</type>\n" +
+                  "    <data></data>\n" +
+                  "</response>";
+
+      }
+      else
+          {
+              return "<response>\n" +
+                      "    <type>fail</type>\n" +
+                      "    <data></data>\n" +
+                      "</response>";
+
+          }
 
 
 
 
-        return "Response";
+
     }
 
     /**
