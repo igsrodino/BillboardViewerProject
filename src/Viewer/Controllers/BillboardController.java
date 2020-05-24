@@ -23,7 +23,8 @@ public class BillboardController{
        }catch(IOException e){
            String errorBoard = "<billboard background=\"#0000FF\">\n" +
                    "    <message colour=\"#FFFF00\">Network Error</message>\n" +
-                   "    <information colour=\"#00FFFF\">Server responded with: " + e.getMessage() + "</information>"+
+                   "    <information colour=\"#00FFFF\">Error message: " + e.getMessage() +
+                   "</information>"+
                    "</billboard>";
            bb = model.getBillboard(errorBoard);
            System.err.println(e.getMessage());
