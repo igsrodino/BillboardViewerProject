@@ -180,7 +180,7 @@ public class ClientController implements Runnable {
                         }
                         break;
                     case "createUser":
-                        //(userController.checkPermission(userID, "edit_users"))
+                        //if(userController.checkPermission(userID, "edit_users"))
                          {
                             username = request.getElementsByTagName("username").item(0).getTextContent();
                             password = request.getElementsByTagName("password").item(0).getTextContent();
@@ -189,10 +189,10 @@ public class ClientController implements Runnable {
                         }
                         break;
                     case "deleteUser":
-                        if (userController.checkPermission(userID, "edit_users")) {
+                        //if (userController.checkPermission(userID, "edit_users")) {
                             username = request.getElementsByTagName("username").item(0).getTextContent();
                             response = userController.deleteUser(username);
-                        }
+                       // }
                         break;
                     case "getPermissions":
                         requestedUserID = userController.getUserID(request.getElementsByTagName("username").item(0).getTextContent());

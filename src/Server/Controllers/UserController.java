@@ -95,8 +95,30 @@ public class UserController {
      * @param username the username of the user to delete
      * @return  a Response string
      */
-    public String deleteUser(String username){
-        return "Response";
+    public String deleteUser(String username) throws SQLException {
+
+
+       if(this.model.deleteUser(username))
+       {
+           return "<response>\n" +
+                   "    <type>success</type>\n" +
+                   "    <data></data>\n" +
+                   "</response>";
+
+       }
+       else
+           {
+               return "<response>\n" +
+                       "    <type>fail</type>\n" +
+                       "    <data></data>\n" +
+                       "</response>";
+
+           }
+
+
+
+
+
     }
 
     /**

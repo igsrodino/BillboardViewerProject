@@ -44,7 +44,15 @@ public class UserModel {
      * Gets the password hash
      * @return password hash
      */
-    public String getPassword(){
+    public String getPassword(String username) throws SQLException {
+        String password = "";
+        ResultSet rs = this.dbConn.runSelectQuery("SELECT password FROM cab302.users where users.username ='" +username+"'");
+        while ( rs.next() ) {
+            password = rs.getString("password");
+            System.out.println(password);
+        }
+
+
         return this.password;
     }
 
@@ -52,7 +60,14 @@ public class UserModel {
      * Gets the salt
      * @return the salt
      */
-    public String getSalt(){
+    public String getSalt(String username) throws SQLException {
+
+        String salt = "";
+        ResultSet rs = this.dbConn.runSelectQuery("SELECT salt FROM cab302.users where users.username ='" +username+"'");
+        while ( rs.next() ) {
+            salt = rs.getString("salt");
+            System.out.println(salt);
+        }
         return this.salt;
     }
 
@@ -76,8 +91,21 @@ public class UserModel {
      * @param userID  the userID of the user record to retrieve
      * @return  true if the record was loaded successfully, or false if it wasn't found
      */
-    public boolean getUser(int userID){
-        return false;
+    public boolean getUser(int userID) throws SQLException {
+        int useridcheck = -1;
+        ResultSet rs = this.dbConn.runSelectQuery("SELECT username FROM cab302.users where users.username ='" +userID+"'");
+        while ( rs.next() ) {
+            useridcheck = rs.getInt("username");
+            // System.out.println(useridcheck);
+        }
+        if(userID == useridcheck) {
+
+            return(true);
+        }
+        else
+        {
+            return(false);
+        }
     }
 
     /**
@@ -161,6 +189,32 @@ public class UserModel {
 
 
     }
+
+    /**
+     *
+     * @param Username
+     * @return if successful
+     */
+    public boolean deleteUser(String Username) throws SQLException {
+
+
+
+        if(getUser(Username)) {
+            this.dbConn.runUpdateQuery("DELETE FROM users WHERE username = '"+Username+"'");
+            return (true);
+
+        }
+        else
+        {
+            return (false);
+
+        }
+
+    }
+
+
+
+
 
 
     /**
