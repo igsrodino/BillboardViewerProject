@@ -20,37 +20,35 @@ public class BillboardController{
     public void updateViewer() {
        try{
            bb = model.getBillboard();
-
-           if (bb.getMessage().length() > 0) {
-               view.setMessage(bb.getMessage());
-           }
-           if (bb.getMessageColour().length() > 0) {
-               view.setMessageColour(bb.getMessageColour());
-           }
-           if (bb.getInformation().length() > 0) {
-               view.setInformation(bb.getInformation());
-           }
-           if (bb.getInformationColour().length() > 0) {
-               view.setInformationColour(bb.getInformationColour());
-           }
-           if (bb.getBackgroundColour().length() > 0) {
-               view.setBackgroundColour(bb.getBackgroundColour());
-           }
-           if (bb.getPictureURL().length() > 0) {
-               view.setUrl(bb.getPictureURL());
-           }
-           else if (bb.getPictureData().length() > 0) {
-               view.setData(bb.getPictureData());
-           }
        }catch(IOException e){
+           String errorBoard = "<billboard background=\"#0000FF\">\n" +
+                   "    <message colour=\"#FFFF00\">Network Error</message>\n" +
+                   "    <information colour=\"#00FFFF\">Server responded with: " + e.getMessage() + "</information>"+
+                   "</billboard>";
+           bb = model.getBillboard(errorBoard);
            System.err.println(e.getMessage());
            System.err.println(e.getStackTrace());
        }
-
-
-        // TODO: Create a while loop that calls model.getBillboard() every 15 seconds. Assign the
-        //  return value to this.bb
-        // TODO: Call BillboardPOJO getters on bb, and update the view with the returned data.
-        //  Call view methods to do this.
+        if (bb.getMessage().length() > 0) {
+            view.setMessage(bb.getMessage());
+        }
+        if (bb.getMessageColour().length() > 0) {
+            view.setMessageColour(bb.getMessageColour());
+        }
+        if (bb.getInformation().length() > 0) {
+            view.setInformation(bb.getInformation());
+        }
+        if (bb.getInformationColour().length() > 0) {
+            view.setInformationColour(bb.getInformationColour());
+        }
+        if (bb.getBackgroundColour().length() > 0) {
+            view.setBackgroundColour(bb.getBackgroundColour());
+        }
+        if (bb.getPictureURL().length() > 0) {
+            view.setUrl(bb.getPictureURL());
+        }
+        else if (bb.getPictureData().length() > 0) {
+            view.setData(bb.getPictureData());
+        }
     }
 }

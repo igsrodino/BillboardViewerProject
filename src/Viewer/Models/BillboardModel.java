@@ -51,9 +51,7 @@ public class BillboardModel {
             e1.printStackTrace();
         }
     }
-
     public void getInfo(NodeList node) {
-//        BillboardPOJO billboardInfo = new BillboardPOJO();
         NodeList childNodes = node.item(0).getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node nodeItem = childNodes.item(i);
@@ -87,7 +85,16 @@ public class BillboardModel {
             }
         }
     }
+    public BillboardPOJO getBillboard(String errorBoard) {
+        try{
+            this.parseXML(errorBoard);
 
+        }catch(IOException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+        return this.info;
+    }
     public BillboardPOJO getBillboard() throws IOException {
 
         this.parseXML(this.requestBillboard());
