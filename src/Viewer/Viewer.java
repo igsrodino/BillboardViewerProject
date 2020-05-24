@@ -19,7 +19,7 @@ public class Viewer {
                 @Override
                 public void run() {
                     controller.updateViewer();
-                }}, 0, 2000);
+                }}, 0, 15000);
         }
         catch (Exception e)
         {
