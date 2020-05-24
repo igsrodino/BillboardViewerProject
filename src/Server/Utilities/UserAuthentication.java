@@ -63,7 +63,10 @@ public class UserAuthentication {
      * @return  an access token
      */
     public static String generateSessionToken(String userName){
-        return "FakeToken";
+        String token = UUID.randomUUID().toString().toUpperCase()
+                + "|" + userName + "|";
+
+        return String.valueOf((token));
     }
 
 

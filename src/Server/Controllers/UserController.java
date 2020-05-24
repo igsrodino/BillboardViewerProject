@@ -31,9 +31,38 @@ public class UserController {
      * @param password  the password hash from the client
      * @return  a Response string with the session token in the data element
      */
-    public String login(String username, String password){
-        // Uses the UserAuthentication class to generate a session token
-        return "Response";
+    public String login(String username, String password) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        String hashedpass = this.model.getPassword(username);
+       String salt = this.model.getSalt(username);
+       String hashedpass2 = UserAuthentication.generateHash(password, salt);
+
+       if(UserAuthentication.compareHashes(hashedpass,hashedpass2))
+       {
+           return ("<response>\n" +
+                   "    <type>success</type>\n" +
+                   "    <data>\n" +
+                   "        " +
+                   "    </data>\n" +
+                   "</response>");
+
+       }
+       else
+           {
+              return  ("<response>\n" +
+                      "    <type>fail</type>\n" +
+                      "    <data></data>\n" +
+                      "</response>");
+
+           }
+
+
+
+
+
+
+
+
+
     }
 
     /**
@@ -126,6 +155,7 @@ public class UserController {
      * @return  a Response string
      */
     public String listUsers(){
+
         return "Response";
     }
 

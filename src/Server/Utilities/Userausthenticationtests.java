@@ -66,8 +66,13 @@ public class Userausthenticationtests {
         System.out.println(hassedpass2);
         assertFalse(UserAuthentication.compareHashes(hassedpass1,hassedpass2));
 
+    }
 
-
+    @Test
+    public void testsessiontoken()
+    {
+        String  token = UserAuthentication.generateSessionToken("dddd");
+        System.out.println(token);
     }
 
 }

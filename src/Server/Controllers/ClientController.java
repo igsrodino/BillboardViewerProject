@@ -168,10 +168,8 @@ public class ClientController implements Runnable {
                         //}
                         break;
                     case "login":
-                        username =
-                                request.getElementsByTagName("username").item(0).getTextContent();
-                        password =
-                                request.getElementsByTagName("password").item(0).getTextContent();
+                        username = request.getElementsByTagName("username").item(0).getTextContent();
+                        password = request.getElementsByTagName("password").item(0).getTextContent();
                         response = userController.login(username, password);
                         break;
                     case "listUsers":

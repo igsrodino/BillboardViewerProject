@@ -53,7 +53,7 @@ public class UserModel {
         }
 
 
-        return this.password;
+        return(password);
     }
 
     /**
@@ -68,7 +68,7 @@ public class UserModel {
             salt = rs.getString("salt");
             System.out.println(salt);
         }
-        return this.salt;
+        return(salt);
     }
 
     /**
