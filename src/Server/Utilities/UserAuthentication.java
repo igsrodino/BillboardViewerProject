@@ -64,7 +64,7 @@ public class UserAuthentication {
      */
     public static String generateSessionToken(String userName){
         String token = UUID.randomUUID().toString().toUpperCase()
-                + "|" + userName + "|";
+                + "<" + userName + ">";
 
         return String.valueOf((token));
     }
