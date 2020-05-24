@@ -1,7 +1,6 @@
 package Server.Models;
 
 import Server.Utilities.Database;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -11,35 +10,39 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
-* Allows access to scheduling data.
-* */
+ * Allows access to scheduling data.
+ */
 public class ScheduleModel {
     private Database dbConn;
 
     /**
-     *  Constructs the Schedule object
-     * @param dbConnection allows access to the database via the connection established at server start*/
-    public ScheduleModel(Database dbConnection){
+     * Constructs the Schedule object
+     *
+     * @param dbConnection allows access to the database via the connection established at server start
+     */
+    public ScheduleModel(Database dbConnection) {
         this.dbConn = dbConnection;
     }
     // time needs to have 00 added onto it for it to insert correctly (accounts for seconds)
 
     /**
      * Gets the schedule for a billboard.
-     * @param billboardID  the billboard to retrieve the schedule for
-     * @return  a Document xml object containing the schedule details. The schedule details are
+     *
+     * @param billboardID the billboard to retrieve the schedule for
+     * @return a Document xml object containing the schedule details. The schedule details are
      * enclosed in a data root element. There may be more than one schedule item in the
      * Document (ie the billboard shows at 900 and 1500 daily for 30 minutes.
      */
-    public Document getBillboardSchedule(int billboardID){
+    public Document getBillboardSchedule(int billboardID) {
         return null;
     }
 
     /**
      * Gets the schedule data for every billboard in the system.
-     * @return  a Document xml object containing the schedules inside a root data element
+     *
+     * @return a Document xml object containing the schedules inside a root data element
      */
-    public Document getSchedule(){
+    public Document getSchedule() {
         ResultSet rs =
                 this.dbConn.runSelectQuery("select * from schedule");
         try {
@@ -79,7 +82,7 @@ public class ScheduleModel {
                     bb.appendChild(doc.createTextNode(Integer.toString(rs.getInt("billboard"))));
                     schedule.appendChild(bb);
                 }
-                if (rs.getInt("weekday") != 0){
+                if (rs.getInt("weekday") != 0) {
                     Element weekday = doc.createElement("weekday");
                     weekday.appendChild(doc.createTextNode(Integer.toString(rs.getInt("weekday"))));
                     schedule.appendChild(weekday);
@@ -97,26 +100,35 @@ public class ScheduleModel {
 
     /**
      * Removes a schedule for a specific billboard
-     * @param billboardID  the billboard to remove the schedule for
-     * @param startTime  the start time of the schedule to be removed
-     * @return  an int containing the number of affected rows. Generally going to be 1 or 0.
+     *
+     * @param billboardID the billboard to remove the schedule for
+     * @param startTime   the start time of the schedule to be removed
+     * @return an int containing the number of affected rows. Generally going to be 1 or 0.
      */
-    public int removeSchedule(int billboardID, int startTime){
-        return 0;
+    public void removeSchedule(int billboardID, int startTime) {
+        this.dbConn.runUpdateQuery("delete from schedule where billboard = " + billboardID + " and " +
+                "start_time = " + startTime);
     }
 
     /**
      * Sets a schedule for the specified billboard
-     * @param billboardID  the billboard to schedule
-     * @param startTime  the start time in 24 hour format (1500 or 900 for 3pm and 9 am respectively)
-     * @param duration  the duration to show it in minutes
-     * @param recurs  the number of minutes to wait before reshowing the billboard. Set to 0 to display once, 60 for
-     *                every hour, and 1440 for every day.
+     *
+     * @param billboardID the billboard to schedule
+     * @param startTime   the start time in 24 hour format (1500 or 900 for 3pm and 9 am respectively)
+     * @param duration    the duration to show it in minutes
+     * @param recurs      the number of minutes to wait before reshowing the billboard. Set to 0 to display once, 60 for
+     *                    every hour, and 1440 for every day.
+     * @param weekday     the weekday to show it on, 1 = sunday, ...,  7 = saturday
      * @return an int containing the number of rows affected by the operation
      */
-    public int setSchedule(int billboardID, int startTime, int duration, int recurs){
+    public boolean setSchedule(int billboardID, int startTime, int endTime, int duration,
+                               int recurs, int weekday) {
         // Needs to a) add 00 to the startTime before inserting (startTime * 100), and b) calculate
         // end_time (startTime + duration)*100
-        return 0;
+
+        int res = dbConn.runUpdateQuery("insert into schedule (start_time, end_time, duration, weekday, recurs, billboard) \n" +
+                "values (" + (startTime * 100) + "," + endTime + "," + duration + "," + weekday +
+                "," + recurs + "," + billboardID + ")\n");
+        return res > 0;
     }
 }
