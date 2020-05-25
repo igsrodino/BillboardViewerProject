@@ -232,18 +232,10 @@ public class BillboardController {
     /**
      * Creates a billboard with the provided information
      *
-     * @param background        a hex value representing the color of the background
-     * @param message           the billboard message
-     * @param message_color     the color of the message text
-     * @param image             the url or base64 data string of the image
-     * @param imageType         the type of image. The two valid options are: 'url' or 'data'
-     * @param information       in depth details about the billboard message
-     * @param information_color the hex code for the information text color
-     * @param owner             the id of the user creating the billboard
      * @return a stringified Document object containing a proper Response object.
      */
     public String createBillboard(Document request) throws ParserConfigurationException {
-        int ID = -1;
+        int id = -1;
         String name = "";
         String background = "";
         String message = "";
@@ -254,10 +246,48 @@ public class BillboardController {
         String information_color= "";
         int owner = -1;
 
-        int resType = this.model.createBillboard(ID, name, background, message, message_color,
+        request.getDocumentElement().normalize();
+        NodeList bbData = request.getElementsByTagName("data").item(0).getChildNodes();
+        for (int i = 0; i < bbData.getLength(); i++) {
+            if(bbData.item(i).getNodeType() == Node.ELEMENT_NODE){
+                Element element = (Element) bbData.item(i);
+                if(element.getTagName() == "id"){
+                    id = Integer.parseInt(element.getTextContent());
+                }
+                if(element.getTagName() == "name"){
+                    name = element.getTextContent();
+                }
+                if(element.getTagName() == "background"){
+                    background = element.getTextContent();
+                }
+                if(element.getTagName() == "message"){
+                    message = element.getTextContent();
+
+                }
+                if(element.getTagName() == "message_color"){
+                    message_color = element.getTextContent();
+                }
+                if(element.getTagName() == "information"){
+                    information = element.getTextContent();
+                }
+                if(element.getTagName() == "information_color"){
+                    information_color = element.getTextContent();
+                }
+                if(element.getTagName() == "image"){
+                    image = element.getTextContent();
+                }
+                if(element.getTagName() == "type"){
+                    imageType = element.getTextContent();
+                }
+                if(element.getTagName() == "owner"){
+                    owner = Integer.parseInt(element.getTextContent());
+                }
+            }
+        }
+        int resType = this.model.createBillboard(id, name, background, message, message_color,
                 image, imageType, information, information_color, owner);
         return "<response>\n" +
-                "    <type>"+(resType == 0)+"</type>\n" +
+                "    <type>"+(resType >= 1)+"</type>\n" +
                 "    <data></data>\n" +
                 "</response>";
 
