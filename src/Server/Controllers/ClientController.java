@@ -160,10 +160,10 @@ public class ClientController implements Runnable {
 
                         break;
                     case "deleteBillboard":
-                       // if (userController.checkPermission(userID, "edit_permission")) {
-                            billboardID =
-                                    Integer.parseInt(request.getElementsByTagName("data").item(0).getTextContent());
-                            response = billboard.deleteBillboard(billboardID);
+                        // if (userController.checkPermission(userID, "edit_permission")) {
+                        billboardID =
+                                Integer.parseInt(request.getElementsByTagName("data").item(0).getTextContent());
+                        response = billboard.deleteBillboard(billboardID);
                         //}
                         break;
                     case "login":
@@ -219,7 +219,7 @@ public class ClientController implements Runnable {
                         break;
                     case "getSchedule":
 //                        if (userController.checkPermission(userID, "schedule_billboards")) {
-                            response = scheduleController.getSchedule();
+                        response = scheduleController.getSchedule();
 //                        }
                         break;
                     case "setSchedule":
@@ -240,12 +240,12 @@ public class ClientController implements Runnable {
                         break;
                     case "deleteSchedule":
 //                        if (userController.checkPermission(userID, "schedule_billboards")) {
-                            billboardID =
-                                    Integer.parseInt(request.getElementsByTagName("billboard").item(0).getTextContent());
-                            startTime =
-                                    Integer.parseInt(request.getElementsByTagName("startTime").item(0).getTextContent());
-                            response = scheduleController.removeSchedule(billboardID,
-                                    startTime*100);
+                        billboardID =
+                                Integer.parseInt(request.getElementsByTagName("billboard").item(0).getTextContent());
+                        startTime =
+                                Integer.parseInt(request.getElementsByTagName("startTime").item(0).getTextContent());
+                        response = scheduleController.removeSchedule(billboardID,
+                                startTime*100);
 //                        }
                         break;
                     default:
