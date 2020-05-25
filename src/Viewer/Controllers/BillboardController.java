@@ -4,7 +4,10 @@ import Viewer.Models.BillboardModel;
 import Viewer.Models.BillboardPOJO;
 import Viewer.Views.BillboardView;
 
-public class BillboardController {
+import java.io.IOException;
+import java.util.TimerTask;
+
+public class BillboardController{
     private BillboardModel model;
     private BillboardView view;
     private BillboardPOJO bb;
@@ -14,9 +17,19 @@ public class BillboardController {
         this.view = view;
         this.bb = null;
     }
-    public void startViewer() {
-        bb = model.getBillboard();
-
+    public void updateViewer() {
+       try{
+           bb = model.getBillboard();
+       }catch(IOException e){
+           String errorBoard = "<billboard background=\"#0000FF\">\n" +
+                   "    <message colour=\"#FFFF00\">Network Error</message>\n" +
+                   "    <information colour=\"#00FFFF\">Error message: " + e.getMessage() +
+                   "</information>"+
+                   "</billboard>";
+           bb = model.getBillboard(errorBoard);
+           System.err.println(e.getMessage());
+           System.err.println(e.getStackTrace());
+       }
         if (bb.getMessage().length() > 0) {
             view.setMessage(bb.getMessage());
         }
@@ -38,11 +51,5 @@ public class BillboardController {
         else if (bb.getPictureData().length() > 0) {
             view.setData(bb.getPictureData());
         }
-
-
-        // TODO: Create a while loop that calls model.getBillboard() every 15 seconds. Assign the
-        //  return value to this.bb
-        // TODO: Call BillboardPOJO getters on bb, and update the view with the returned data.
-        //  Call view methods to do this.
     }
 }
