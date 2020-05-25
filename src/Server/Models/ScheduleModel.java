@@ -136,7 +136,7 @@ public class ScheduleModel {
     public int getCurrentBillboard(int day, String startTime) {
         ResultSet rs =
                 this.dbConn.runSelectQuery("select billboard from schedule where weekday = " + day +
-                        " and end_time > \""+startTime+"\" order by end_time desc limit 1");
+                        " and end_time > \""+startTime+"\" order by end_time asc limit 1");
         int res = -1;
         try{
             while(rs.next()){
