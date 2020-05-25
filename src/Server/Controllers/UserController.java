@@ -2,6 +2,24 @@ package Server.Controllers;
 
 import Server.Models.UserModel;
 import Server.Utilities.UserAuthentication;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.print.Doc;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Provides access to user operations
  */
@@ -77,14 +95,65 @@ public class UserController {
         return "Response";
     }
 
+    public static String convertDocumentToString(Document doc){
+        // TODO: add error handling
+        String result = "";
+        try {
+            StringWriter sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+            return sw.toString();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+            return result;
+        }
+
+    }
+
     /**
      * Gets the permissions for the given user
      * @param username  the username to retrieve permissions for
      * @return  a Response string
      */
-    public String getUserPermissions(String username){
-        return "Response";
+    public String getUserPermissions(int requestedUserID){
+        String permissionsXMLString= "response";
+        try{
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+            Element resp = doc.createElement("response");
+            Element data = doc.createElement("data");
+            Element type = doc.createElement("type");
+
+            ArrayList<String> permissions = this.model.getPermissions(requestedUserID);
+            System.out.println(permissions);
+            if(permissions != null && permissions.size() > 0){
+                for (String permission : permissions){
+                    data.appendChild(doc.createTextNode(permission+","));
+                }
+                type.appendChild(doc.createTextNode("success"));
+            }
+            else
+            {
+                type.appendChild(doc.createTextNode("failure"));
+            }
+            doc.appendChild(resp);
+            resp.appendChild(data);
+            resp.appendChild(type);
+            permissionsXMLString = convertDocumentToString(doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return permissionsXMLString;
     }
+
 
     /**
      * Checks to see if the given user has a specific permission
@@ -105,8 +174,65 @@ public class UserController {
      * @param permissions  a list of permissions to set
      * @return  a Response string
      */
-    public String setPermissions(String username, String[] permissions){
-        return "Response";
+    public String setPermissions(int requestedUserID, Document request){
+        //return "Response";
+        String set_permXMLString= "response";
+        String[] permissions =
+                request.getElementsByTagName("permissions").item(0).getTextContent().split(",");
+        List<String> perm_list = Arrays.asList(permissions);
+        boolean create_billboard = false;
+        boolean edit_billboards = false;
+        boolean schedule_billboards = false;
+        boolean edit_users = false;
+        if(perm_list.contains("create_billboards")){
+            create_billboard = true;
+        }
+        if(perm_list.contains("edit_billboards")){
+            edit_billboards = true;
+        }
+        if(perm_list.contains("schedule_billboards")){
+            schedule_billboards = true;
+        }
+        if(perm_list.contains("edit_users")){
+            edit_users = true;
+        }
+
+
+        try{
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+            Element resp = doc.createElement("response");
+            Element data = doc.createElement("data");
+            Element type = doc.createElement("type");
+            boolean result = this.model.setPermissions(requestedUserID,create_billboard,edit_billboards,schedule_billboards,edit_users);
+            if(result){
+                type.appendChild(doc.createTextNode("success"));
+            }
+            else{
+                type.appendChild(doc.createTextNode("failure"));
+            }
+           // ArrayList<String> permissions = this.model.getPermissions(requestedUserID);
+//            System.out.println(permissions);
+//            if(permissions != null && permissions.size() > 0){
+//                for (String permission : permissions){
+//                    data.appendChild(doc.createTextNode(permission+","));
+//                }
+//                type.appendChild(doc.createTextNode("success"));
+//            }
+//            else
+//            {
+//                type.appendChild(doc.createTextNode("failure"));
+//            }
+            doc.appendChild(resp);
+            resp.appendChild(data);
+            resp.appendChild(type);
+            set_permXMLString = convertDocumentToString(doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return set_permXMLString;
     }
 
     /**
