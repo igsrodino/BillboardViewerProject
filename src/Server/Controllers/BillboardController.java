@@ -34,7 +34,12 @@ public class BillboardController {
      * @return string containing the full XML response
      */
     public String getBillboard(int billboardID){
-
+        if(billboardID == -1){
+            return "<response>\n" +
+                    "    <type>billboard-not-found</type>\n" +
+                    "    <data></data>\n" +
+                    "</response>";
+        }
         boolean status = this.model.getBillboard(billboardID);
         if(!status){
             return "<response>\n" +
