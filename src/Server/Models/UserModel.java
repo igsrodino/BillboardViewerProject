@@ -2,6 +2,8 @@ package Server.Models;
 
 import Server.Utilities.Database;
 
+import java.sql.*;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class UserModel {
         this.password = "";
         this.salt = "";
         this.userID = -1;
-        this.permissions = null;
+        this.permissions = new ArrayList<String>();
     }
 
     /**
@@ -85,6 +87,22 @@ public class UserModel {
      * @return  the user id or -1 if it wasn't found
      */
     public int getUserID(String username){
+        //return this.userID;
+        //Statement stmt = dbConn.createStatement();
+        //ResultSet rs = this.dbConn.runSelectQuery("select * from users where id =" +"'"+username+"'");
+        ResultSet rs = this.dbConn.runSelectQuery("select * from users where username =\""+username+"\"");
+        //String q1 = "select * from users where username =";
+        //String q2 =
+        //ResultSet rs = this.dbConn.runSelectQuery(q1.concat(username));
+
+        try{
+            while(rs.next()){
+                this.userID = rs.getInt("id");
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        System.out.println(this.userID);
 
         ResultSet rs = this.dbConn.runSelectQuery("select * from users where username =\""+username+"\"");
 
@@ -101,10 +119,37 @@ public class UserModel {
     /**
      * Gets the permissions
      * @return list of permissions
+     * @param userID
      */
     public ArrayList<String> getPermissions(int userID) throws SQLException {
         //return this.permissions;
         //String name = getUsername(UserID)
+       // int UserId =
+        ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= "+userID);
+       // ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= 47");
+        //System.out.print(rs.getFetchSize());
+        try{
+            while(rs.next()){
+                //System.out.println(rs.getInt("create_billboards"));
+                if(rs.getBoolean("create_billboards")){
+                    this.permissions.add("create_billboards");
+                }
+                if(rs.getBoolean("edit_billboards")){
+                    this.permissions.add("edit_billboards");
+                }
+                if(rs.getBoolean("schedule_billboards")){
+                    this.permissions.add("schedule_billboards");
+                }
+                if(rs.getBoolean("edit_users")){
+                    this.permissions.add("edit_users");
+                }
+                //this.permissions.add(rs.getString("permission"));
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        //this.permissions.add("edit_billboards");
+        return permissions;
         // int UserId =
         ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= "+userID);
         // ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= 47");

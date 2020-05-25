@@ -155,18 +155,16 @@ public class ClientController implements Runnable {
                         break;
                     case "createBillboard":
                         //if (userController.checkPermission(userID, "edit_permission")) {
-                                           response = billboard.createBillboard(102, "Federer", "#0000FF", "Babolat AeroPro","#FFFF00"," ", "url",
-                                                   "Wilson RF97","#00FFFF", 6);
-                           //String background, String message, String message_color, String image,
-                            //                                   String imageType, String information, String information_color, int owner
+                                           response = billboard.createBillboard(request);
+
                        // }
 
                         break;
                     case "deleteBillboard":
-                       // if (userController.checkPermission(userID, "edit_permission")) {
-                            billboardID =
-                                    Integer.parseInt(request.getElementsByTagName("data").item(0).getTextContent());
-                            response = billboard.deleteBillboard(billboardID);
+                        // if (userController.checkPermission(userID, "edit_permission")) {
+                        billboardID =
+                                Integer.parseInt(request.getElementsByTagName("data").item(0).getTextContent());
+                        response = billboard.deleteBillboard(billboardID);
                         //}
                         break;
                     case "login":
@@ -196,9 +194,12 @@ public class ClientController implements Runnable {
                         break;
                     case "getPermissions":
                         requestedUserID = userController.getUserID(request.getElementsByTagName("username").item(0).getTextContent());
+
+                        //requestedUserID = userController.getUserID()
                         //if (userController.checkPermission(userID, "edit_users") || requestedUserID == userID) {
                             username = request.getElementsByTagName("username").item(0).getTextContent();
-                            response = userController.getUserPermissions(requestedUserID);
+                            //response = userController.getUserPermissions(username,requestedUserID);
+                        response = userController.getUserPermissions(requestedUserID);
                         //}
                         break;
                     case "setPermissions":
@@ -221,7 +222,7 @@ public class ClientController implements Runnable {
                         break;
                     case "getSchedule":
 //                        if (userController.checkPermission(userID, "schedule_billboards")) {
-                            response = scheduleController.getSchedule();
+                        response = scheduleController.getSchedule();
 //                        }
                         break;
                     case "setSchedule":
@@ -242,12 +243,12 @@ public class ClientController implements Runnable {
                         break;
                     case "deleteSchedule":
 //                        if (userController.checkPermission(userID, "schedule_billboards")) {
-                            billboardID =
-                                    Integer.parseInt(request.getElementsByTagName("billboard").item(0).getTextContent());
-                            startTime =
-                                    Integer.parseInt(request.getElementsByTagName("startTime").item(0).getTextContent());
-                            response = scheduleController.removeSchedule(billboardID,
-                                    startTime*100);
+                        billboardID =
+                                Integer.parseInt(request.getElementsByTagName("billboard").item(0).getTextContent());
+                        startTime =
+                                Integer.parseInt(request.getElementsByTagName("startTime").item(0).getTextContent());
+                        response = scheduleController.removeSchedule(billboardID,
+                                startTime*100);
 //                        }
                         break;
                     default:

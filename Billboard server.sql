@@ -31,8 +31,8 @@ CREATE TABLE `schedule` (
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
   `duration` int NOT NULL,
-  `weekday` int NOT NULL,
-  `recurs` int DEFAULT 0,
+  `day` int NOT NULL,
+  `recurs` int,
   `billboard` int NOT NULL
 );
 

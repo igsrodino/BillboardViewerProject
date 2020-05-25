@@ -4,6 +4,20 @@ import Server.Models.UserModel;
 import Server.Utilities.UserAuthentication;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
+import java.util.ArrayList;
+
 
 import javax.print.Doc;
 import javax.xml.parsers.DocumentBuilder;
@@ -30,6 +44,7 @@ public class UserController {
      * Constructor
      * @param model  the UserModel object to use for data access
      */
+
     public UserController(UserModel model){
         this.model = model;
     }
@@ -119,6 +134,7 @@ public class UserController {
     /**
      * Gets the permissions for the given user
      * @param username  the username to retrieve permissions for
+     * @param requestedUserID
      * @return  a Response string
      */
     public String getUserPermissions(int requestedUserID){
@@ -253,5 +269,7 @@ public class UserController {
     public int getUserID(String username) {
         //return -1;
         return this.model.getUserID(username);
+
+
     }
 }
