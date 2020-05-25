@@ -2,13 +2,16 @@ package Server.Controllers;
 import java.io.StringWriter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.*;
 import Server.Models.BillboardModel;
+
 //import Server.Models.ClientController;
+
 
 /**
  * Provides access to billboards
@@ -120,7 +123,11 @@ public class BillboardController {
             }
 
             //Transform document to XML string
+<<<<<<< HEAD
+            billboardXMLStringValue = this.convertDocumentToString(doc);
+=======
             billboardXMLStringValue = convertDocumentToString(doc);
+>>>>>>> master
 
         }catch(Exception e){
             System.out.println("Something went wrong.");}
@@ -130,7 +137,11 @@ public class BillboardController {
 
 
 
+<<<<<<< HEAD
+    private String convertDocumentToString(Document doc){
+=======
     public static String convertDocumentToString(Document doc){
+>>>>>>> master
             // TODO: add error handling
         String result = "";
         try {
@@ -178,7 +189,11 @@ public class BillboardController {
             doc.appendChild(resp);
             resp.appendChild(data);
             resp.appendChild(type);
+<<<<<<< HEAD
+             list_xml = this.convertDocumentToString(doc);
+=======
              list_xml = convertDocumentToString(doc);
+>>>>>>> master
         }catch(Exception e){
             e.printStackTrace();
 
@@ -191,6 +206,11 @@ public class BillboardController {
      * @param billboardID  the id of the billboard to be deleted
      * @return string containing a response object that has an empty data element.
      */
+<<<<<<< HEAD
+    public String deleteBillboard(int billboardID){
+//         Use the model.deleteBillboard() method
+        return null;
+=======
     public String deleteBillboard(int billboardID) {
 //      Use the model.deleteBillboard() method
         this.model.deleteBillboard(billboardID);
@@ -224,6 +244,7 @@ public class BillboardController {
                 e.printStackTrace();
             }
         return xmlString;
+>>>>>>> master
     }
 
     /**
@@ -238,9 +259,14 @@ public class BillboardController {
      * @param owner  the id of the user creating the billboard
      * @return a stringified Document object containing a proper Response object.
      */
-    public String createBillboard(String background, String message, String message_color, String image,
-                                String imageType, String information, String information_color, int owner){
-        return "Response";
+    public String createBillboard(String name, String background, String message, String message_color, String image,
+                                String imageType, String information, String information_color, int owner) throws ParserConfigurationException {
+        this.model.createBillboard(name, background, message, message_color, image, imageType,information, information_color, owner);
+        return "<response>\n" +
+                "    <type>success</type>\n" +
+                "    <data></data>\n" +
+                "</response>";
+
     }
 }
 

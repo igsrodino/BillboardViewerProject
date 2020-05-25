@@ -209,14 +209,14 @@ public class BillboardModel {
      * @param owner  the id of the user creating the billboard
      * @return int representing the number of rows inserted
     * */
-    public int createBillboard(String background, String message, String message_color, String image,
+    public int createBillboard(String name, String background, String message, String message_color, String image,
                                    String imageType, String information, String information_color, int owner){
         int result = 0;
         try{
             if(imageType == "url") {
-                result = this.dbConn.runUpdateQuery("insert into billboards (background, message, message_color, url," +
+                result = this.dbConn.runUpdateQuery("insert into billboards (name, background, message, message_color, url," +
                         " information, information_color, owner" + " ) " +
-                        "values ("+background+", "+message+", "+message_color+", "+image+", "+information+", "+information_color+", "+owner+")");
+                        "values ('"+name+"', '"+background+"', '"+message+"', '"+message_color+"', '"+image+"', '"+information+"', '"+information_color+"', "+owner+")");
             } else if(imageType == "data"){
                 result = this.dbConn.runUpdateQuery("insert into billboards (background, message, message_color, " +
                         "data," +
