@@ -172,8 +172,8 @@ public class UserModel {
      * @param permissions  the permissions to set
      * @return true if the operation was a success or false if it failed
      */
-    public boolean setPermissions(int userID, boolean create_billboards, boolean edit_billboards, boolean schedule_billboards,
-                                  boolean edit_users){
+    public boolean setPermissions(int userID, int create_billboards, int edit_billboards, int schedule_billboards,
+                                  int edit_users){
 
         ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user="+userID);
         int result = -1;
@@ -183,7 +183,7 @@ public class UserModel {
             if (rs.getRow()>0){
                 // Run an update query
                 result = dbConn.runUpdateQuery("update permissions set create_billboards="+create_billboards+", edit_billboards="+edit_billboards
-                        +", schedule_billboards="+schedule_billboards+", edit_users="+edit_users);
+                        +", schedule_billboards="+schedule_billboards+", edit_users="+edit_users+" where user = " + userID);
             } else {
                 // run an insert query
                 result=dbConn.runUpdateQuery("insert into permissions(create_billboards,edit_billboards,schedule_billboards,edit_users) values("+

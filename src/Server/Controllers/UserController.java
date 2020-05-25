@@ -180,21 +180,21 @@ public class UserController {
         String[] permissions =
                 request.getElementsByTagName("permissions").item(0).getTextContent().split(",");
         List<String> perm_list = Arrays.asList(permissions);
-        boolean create_billboard = false;
-        boolean edit_billboards = false;
-        boolean schedule_billboards = false;
-        boolean edit_users = false;
+        int create_billboard = 0;
+        int edit_billboards = 0;
+        int schedule_billboards = 0;
+        int edit_users = 0;
         if(perm_list.contains("create_billboards")){
-            create_billboard = true;
+            create_billboard = 1;
         }
         if(perm_list.contains("edit_billboards")){
-            edit_billboards = true;
+            edit_billboards = 1;
         }
         if(perm_list.contains("schedule_billboards")){
-            schedule_billboards = true;
+            schedule_billboards = 1;
         }
         if(perm_list.contains("edit_users")){
-            edit_users = true;
+            edit_users = 1;
         }
 
 
