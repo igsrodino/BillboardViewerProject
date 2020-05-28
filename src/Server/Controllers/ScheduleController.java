@@ -8,6 +8,8 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 
 /**
  * Provides access to scheduling for billboards
@@ -81,12 +83,34 @@ public class ScheduleController {
      * @param duration    the duration to show it in minutes
      * @param recurs      the number of minutes to wait before reshowing the billboard. Set to 0 to display once, 60 for
      *                    every hour, and 1440 for every day.
+     * @param weekday
      * @return a Response string
      */
-    public String setBillboardSchedule(int billboardID, int startTime, int duration, int recurs) {
+    public String setBillboardSchedule(int billboardID, int startTime, int duration, int recurs,
+                                       int weekday) {
         // End time is start time + duration
         // StartTime is in 24 hour time to make the math easier.
-        return "Response";
+        if(startTime>2400){
+            return "<response>\n" +
+                    "\t<type>error</type>\n" +
+                    "\t<data>Start time cannot be greater than 2400</data>\n"+
+                    "</response>";
+        }
+        weekday = weekday%7;
+        if (weekday <=0){
+            weekday = 1;
+        }
+
+        Calendar cal =
+                new Calendar.Builder().setTimeOfDay((startTime/100), (startTime%100), 0 ).build();
+        cal.add(Calendar.MINUTE, duration);
+        int endTime = ((cal.get(Calendar.HOUR_OF_DAY)*100)+cal.get(Calendar.MINUTE))*100;
+        boolean result =  this.model.setSchedule(billboardID,startTime,endTime, duration, recurs,
+                weekday);
+
+        return "<response>\n" +
+                "\t<type>"+result+"</type>\n" +
+                "</response>";
     }
 
     /**

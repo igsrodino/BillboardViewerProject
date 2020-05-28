@@ -32,13 +32,16 @@ CREATE TABLE `schedule` (
   `end_time` time NOT NULL,
   `duration` int NOT NULL,
   `weekday` int NOT NULL,
-  `recurs` int DEFAULT 0,
+  `recurs` int,
   `billboard` int NOT NULL
 );
 
 CREATE TABLE `permissions` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `permission` ENUM ('create_billboards', 'edit_billboards', 'schedule_billboards', 'edit_users') NOT NULL,
+  `create_billboards` boolean DEFAULT false,
+  `edit_billboards` boolean DEFAULT false,
+  `schedule_billboards` boolean DEFAULT false,
+  `edit_users` boolean DEFAULT false,
   `user` int
 );
 
