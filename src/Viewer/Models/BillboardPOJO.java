@@ -8,29 +8,15 @@ public class BillboardPOJO {
     private String informationColour;
     private String information;
     private String pictureData;
-    private int owner;
-    private String creator;
-    private String name;
 
-public BillboardPOJO(){
-    this.backgroundColour = "";
-    this.messageColour = "";
-    this.message = "";
-    this.pictureURL = "";
-    this.pictureData = "";
-    this.informationColour = "";
-    this.information = "";
-    this.creator = "";
-    this.owner = -1;
-    this.name = "";
-}
-
-    public void setOwner(int owner) {
-        this.owner = owner;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public BillboardPOJO(){
+        this.backgroundColour = "";
+        this.messageColour = "";
+        this.message = "";
+        this.pictureURL = "";
+        this.pictureData = "";
+        this.informationColour = "";
+        this.information = "";
     }
 
     public String getBackgroundColour() {
@@ -54,7 +40,7 @@ public BillboardPOJO(){
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.message = ("<html><center>" + message + "</center></html>");
     }
 
     public String getPictureURL() {
@@ -78,7 +64,7 @@ public BillboardPOJO(){
     }
 
     public void setInformation(String information) {
-        this.information = information;
+        this.information = ("<html><center>" + information + "</center></html>");
     }
 
     public String getPictureData() {
@@ -87,13 +73,5 @@ public BillboardPOJO(){
 
     public void setPictureData(String pictureData) {
         this.pictureData = pictureData;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

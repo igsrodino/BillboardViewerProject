@@ -160,10 +160,10 @@ public class BillboardView {
         }
     }
     public void setMessage(String message) {
-        welcomeLabel.setText(("<html><center>" + message + "</center></html>"));
+        welcomeLabel.setText(message);
     }
     public void setInformation(String information){
-        checkoutLabel.setText(("<html><center>" + information + "</center></html>"));
+        checkoutLabel.setText(information);
     }
     public void setBackgroundColour(String backgroundColour){
         frame.getContentPane().setBackground(Color.decode(backgroundColour));
