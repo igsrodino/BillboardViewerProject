@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -130,5 +131,24 @@ public class ScheduleModel {
                 "values (" + (startTime * 100) + "," + endTime + "," + duration + "," + weekday +
                 "," + recurs + "," + billboardID + ")\n");
         return res > 0;
+    }
+
+    public int getCurrentBillboard(int day, String startTime) {
+        ResultSet rs =
+                this.dbConn.runSelectQuery("select billboard from schedule where weekday = " + day +
+                        " and end_time > \""+startTime+"\" order by end_time asc limit 1");
+        int res = -1;
+        try{
+            while(rs.next()){
+                if(rs.getInt("billboard") != 0){
+                    res = rs.getInt("billboard");
+                }
+            }
+        }catch(SQLException e){
+            System.err.println(e.getMessage());
+            System.err.println(e.getStackTrace());
+        }
+        System.out.println(res);
+        return res;
     }
 }
