@@ -71,7 +71,7 @@ public class Userausthenticationtests {
     @Test
     public void testsessiontoken()
     {
-        String  token = UserAuthentication.generateSessionToken("dddd");
+        String  token = UserAuthentication.generateSessionToken(1);
         System.out.println(token);
     }
 

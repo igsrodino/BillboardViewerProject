@@ -49,7 +49,7 @@ public class UserModel {
         ResultSet rs = this.dbConn.runSelectQuery("SELECT password FROM cab302.users where users.username ='" +username+"'");
         while ( rs.next() ) {
             password = rs.getString("password");
-            System.out.println(password);
+           // System.out.println(password);
         }
 
 
@@ -66,7 +66,7 @@ public class UserModel {
         ResultSet rs = this.dbConn.runSelectQuery("SELECT salt FROM cab302.users where users.username ='" +username+"'");
         while ( rs.next() ) {
             salt = rs.getString("salt");
-            System.out.println(salt);
+          //  System.out.println(salt);
         }
         return(salt);
     }
@@ -75,8 +75,14 @@ public class UserModel {
      * Gets the user id of the current user
      * @return  the user id or -1 if it wasn't found
      */
-    public int getUserID(){
-        return this.userID;
+    public int getUserID(String username) throws SQLException {
+        int useridcheck = -1;
+        ResultSet rs = this.dbConn.runSelectQuery("SELECT id FROM cab302.users where users.username ='" + username + "'");
+        while (rs.next()) {
+            useridcheck = rs.getInt("id");
+        }
+        return useridcheck;
+
     }
     /**
      * Gets the permissions

@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 
+import static Server.Utilities.UserAuthentication.generateSessionToken;
 import static Server.Utilities.UserAuthentication.getSalt;
 
 /**
@@ -36,12 +37,19 @@ public class UserController {
        String salt = this.model.getSalt(username);
        String hashedpass2 = UserAuthentication.generateHash(password, salt);
 
+
        if(UserAuthentication.compareHashes(hashedpass,hashedpass2))
        {
+          int userid = this.model.getUserID(username);
+           String token = UserAuthentication.generateSessionToken(userid);
+
+
+
+
            return ("<response>\n" +
                    "    <type>success</type>\n" +
                    "    <data>\n" +
-                   "        " +
+                   token+
                    "    </data>\n" +
                    "</response>");
 
@@ -56,13 +64,6 @@ public class UserController {
            }
 
 
-
-
-
-
-
-
-
     }
 
     /**
@@ -71,7 +72,8 @@ public class UserController {
      * @return  a Response string
      */
     public String logout(String accessToken){
-        // UserAuthentication.invalidateToken(accessToken)
+        UserAuthentication.invalidateSessionToken(accessToken);
+
         return "Response";
     }
 
@@ -224,7 +226,8 @@ public class UserController {
      * @param username  the user to retrieve the userID from
      * @return int  the userID, or -1 if user not found
      */
-    public int getUserID(String username) {
-        return -1;
+    public int getUserID(String username) throws SQLException {
+        return(this.model.getUserID(username));
+
     }
 }
