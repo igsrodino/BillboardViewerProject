@@ -1,6 +1,5 @@
 package Server.Utilities;
 import java.io.UnsupportedEncodingException;
-import java.time.LocalTime;
 import java.util.*;
 
 import java.math.BigInteger;
@@ -227,7 +226,6 @@ public class UserAuthentication {
     }
 
 
-
     /**
      * Removes expired tokens from the list of active sessions
      */
@@ -256,4 +254,21 @@ public class UserAuthentication {
                 }
         }
     }
+
+    public static String listusers()
+    {
+        StringBuilder users = new StringBuilder();
+        for(Map.Entry<String, Long> entry: currentSessions.entrySet())
+        {
+            String token = entry.getKey();
+           int userids = extractUserIDFromToken(token);
+            users.append(userids);
+
+        }
+        return(users.toString());
+
+
+
+    }
+
 }

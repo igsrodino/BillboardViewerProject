@@ -2,11 +2,16 @@ package Server.Models;
 
 import Server.Utilities.Database;
 
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import java.sql.*;
+import java.sql.Statement;
+
 import java.util.ArrayList;
 
 /**
@@ -29,14 +34,24 @@ public class UserModel {
         this.password = "";
         this.salt = "";
         this.userID = -1;
-        this.permissions = null;
+        this.permissions = new ArrayList<String>();
     }
 
     /**
      * Gets the username
      * @return username
      */
-    public String getUsername(){
+    public String getUsername(int ID){
+
+        //return this.username;
+        ResultSet rs = this.dbConn.runSelectQuery("select username from users where id =" + ID+")");
+        try{
+            while(rs.next()){
+                this.username = rs.getString("username");
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         return this.username;
     }
 
@@ -44,37 +59,40 @@ public class UserModel {
      * Gets the password hash
      * @return password hash
      */
+
     public String getPassword(String username) throws SQLException {
         String password = "";
-        ResultSet rs = this.dbConn.runSelectQuery("SELECT password FROM cab302.users where users.username ='" +username+"'");
-        while ( rs.next() ) {
+        ResultSet rs = this.dbConn.runSelectQuery("SELECT password FROM cab302.users where users.username ='" + username + "'");
+        while (rs.next()) {
             password = rs.getString("password");
-           // System.out.println(password);
+            // System.out.println(password);
         }
 
 
-        return(password);
+        return (password);
     }
 
     /**
      * Gets the salt
      * @return the salt
      */
+
     public String getSalt(String username) throws SQLException {
 
-        String salt = "";
-        ResultSet rs = this.dbConn.runSelectQuery("SELECT salt FROM cab302.users where users.username ='" +username+"'");
-        while ( rs.next() ) {
-            salt = rs.getString("salt");
-          //  System.out.println(salt);
+            String salt = "";
+            ResultSet rs = this.dbConn.runSelectQuery("SELECT salt FROM cab302.users where users.username ='" + username + "'");
+            while (rs.next()) {
+                salt = rs.getString("salt");
+                //  System.out.println(salt);
+            }
+            return (salt);
         }
-        return(salt);
-    }
 
     /**
      * Gets the user id of the current user
      * @return  the user id or -1 if it wasn't found
      */
+
     public int getUserID(String username) throws SQLException {
         int useridcheck = -1;
         ResultSet rs = this.dbConn.runSelectQuery("SELECT id FROM cab302.users where users.username ='" + username + "'");
@@ -83,13 +101,42 @@ public class UserModel {
         }
         return useridcheck;
 
+
     }
     /**
      * Gets the permissions
      * @return list of permissions
+     * @param userID
      */
-    public ArrayList getPermissions(){
-        return this.permissions;
+    public ArrayList<String> getPermissions(int userID) throws SQLException {
+        //return this.permissions;
+        //String name = getUsername(UserID)
+       // int UserId =
+        ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= "+userID);
+       // ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= 47");
+        //System.out.print(rs.getFetchSize());
+        try{
+            while(rs.next()){
+                //System.out.println(rs.getInt("create_billboards"));
+                if(rs.getBoolean("create_billboards")){
+                    this.permissions.add("create_billboards");
+                }
+                if(rs.getBoolean("edit_billboards")){
+                    this.permissions.add("edit_billboards");
+                }
+                if(rs.getBoolean("schedule_billboards")){
+                    this.permissions.add("schedule_billboards");
+                }
+                if(rs.getBoolean("edit_users")){
+                    this.permissions.add("edit_users");
+                }
+                //this.permissions.add(rs.getString("permission"));
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        //this.permissions.add("edit_billboards");
+        return permissions;
     }
 
     /**
