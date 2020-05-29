@@ -39,16 +39,12 @@ public class ClientController implements Runnable {
     public void run() {
         try {
             // Read the request from the client
-            StringBuilder request = new StringBuilder();
-            BufferedReader clientRequest = new BufferedReader(new InputStreamReader(inputStream));
-            String line = "";
-            while (clientRequest.ready() && (line = clientRequest.readLine()) != null) {
-                request.append(line);
-            }
-            Document parsedRequest = processRequestString(request.toString());
+            String request = inputStream.readUTF();
 
+            Document parsedRequest = processRequestString(request);
             this.sendResponse(this.processRequest(parsedRequest));
-            clientRequest.close();
+            inputStream.close();
+
             return;
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -75,9 +71,9 @@ public class ClientController implements Runnable {
     private void sendResponse(String response) {
         try {
             this.outputStream.writeUTF(response);
-            this.socket.close();
             this.inputStream.close();
             this.outputStream.close();
+            this.socket.close();
         } catch (IOException e) {
             System.err.println("Client handler failed: " + e.getMessage());
         }
@@ -147,6 +143,7 @@ public class ClientController implements Runnable {
                 switch (route) {
                     case "getBillboard":
                         response = billboard.getBillboard(scheduleController.getCurrentBillboard());
+
                         break;
                     case "listBillboards":
                         response = billboard.getBillboardList();
@@ -157,17 +154,18 @@ public class ClientController implements Runnable {
                         response = billboard.getBillboard(billboardID);
                         break;
                     case "createBillboard":
-                        if (userController.checkPermission(userID, "edit_permission")) {
-                            //                response = billboard.createBillboard();
-                        }
+                        //if (userController.checkPermission(userID, "edit_permission")) {
+                                           response = billboard.createBillboard(request);
+
+                       // }
 
                         break;
                     case "deleteBillboard":
-                        if (userController.checkPermission(userID, "edit_permission")) {
-                            billboardID =
-                                    Integer.parseInt(request.getElementsByTagName("data").item(0).getTextContent());
-                            response = billboard.deleteBillboard(billboardID);
-                        }
+                        // if (userController.checkPermission(userID, "edit_permission")) {
+                        billboardID =
+                                Integer.parseInt(request.getElementsByTagName("data").item(0).getTextContent());
+                        response = billboard.deleteBillboard(billboardID);
+                        //}
                         break;
                     case "login":
                         username =
@@ -196,10 +194,13 @@ public class ClientController implements Runnable {
                         break;
                     case "getPermissions":
                         requestedUserID = userController.getUserID(request.getElementsByTagName("username").item(0).getTextContent());
-                        if (userController.checkPermission(userID, "edit_users") || requestedUserID == userID) {
+
+                        //requestedUserID = userController.getUserID()
+                        //if (userController.checkPermission(userID, "edit_users") || requestedUserID == userID) {
                             username = request.getElementsByTagName("username").item(0).getTextContent();
-                            response = userController.getUserPermissions(username);
-                        }
+                            //response = userController.getUserPermissions(username,requestedUserID);
+                        response = userController.getUserPermissions(requestedUserID);
+                        //}
                         break;
                     case "setPermissions":
                         requestedUserID = userController.getUserID(request.getElementsByTagName("username").item(0).getTextContent());
@@ -221,32 +222,35 @@ public class ClientController implements Runnable {
                         response = userController.logout(token);
                         break;
                     case "getSchedule":
-                        if (userController.checkPermission(userID, "schedule_billboards")) {
-                            response = scheduleController.getSchedule();
-                        }
+//                        if (userController.checkPermission(userID, "schedule_billboards")) {
+                        response = scheduleController.getSchedule();
+//                        }
                         break;
                     case "setSchedule":
-                        if (userController.checkPermission(userID, "schedule_billboards")) {
+//                        if (userController.checkPermission(userID, "schedule_billboards")) {
                             billboardID =
                                     Integer.parseInt(request.getElementsByTagName("billboard").item(0).getTextContent());
                             startTime =
                                     Integer.parseInt(request.getElementsByTagName("startTime").item(0).getTextContent());
-                            int endTime =
-                                    Integer.parseInt(request.getElementsByTagName("endTime").item(0).getTextContent());
+                            int duration =
+                                    Integer.parseInt(request.getElementsByTagName("duration").item(0).getTextContent());
                             int recurs =
                                     Integer.parseInt(request.getElementsByTagName("recurs").item(0).getTextContent());
+                            int weekday =
+                                    Integer.parseInt(request.getElementsByTagName("weekday").item(0).getTextContent());
                             response = scheduleController.setBillboardSchedule(billboardID,
-                                    startTime, endTime, recurs);
-                        }
+                                    startTime, duration, recurs, weekday);
+//                        }
                         break;
                     case "deleteSchedule":
-                        if (userController.checkPermission(userID, "schedule_billboards")) {
-                            billboardID =
-                                    Integer.parseInt(request.getElementsByTagName("billboard").item(0).getTextContent());
-                            startTime =
-                                    Integer.parseInt(request.getElementsByTagName("startTime").item(0).getTextContent());
-                            response = scheduleController.removeSchedule(billboardID, startTime);
-                        }
+//                        if (userController.checkPermission(userID, "schedule_billboards")) {
+                        billboardID =
+                                Integer.parseInt(request.getElementsByTagName("billboard").item(0).getTextContent());
+                        startTime =
+                                Integer.parseInt(request.getElementsByTagName("startTime").item(0).getTextContent());
+                        response = scheduleController.removeSchedule(billboardID,
+                                startTime*100);
+//                        }
                         break;
                     default:
                         response = "<response>\n" +

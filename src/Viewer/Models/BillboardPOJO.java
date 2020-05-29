@@ -17,6 +17,7 @@ public BillboardPOJO(){
     this.messageColour = "";
     this.message = "";
     this.pictureURL = "";
+    this.pictureData = "";
     this.informationColour = "";
     this.information = "";
     this.creator = "";
