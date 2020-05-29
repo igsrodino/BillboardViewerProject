@@ -67,7 +67,7 @@ public class Userausthenticationtests {
         assertFalse(UserAuthentication.compareHashes(hassedpass1,hassedpass2));
 
     }
-
+//this is just to see if a it created a session token 
     @Test
     public void testsessiontoken()
     {
