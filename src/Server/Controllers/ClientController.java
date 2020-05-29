@@ -154,9 +154,10 @@ public class ClientController implements Runnable {
                         response = billboard.getBillboard(billboardID);
                         break;
                     case "createBillboard":
-                        if (userController.checkPermission(userID, "edit_permission")) {
-                            //                response = billboard.createBillboard();
-                        }
+                        //if (userController.checkPermission(userID, "edit_permission")) {
+                                           response = billboard.createBillboard(request);
+
+                       // }
 
                         break;
                     case "deleteBillboard":
@@ -193,10 +194,13 @@ public class ClientController implements Runnable {
                         break;
                     case "getPermissions":
                         requestedUserID = userController.getUserID(request.getElementsByTagName("username").item(0).getTextContent());
-                        if (userController.checkPermission(userID, "edit_users") || requestedUserID == userID) {
+
+                        //requestedUserID = userController.getUserID()
+                        //if (userController.checkPermission(userID, "edit_users") || requestedUserID == userID) {
                             username = request.getElementsByTagName("username").item(0).getTextContent();
-                            response = userController.getUserPermissions(username);
-                        }
+                            //response = userController.getUserPermissions(username,requestedUserID);
+                        response = userController.getUserPermissions(requestedUserID);
+                        //}
                         break;
                     case "setPermissions":
                         requestedUserID = userController.getUserID(request.getElementsByTagName("username").item(0).getTextContent());
