@@ -2,6 +2,16 @@ package Server.Controllers;
 
 import Server.Models.UserModel;
 import Server.Utilities.UserAuthentication;
+
+
+import javax.swing.*;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.sql.SQLException;
+
+import static Server.Utilities.UserAuthentication.generateSessionToken;
+import static Server.Utilities.UserAuthentication.getSalt;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -17,6 +27,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 import java.util.ArrayList;
+
 
 /**
  * Provides access to user operations
@@ -39,9 +50,38 @@ public class UserController {
      * @param password  the password hash from the client
      * @return  a Response string with the session token in the data element
      */
-    public String login(String username, String password){
-        // Uses the UserAuthentication class to generate a session token
-        return "Response";
+    public String login(String username, String password) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException, UnsupportedEncodingException {
+        String hashedpass = this.model.getPassword(username);
+       String salt = this.model.getSalt(username);
+       String hashedpass2 = UserAuthentication.generateHash(password, salt);
+
+
+       if(UserAuthentication.compareHashes(hashedpass,hashedpass2))
+       {
+          int userid = this.model.getUserID(username);
+           String token = UserAuthentication.generateSessionToken(userid);
+
+
+
+
+           return ("<response>\n" +
+                   "    <type>success</type>\n" +
+                   "    <data>\n" +
+                   token+
+                   "    </data>\n" +
+                   "</response>");
+
+       }
+       else
+           {
+              return  ("<response>\n" +
+                      "    <type>fail</type>\n" +
+                      "    <data></data>\n" +
+                      "</response>");
+
+           }
+
+
     }
 
     /**
@@ -50,8 +90,12 @@ public class UserController {
      * @return  a Response string
      */
     public String logout(String accessToken){
-        // UserAuthentication.invalidateToken(accessToken)
-        return "Response";
+        UserAuthentication.invalidateSessionToken(accessToken);
+
+        return " \"<response>\\n\" +\n" +
+                "                  \"    <type>success</type>\\n\" +\n" +
+                "                  \"    <data></data>\\n\" +\n" +
+                "                  \"</response>\";";
     }
 
     /**
@@ -69,11 +113,32 @@ public class UserController {
      * @param password  the password hash from the client
      * @return  a Response string
      */
-    public String createUser(String username, String password){
-        // Use UserAuthentication.generateHash(password, some random salt) to generate the
-        // password hash
-        // Use the model to store the details.
-        return "Response";
+    public String createUser(String username, String password, String Name) throws NoSuchAlgorithmException, InvalidKeySpecException, SQLException, UnsupportedEncodingException {
+        String salt = UserAuthentication.getSalt();
+        String hashedpass = UserAuthentication.generateHash(password,salt);
+
+
+      if(this.model.createuser(username, Name, hashedpass, salt))
+      {
+          return "<response>\n" +
+                  "    <type>success</type>\n" +
+                  "    <data></data>\n" +
+                  "</response>";
+
+      }
+      else
+          {
+              return "<response>\n" +
+                      "    <type>fail</type>\n" +
+                      "    <data></data>\n" +
+                      "</response>";
+
+          }
+
+
+
+
+
     }
 
     /**
@@ -82,8 +147,30 @@ public class UserController {
      * @param username the username of the user to delete
      * @return  a Response string
      */
-    public String deleteUser(String username){
-        return "Response";
+    public String deleteUser(String username) throws SQLException {
+
+
+       if(this.model.deleteUser(username))
+       {
+           return "<response>\n" +
+                   "    <type>success</type>\n" +
+                   "    <data></data>\n" +
+                   "</response>";
+
+       }
+       else
+           {
+               return "<response>\n" +
+                       "    <type>fail</type>\n" +
+                       "    <data></data>\n" +
+                       "</response>";
+
+           }
+
+
+
+
+
     }
 
     /**
@@ -91,7 +178,16 @@ public class UserController {
      * @return  a Response string
      */
     public String listUsers(){
-        return "Response";
+
+       String currentusers = UserAuthentication.listusers();
+
+
+
+        return "<response>\n" +
+                "    <type>success</type>\n" +
+                "    <data>\n" +
+                         currentusers       +
+                "</response>";
     }
     public static String convertDocumentToString(Document doc){
         // TODO: add error handling
@@ -116,7 +212,6 @@ public class UserController {
 
     /**
      * Gets the permissions for the given user
-     * @param username  the username to retrieve permissions for
      * @param requestedUserID
      * @return  a Response string
      */
@@ -182,8 +277,26 @@ public class UserController {
      * @param password  the password hash from the client
      * @return  a Response object
      */
-    public String setUserPassword(String username, String password){
-        return "Response";
+    public String setUserPassword(String username, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
+        String salt = UserAuthentication.getSalt();
+        String hashedpass = UserAuthentication.generateHash(password,salt);
+       // System.out.println(username);
+        if(this.model.setUserPassword(username,hashedpass,salt ))
+        { return("<response>\n" +
+                "    <type>success</type>\n" +
+                "    <data></data>\n" +
+                "</response>");
+
+        }
+        else
+            {return ("<response>\n" +
+                    "    <type>fail</type>\n" +
+                    "    <data></data>\n" +
+                    "</response>");
+
+            }
+
+
     }
 
     /**
@@ -191,9 +304,9 @@ public class UserController {
      * @param username  the user to retrieve the userID from
      * @return int  the userID, or -1 if user not found
      */
-    public int getUserID(String username) {
-        //return -1;
-        return this.model.getUserID(username);
+
+    public int getUserID(String username) throws SQLException {
+        return(this.model.getUserID(username));
 
 
     }
