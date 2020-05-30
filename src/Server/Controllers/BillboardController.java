@@ -10,7 +10,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.*;
 import Server.Models.BillboardModel;
-//import Server.Models.ClientController;
 
 /**
  * Provides access to billboards

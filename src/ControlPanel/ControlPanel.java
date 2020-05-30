@@ -8,7 +8,9 @@ import ControlPanel.Models.ScheduleModel;
 import ControlPanel.Models.UserModel;
 import ControlPanel.View.*;
 
-
+/**
+ * GUI setup for control panel.
+ */
 public class ControlPanel {
     public static void main(String args[]){
 
@@ -42,7 +44,7 @@ public class ControlPanel {
         }
         catch (Exception e)
         {
-            //error handling code
+            System.out.println("Error occurred");
         }
     }
 }

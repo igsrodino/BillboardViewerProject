@@ -1,5 +1,9 @@
 package Viewer.Models;
 
+/**
+ * Contains getters and setters to retrieve information, image and message tags
+ * from given from BillboardModel and be displayed in BillboardView
+ */
 public class BillboardPOJO {
     private String backgroundColour;
     private String messageColour;

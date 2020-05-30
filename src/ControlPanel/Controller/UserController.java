@@ -5,7 +5,6 @@ import ControlPanel.View.LoginView;
 import ControlPanel.View.AppFrame;
 import ControlPanel.View.MainNav;
 import ControlPanel.View.UserView;
-import com.sun.tools.javac.Main;
 
 /**
  * Manages events in the User Administration views

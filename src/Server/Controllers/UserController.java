@@ -119,27 +119,18 @@ public class UserController {
         String salt = UserAuthentication.getSalt();
         String hashedpass = UserAuthentication.generateHash(password,salt);
 
-
-      if(this.model.createuser(username, Name, hashedpass, salt))
-      {
+      if(this.model.createuser(username, Name, hashedpass, salt)) {
           return "<response>\n" +
                   "    <type>success</type>\n" +
                   "    <data></data>\n" +
                   "</response>";
-
       }
-      else
-          {
+      else {
               return "<response>\n" +
                       "    <type>fail</type>\n" +
                       "    <data></data>\n" +
                       "</response>";
-
           }
-
-
-
-
 
     }
 
@@ -151,27 +142,19 @@ public class UserController {
      */
     public String deleteUser(String username) throws SQLException {
 
-
        if(this.model.deleteUser(username))
        {
            return "<response>\n" +
                    "    <type>success</type>\n" +
                    "    <data></data>\n" +
                    "</response>";
-
        }
-       else
-           {
-               return "<response>\n" +
-                       "    <type>fail</type>\n" +
-                       "    <data></data>\n" +
-                       "</response>";
-
+       else {
+           return "<response>\n" +
+                   "    <type>fail</type>\n" +
+                   "    <data></data>\n" +
+                   "</response>";
            }
-
-
-
-
 
     }
 
@@ -183,16 +166,15 @@ public class UserController {
 
        String currentusers = UserAuthentication.listusers();
 
-
-
         return "<response>\n" +
                 "    <type>success</type>\n" +
                 "    <data>\n" +
                          currentusers       +
                 "</response>";
     }
+
     public static String convertDocumentToString(Document doc){
-        // TODO: add error handling
+
         String result = "";
         try {
             StringWriter sw = new StringWriter();
@@ -235,15 +217,15 @@ public class UserController {
                 }
                 type.appendChild(doc.createTextNode("success"));
             }
-            else
-            {
+            else {
                 type.appendChild(doc.createTextNode("failure"));
             }
             doc.appendChild(resp);
             resp.appendChild(data);
             resp.appendChild(type);
             permissionsXMLString = convertDocumentToString(doc);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -270,7 +252,6 @@ public class UserController {
      * @return  a Response string
      */
     public String setPermissions(int requestedUserID, Document request){
-        //return "Response";
         String set_permXMLString= "response";
         String[] permissions =
                 request.getElementsByTagName("permissions").item(0).getTextContent().split(",");
@@ -307,18 +288,7 @@ public class UserController {
             else{
                 type.appendChild(doc.createTextNode("failure"));
             }
-           // ArrayList<String> permissions = this.model.getPermissions(requestedUserID);
-//            System.out.println(permissions);
-//            if(permissions != null && permissions.size() > 0){
-//                for (String permission : permissions){
-//                    data.appendChild(doc.createTextNode(permission+","));
-//                }
-//                type.appendChild(doc.createTextNode("success"));
-//            }
-//            else
-//            {
-//                type.appendChild(doc.createTextNode("failure"));
-//            }
+
             doc.appendChild(resp);
             resp.appendChild(data);
             resp.appendChild(type);
@@ -339,7 +309,6 @@ public class UserController {
     public String setUserPassword(String username, String password) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
         String salt = UserAuthentication.getSalt();
         String hashedpass = UserAuthentication.generateHash(password,salt);
-       // System.out.println(username);
         if(this.model.setUserPassword(username,hashedpass,salt ))
         { return("<response>\n" +
                 "    <type>success</type>\n" +
@@ -354,8 +323,6 @@ public class UserController {
                     "</response>");
 
             }
-
-
     }
 
     /**
@@ -366,7 +333,5 @@ public class UserController {
 
     public int getUserID(String username) throws SQLException {
         return(this.model.getUserID(username));
-
-
     }
 }

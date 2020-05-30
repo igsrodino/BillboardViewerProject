@@ -5,6 +5,9 @@ import Viewer.Models.BillboardPOJO;
 import javax.swing.*;
 import java.util.ArrayList;
 
+/**
+ * Different methods to alter billboards
+ */
 public class BillboardModel {
     private ArrayList<BillboardPOJO> billboards;
 

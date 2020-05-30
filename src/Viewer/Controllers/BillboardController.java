@@ -5,8 +5,10 @@ import Viewer.Models.BillboardPOJO;
 import Viewer.Views.BillboardView;
 
 import java.io.IOException;
-import java.util.TimerTask;
 
+/**
+ * For updating the viewer in the case XML document has all or some information, image or message tags.
+ */
 public class BillboardController{
     private BillboardModel model;
     private BillboardView view;

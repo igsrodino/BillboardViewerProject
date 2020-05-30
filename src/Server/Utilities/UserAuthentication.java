@@ -27,7 +27,7 @@ public class UserAuthentication {
     private static int timeoutperiod = 1;
 
 
-    /* A map of <accessToken, unhashed value>
+    /** A map of <accessToken, unhashed value>
      * Unhashed value: userID, uuid, ISO time of token creation where userID is an int, salt is
      * a random int, and ISO time was obtained from LocalDateTime*/
     private static HashMap<String, Long> currentSessions = new HashMap<>();
@@ -45,23 +45,14 @@ public class UserAuthentication {
         String[] id = token.split("-");
         int idoutput =  Integer.parseInt(id[5]);
 
-
-        if(idoutput >= 0 && isValidSessionToken(token) >= 0)
-        {
+        if (idoutput >= 0 && isValidSessionToken(token) >= 0) {
             System.out.println(idoutput);
             return(idoutput);
-
-
         }
-        else
-            {
-                return -1;
-
-            }
-
+        else {
+            return -1;
+        }
     }
-
-
 
     /**
      * Checks if the provided token is valid
@@ -70,30 +61,19 @@ public class UserAuthentication {
      */
     public static int isValidSessionToken(String token){
         long tokkentimeexpiretime = currentSessions.get(token) + timeoutperiod;
-      // System.out .println(tokkentimeexpiretime);
         Date date = new Date();
         long  diff = date.getTime();
         long currenttime = TimeUnit.MILLISECONDS.toMinutes(diff);
-        //System.out.println(currenttime);
 
-        if(tokkentimeexpiretime > currenttime)
-        {
+        if(tokkentimeexpiretime > currenttime) {
             String[] id = token.split("-");
 
-
             return(Integer.parseInt(id[5]));
-
-
-
         }
-        else
-            {
-            //   System.out.println("invalid");
-                purgeExpiredTokens();
-                return(-1);
-            }
-
-
+        else {
+            purgeExpiredTokens();
+            return(-1);
+        }
     }
 
     /**
@@ -106,39 +86,28 @@ public class UserAuthentication {
         int useridtokenoutput =-1;
         String useridtoken = "";
         Date date = new Date();
-       long  diff = date.getTime();
-
+        long  diff = date.getTime();
         long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-
-       // System.out.println(minutes);
 
         String token = UUID.randomUUID().toString().toUpperCase()
                 + "-" + userid  ;
 
-        for(Map.Entry<String, Long> entry: currentSessions.entrySet())
-        {
+        for(Map.Entry<String, Long> entry: currentSessions.entrySet()) {
             useridtoken = (entry.getKey());
             useridtokenoutput = extractUserIDFromToken(useridtoken);
-
-
         }
-        if(useridtokenoutput == userid)
-        {
+
+        if(useridtokenoutput == userid) {
             currentSessions.remove(useridtoken);
             currentSessions.put(token, minutes);
-
-
         }
-        else
-            {
-                currentSessions.put(token, minutes);
 
-
-            }
+        else {
+            currentSessions.put(token, minutes);
+        }
 
 
         System.out.println(currentSessions);
-
         return token;
 
     }
@@ -146,7 +115,6 @@ public class UserAuthentication {
     /**Generates a salt value
      *
      */
-
     public static String getSalt() throws NoSuchAlgorithmException
     {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
@@ -161,7 +129,6 @@ public class UserAuthentication {
      * @param salt  the salt to keep it cryptographically secure
      * @return  returns the resulting hash
      */
-
     public static String generateHash(String password, String salt) throws InvalidKeySpecException, NoSuchAlgorithmException, UnsupportedEncodingException {
 
         int iterations = 500;
@@ -172,9 +139,7 @@ public class UserAuthentication {
         SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         byte[] hash = skf.generateSecret(spec).getEncoded();
         return toHex(hash);
-
     }
-
 
     /**converts the byte array to a hex to make it easier to store
      *
@@ -185,10 +150,10 @@ public class UserAuthentication {
         BigInteger bi = new BigInteger(1, array);
         String hex = bi.toString(16);
         int paddingLength = (array.length * 2) - hex.length();
-        if(paddingLength > 0)
-        {
+        if(paddingLength > 0) {
             return String.format("%0"  +paddingLength + "d", 0) + hex;
-        }else{
+        }
+        else {
             return hex;
         }
     }
@@ -201,16 +166,13 @@ public class UserAuthentication {
      */
     public static boolean compareHashes(String hashA, String hashB){
 
-        if(hashA.equals(hashB))        {
+        if (hashA.equals(hashB)) {
             return true;
         }
-        else
-        {
+        else {
             return false;
         }
     }
-
-
 
 
     /**
@@ -222,7 +184,6 @@ public class UserAuthentication {
 
         currentSessions.remove(token);
         purgeExpiredTokens();
-
     }
 
 
@@ -231,44 +192,31 @@ public class UserAuthentication {
      */
     private static void purgeExpiredTokens()
     {
-        for(Map.Entry<String, Long> entry: currentSessions.entrySet())
-        {
+        for(Map.Entry<String, Long> entry: currentSessions.entrySet()) {
             long expiretime = entry.getValue() + timeoutperiod ;
             String token = entry.getKey();
             Date date = new Date();
             long  diff = date.getTime();
             long currenttime = TimeUnit.MILLISECONDS.toMinutes(diff);
-          //  System.out.println(expiretime);
-           // System.out.println(currenttime);
 
-            if(expiretime > currenttime)
-            {
+            if (expiretime > currenttime) {
                 System.out.println("valid");
-
-
             }
-            else
-                {
-                    currentSessions.remove(token);
-
-                }
+            else {
+                currentSessions.remove(token);
+            }
         }
     }
 
     public static String listusers()
     {
         StringBuilder users = new StringBuilder();
-        for(Map.Entry<String, Long> entry: currentSessions.entrySet())
-        {
+        for(Map.Entry<String, Long> entry: currentSessions.entrySet()) {
             String token = entry.getKey();
-           int userids = extractUserIDFromToken(token);
+            int userids = extractUserIDFromToken(token);
             users.append(userids);
-
         }
         return(users.toString());
-
-
-
     }
 
 }

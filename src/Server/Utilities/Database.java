@@ -33,7 +33,8 @@ public class Database {
             throw new SQLSyntaxErrorException(e.getMessage());
         }
     }
-    /*
+
+    /**
     * Cleanly closes the database connection to prevent the database from getting choked
     * */
     public void closeConnection(){
@@ -43,6 +44,7 @@ public class Database {
             System.out.println(e.getMessage());
         }
     };
+
     /**
     * Creates any missing tables according to the schema laid out in src/sql-scripts
     * @return void
@@ -121,10 +123,12 @@ public class Database {
             createTable.executeUpdate("ALTER TABLE `permissions` ADD FOREIGN KEY (`user`) REFERENCES `users` (`id`);");
             System.out.println("Database is ready");
 
-        }catch(Exception e){
+        }
+        catch(Exception e){
             throw new SQLSyntaxErrorException(e.getMessage());
         }
     }
+
     /**
     * Used to execute a select statement query on the database
     * Cannot be used to modify data, only retrieve it
@@ -142,6 +146,7 @@ public class Database {
         }
         return result;
     }
+
     /**
     * Executes an insert,update, or delete query on the database.
     * Used to modify data, cannot be used to retrieve it
@@ -153,7 +158,8 @@ public class Database {
         try{
             Statement query = this.dbConn.createStatement();
             rowCount = query.executeUpdate(sql);
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             System.out.println("Error: "+e.getMessage());
             e.printStackTrace();
         }

@@ -5,6 +5,10 @@ import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Creates an Error screen to be displayed in case there is no current Billboard
+ * to display, or if connection with server failed
+ */
 public class BillboardErrorScreen{
 
     JFrame frame = new JFrame(); // Create and set up window frame

@@ -1,12 +1,7 @@
 package Server;
 
-
 import Server.Controllers.ClientController;
-import Server.Models.BillboardModel;
-import Server.Models.ScheduleModel;
-import Server.Models.UserModel;
 import Server.Utilities.Database;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -14,11 +9,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLSyntaxErrorException;
 
-
 /**
-* Server Controller
+* Server Controller and setup
 * */
-
 public class Server {
     private static int portNumber = 5050; // needs to be set from .props file?
     public static void main(String[] args){
@@ -81,7 +74,7 @@ public class Server {
         }
         catch (Exception e)
         {
-            //error handling code
+            System.out.println("Error occurred");
         }
     }
 }

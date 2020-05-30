@@ -1,19 +1,16 @@
 package Viewer.Views;
-import Viewer.Controllers.BillboardController;
-import Viewer.Models.BillboardModel;
-import Viewer.Models.BillboardPOJO;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Base64;
 
-/* Gui stuff goes in this classes
- * Exposes several methods so the controller can update the view
- * */
+/**
+ * Gui setup for Billboard screen.
+ * Exposes several methods so the controller can update the view.
+ */
 public class BillboardView {
     private JFrame frame = new JFrame(); // Create and set up window frame
     private Container container = frame.getContentPane(); // Create a container in frame to insert <message> labels into
@@ -82,7 +79,7 @@ public class BillboardView {
         container.add(checkoutLabel, gbc); // Places label on bottom part of Billboard (Y axis)
     }
 
-    private void createLabels() throws IOException {
+    private void createLabels() {
         // Set up billboard layout
         frame.setLayout(new GridBagLayout());
         frame.getContentPane().setBackground(Color.WHITE); // Change background colour

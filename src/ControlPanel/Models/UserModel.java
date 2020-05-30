@@ -1,5 +1,8 @@
 package ControlPanel.Models;
 
+/**
+ * Getters for getCreater and getUserID.
+ */
 public class UserModel {
     private String creator;
     private int userID;

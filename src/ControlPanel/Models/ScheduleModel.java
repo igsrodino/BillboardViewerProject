@@ -3,6 +3,9 @@ package ControlPanel.Models;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Setup for schedule model
+ */
 public class ScheduleModel {
     private Map<String, Integer> sunday;
 

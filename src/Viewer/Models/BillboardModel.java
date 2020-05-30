@@ -13,7 +13,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.Socket;
 
-// Contains methods to call the server and return the response in an appropriate format
+/**
+ * Contains methods to call the server and return the response in an appropriate format
+ *
+ */
 public class BillboardModel {
     private BillboardPOJO info;
     private static String response;
