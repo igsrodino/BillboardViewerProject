@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ControlPanel.View.MainNav">
+  <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="10" bottom="0" right="10"/>
+    <constraints>
+      <xy x="20" y="20" width="691" height="400"/>
+    </constraints>
+    <properties>
+      <background color="-4473925"/>
+      <enabled value="true"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <toolbar id="4f052">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-4473925"/>
+          <borderPainted value="false"/>
+          <floatable value="false"/>
+          <opaque value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="ace69" class="javax.swing.JButton" binding="billboardManagementButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <font size="14" style="0"/>
+              <text value="Billboard Management"/>
+              <toolTipText value="Create, edit and delete billboards"/>
+            </properties>
+          </component>
+          <component id="697f2" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties>
+              <separatorSize width="20" height="-1"/>
+            </properties>
+          </component>
+          <component id="c9840" class="javax.swing.JButton" binding="billboardSchedulingButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <font size="14" style="0"/>
+              <text value="Billboard Scheduling"/>
+              <toolTipText value="Schedule billboards &amp; edit/delete existing schedules"/>
+            </properties>
+          </component>
+          <component id="af636" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties>
+              <separatorSize width="20" height="-1"/>
+            </properties>
+          </component>
+          <component id="62ea8" class="javax.swing.JButton" binding="userAdministrationButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <font size="14" style="0"/>
+              <text value="User Administration"/>
+              <toolTipText value="Add, remove, and edit users"/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
+      <vspacer id="e477c">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <component id="fa10d" class="javax.swing.JButton" binding="logOutButton" default-binding="true">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <borderPainted value="true"/>
+          <contentAreaFilled value="true"/>
+          <enabled value="true"/>
+          <font size="14" style="0"/>
+          <hideActionText value="false"/>
+          <text value="Log out"/>
+          <toolTipText value="Log out of the app"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>

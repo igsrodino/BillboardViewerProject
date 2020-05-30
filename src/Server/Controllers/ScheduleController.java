@@ -8,8 +8,10 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Provides access to scheduling for billboards
@@ -72,7 +74,13 @@ public class ScheduleController {
      * no billboards are scheduled
      */
     public int getCurrentBillboard() {
-        return 1;
+        Date now = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(now);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String startTime = sdf.format(now);
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        return model.getCurrentBillboard(day, startTime);
     }
 
     /**

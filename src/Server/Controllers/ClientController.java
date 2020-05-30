@@ -115,6 +115,7 @@ public class ClientController implements Runnable {
             int userID = -1;
             String username = "";
             String password = "";
+            String name = "";
             int requestedUserID = -1;
             String token = "";
             int startTime = -1;
@@ -168,10 +169,8 @@ public class ClientController implements Runnable {
                         //}
                         break;
                     case "login":
-                        username =
-                                request.getElementsByTagName("username").item(0).getTextContent();
-                        password =
-                                request.getElementsByTagName("password").item(0).getTextContent();
+                        username = request.getElementsByTagName("username").item(0).getTextContent();
+                        password = request.getElementsByTagName("password").item(0).getTextContent();
                         response = userController.login(username, password);
                         break;
                     case "listUsers":
@@ -180,17 +179,19 @@ public class ClientController implements Runnable {
                         }
                         break;
                     case "createUser":
-                        if (userController.checkPermission(userID, "edit_users")) {
+                        //if(userController.checkPermission(userID, "edit_users"))
+                         {
                             username = request.getElementsByTagName("username").item(0).getTextContent();
                             password = request.getElementsByTagName("password").item(0).getTextContent();
-                            response = userController.createUser(username, password);
+                            name = request.getElementsByTagName("name").item(0).getTextContent();
+                            response = userController.createUser(username, password, name);
                         }
                         break;
                     case "deleteUser":
-                        if (userController.checkPermission(userID, "edit_users")) {
+                        //if (userController.checkPermission(userID, "edit_users")) {
                             username = request.getElementsByTagName("username").item(0).getTextContent();
                             response = userController.deleteUser(username);
-                        }
+                       // }
                         break;
                     case "getPermissions":
                         requestedUserID = userController.getUserID(request.getElementsByTagName("username").item(0).getTextContent());

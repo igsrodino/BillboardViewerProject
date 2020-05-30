@@ -37,7 +37,7 @@ public class BillboardController {
      * @param billboardID the id of the billboard to retrieve
      * @return string containing the full XML response
      */
-    public String getBillboard(int billboardID){
+    public String getBillboard(int billboardID) {
         
         boolean status = this.model.getBillboard(billboardID);
         if (!status) {

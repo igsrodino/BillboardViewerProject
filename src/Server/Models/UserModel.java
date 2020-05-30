@@ -2,8 +2,16 @@ package Server.Models;
 
 import Server.Utilities.Database;
 
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import java.sql.*;
 import java.sql.Statement;
+
 import java.util.ArrayList;
 
 /**
@@ -51,57 +59,49 @@ public class UserModel {
      * Gets the password hash
      * @return password hash
      */
-    public String getPassword(int ID){
-        ResultSet rs = this.dbConn.runSelectQuery("select password from users where id =" + ID+")");
-        try{
-            while(rs.next()){
-                this.password = rs.getString("password");
-            }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+
+    public String getPassword(String username) throws SQLException {
+        String password = "";
+        ResultSet rs = this.dbConn.runSelectQuery("SELECT password FROM cab302.users where users.username ='" + username + "'");
+        while (rs.next()) {
+            password = rs.getString("password");
+            // System.out.println(password);
         }
-        return this.password;
+
+
+        return (password);
     }
 
     /**
      * Gets the salt
      * @return the salt
      */
-    public String getSalt(int ID){
-        //return this.salt;
-        ResultSet rs = this.dbConn.runSelectQuery("select salt from users where id =" + ID+")");
-        try{
-            while(rs.next()){
-                this.salt = rs.getString("password");
+
+    public String getSalt(String username) throws SQLException {
+
+            String salt = "";
+            ResultSet rs = this.dbConn.runSelectQuery("SELECT salt FROM cab302.users where users.username ='" + username + "'");
+            while (rs.next()) {
+                salt = rs.getString("salt");
+                //  System.out.println(salt);
             }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+            return (salt);
         }
-        return this.salt;
-    }
 
     /**
      * Gets the user id of the current user
      * @return  the user id or -1 if it wasn't found
      */
-    public int getUserID(String username){
-        //return this.userID;
-        //Statement stmt = dbConn.createStatement();
-        //ResultSet rs = this.dbConn.runSelectQuery("select * from users where id =" +"'"+username+"'");
-        ResultSet rs = this.dbConn.runSelectQuery("select * from users where username =\""+username+"\"");
-        //String q1 = "select * from users where username =";
-        //String q2 =
-        //ResultSet rs = this.dbConn.runSelectQuery(q1.concat(username));
 
-        try{
-            while(rs.next()){
-                this.userID = rs.getInt("id");
-            }
-        }catch(Exception e){
-            System.out.println(e.getMessage());
+    public int getUserID(String username) throws SQLException {
+        int useridcheck = -1;
+        ResultSet rs = this.dbConn.runSelectQuery("SELECT id FROM cab302.users where users.username ='" + username + "'");
+        while (rs.next()) {
+            useridcheck = rs.getInt("id");
         }
-        System.out.println(this.userID);
-        return this.userID;
+        return useridcheck;
+
+
     }
     /**
      * Gets the permissions
@@ -144,8 +144,21 @@ public class UserModel {
      * @param userID  the userID of the user record to retrieve
      * @return  true if the record was loaded successfully, or false if it wasn't found
      */
-    public boolean getUser(int userID){
-        return false;
+    public boolean getUser(int userID) throws SQLException {
+        int useridcheck = -1;
+        ResultSet rs = this.dbConn.runSelectQuery("SELECT username FROM cab302.users where users.username ='" +userID+"'");
+        while ( rs.next() ) {
+            useridcheck = rs.getInt("username");
+            // System.out.println(useridcheck);
+        }
+        if(userID == useridcheck) {
+
+            return(true);
+        }
+        else
+        {
+            return(false);
+        }
     }
 
     /**
@@ -153,8 +166,23 @@ public class UserModel {
      * @param username  the username of the user to retrieve
      * @return  true if the record was loaded successfully, or false if it wasn't found
      */
-    public boolean getUser(String username){
-        return false;
+    public boolean getUser(String username) throws SQLException {
+
+
+        String Usernamecheck = "";
+        ResultSet rs = this.dbConn.runSelectQuery("SELECT username FROM cab302.users where users.username ='" +username+"'");
+        while ( rs.next() ) {
+            Usernamecheck = rs.getString("username");
+           // System.out.println(Usernamecheck);
+        }
+        if(username.equals(Usernamecheck)) {
+
+            return(true);
+        }
+        else
+        {
+            return(false);
+        }
     }
 
     /**
@@ -162,13 +190,85 @@ public class UserModel {
      * This just writes the record into the database. The provided password must already be
      * hashed in the UserController.setUserPassword() method before calling this method
      * Will update the internal user fields (username, password, etc)
-     * @param userID the user id of the user to update
+     * @param Username the username of the user to update
      * @param password  the password hash to store in the database
      * @return  true if the update was a success, or false if it was not
      */
-    public boolean setUserPassword(int userID, String password){
-        return false;
+    public boolean setUserPassword(String Username, String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
+
+
+        if(getUser(Username)) {
+            this.dbConn.runUpdateQuery("update users set users.password = '" + password + "' where users.username = '" + Username + "'");
+            this.dbConn.runUpdateQuery("update users set users.salt = '" + salt + "' where users.username = '" + Username + "'");
+            return (true);
+
+        }
+        else
+            {
+                return (false);
+
+            }
+
+
+
+
     }
+
+
+    /**
+     *
+     * @param username the username of the new user
+     * @param password unshased new password
+     * @param name name of new user
+     * @return if sucsessfull returns 1
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     * @throws UnsupportedEncodingException
+     */
+    public boolean createuser(String username , String name , String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
+
+
+        if(!getUser(username)) {
+            this.dbConn.runUpdateQuery("INSERT INTO users (username, password, name, salt) VALUES("+"'"+username+"',"+"'"+password+"',"+"'"+name+"','"+salt+"')");
+            return (true);
+
+        }
+        else
+            {
+                return (false);
+
+            }
+
+
+
+    }
+
+    /**
+     *
+     * @param Username
+     * @return if successful
+     */
+    public boolean deleteUser(String Username) throws SQLException {
+
+
+
+        if(getUser(Username)) {
+            this.dbConn.runUpdateQuery("DELETE FROM users WHERE username = '"+Username+"'");
+            return (true);
+
+        }
+        else
+        {
+            return (false);
+
+        }
+
+    }
+
+
+
+
+
 
     /**
      * Sets the user permissions for the given user.

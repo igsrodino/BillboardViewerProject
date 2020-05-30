@@ -20,6 +20,7 @@ public class BillboardModel {
 
     public BillboardModel() {
         this.info = new BillboardPOJO();
+
     }
 
     private String requestBillboard() throws IOException {
@@ -94,9 +95,14 @@ public class BillboardModel {
         return this.info;
     }
     public BillboardPOJO getBillboard() throws IOException {
+        String board = this.requestBillboard();
 
-        this.parseXML(this.requestBillboard());
-
+        if (!board.contains("billboard-not-found")) {
+            this.parseXML(board);
+        } else {
+            this.info.setMessage("Get your business in front of thousands");
+            this.info.setInformation("Call us for a billboard today");
+        }
         return this.info;
     }
 }
