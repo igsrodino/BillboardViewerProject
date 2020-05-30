@@ -53,26 +53,9 @@ public class UserController {
      * @return  a Response string with the session token in the data element
      */
     public String login(String username, String password) throws SQLException, InvalidKeySpecException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        String hashedpass = "";
-        String hashedpass2 = "";
-
-        if(this.getUserID(username) > -1)
-       {
-            hashedpass = this.model.getPassword(username);
-           String salt = this.model.getSalt(username);
-           System.out.println(salt);
-            hashedpass2 = UserAuthentication.generateHash(password, salt);
-
-       }
-       else {
-            return  ("<response>\n" +
-                    "    <type>fail</type>\n" +
-                    "    <data></data>\n" +
-                    "</response>");
-
-       }
-
-
+        String hashedpass = this.model.getPassword(username);
+       String salt = this.model.getSalt(username);
+       String hashedpass2 = UserAuthentication.generateHash(password, salt);
 
 
        if(UserAuthentication.compareHashes(hashedpass,hashedpass2))
