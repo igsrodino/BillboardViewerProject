@@ -1,17 +1,12 @@
 package Server.Utilities;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import Server.Controllers.UserController;
-import Server.Models.UserModel;
-import org.junit.jupiter.api.*;
-
-
 import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Userausthenticationtests {
 
