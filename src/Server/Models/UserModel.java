@@ -80,10 +80,10 @@ public class UserModel {
     public String getSalt(String username) throws SQLException {
 
             String salt = "";
-            ResultSet rs = this.dbConn.runSelectQuery("SELECT salt FROM cab302.users where users.username ='" + username + "'");
+            ResultSet rs = this.dbConn.runSelectQuery("SELECT salt FROM users where users.username ='" + username + "'");
             while (rs.next()) {
                 salt = rs.getString("salt");
-                //  System.out.println(salt);
+                 System.out.println(salt);
             }
             return (salt);
         }
