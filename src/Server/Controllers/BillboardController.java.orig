@@ -123,11 +123,8 @@ public class BillboardController {
             }
 
             //Transform document to XML string
-<<<<<<< HEAD
             billboardXMLStringValue = this.convertDocumentToString(doc);
-=======
-            billboardXMLStringValue = convertDocumentToString(doc);
->>>>>>> master
+
 
         }catch(Exception e){
             System.out.println("Something went wrong.");}
@@ -136,12 +133,7 @@ public class BillboardController {
     }
 
 
-
-<<<<<<< HEAD
     private String convertDocumentToString(Document doc){
-=======
-    public static String convertDocumentToString(Document doc){
->>>>>>> master
             // TODO: add error handling
         String result = "";
         try {
@@ -189,11 +181,8 @@ public class BillboardController {
             doc.appendChild(resp);
             resp.appendChild(data);
             resp.appendChild(type);
-<<<<<<< HEAD
              list_xml = this.convertDocumentToString(doc);
-=======
-             list_xml = convertDocumentToString(doc);
->>>>>>> master
+
         }catch(Exception e){
             e.printStackTrace();
 
@@ -206,11 +195,6 @@ public class BillboardController {
      * @param billboardID  the id of the billboard to be deleted
      * @return string containing a response object that has an empty data element.
      */
-<<<<<<< HEAD
-    public String deleteBillboard(int billboardID){
-//         Use the model.deleteBillboard() method
-        return null;
-=======
     public String deleteBillboard(int billboardID) {
 //      Use the model.deleteBillboard() method
         this.model.deleteBillboard(billboardID);
@@ -244,7 +228,6 @@ public class BillboardController {
                 e.printStackTrace();
             }
         return xmlString;
->>>>>>> master
     }
 
     /**

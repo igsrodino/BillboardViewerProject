@@ -11,12 +11,8 @@ import java.sql.SQLException;
 
 import java.sql.*;
 import java.sql.Statement;
-<<<<<<< HEAD
 import java.sql.ResultSet;
 import java.sql.SQLException;
-=======
-
->>>>>>> master
 import java.util.ArrayList;
 
 /**
