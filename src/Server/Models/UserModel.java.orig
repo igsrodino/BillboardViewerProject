@@ -2,10 +2,13 @@ package Server.Models;
 
 import Server.Utilities.Database;
 
-import java.sql.*;
-import java.sql.Statement;
+<<<<<<< HEAD
 import java.sql.ResultSet;
 import java.sql.SQLException;
+=======
+import java.sql.*;
+import java.sql.Statement;
+>>>>>>> master
 import java.util.ArrayList;
 
 /**
@@ -87,6 +90,10 @@ public class UserModel {
      * @return  the user id or -1 if it wasn't found
      */
     public int getUserID(String username){
+<<<<<<< HEAD
+
+        ResultSet rs = this.dbConn.runSelectQuery("select * from users where username =\""+username+"\"");
+=======
         //return this.userID;
         //Statement stmt = dbConn.createStatement();
         //ResultSet rs = this.dbConn.runSelectQuery("select * from users where id =" +"'"+username+"'");
@@ -94,6 +101,7 @@ public class UserModel {
         //String q1 = "select * from users where username =";
         //String q2 =
         //ResultSet rs = this.dbConn.runSelectQuery(q1.concat(username));
+>>>>>>> master
 
         try{
             while(rs.next()){
@@ -113,9 +121,15 @@ public class UserModel {
     public ArrayList<String> getPermissions(int userID) throws SQLException {
         //return this.permissions;
         //String name = getUsername(UserID)
+<<<<<<< HEAD
+        // int UserId =
+        ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= "+userID);
+        // ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= 47");
+=======
        // int UserId =
         ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= "+userID);
        // ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= 47");
+>>>>>>> master
         //System.out.print(rs.getFetchSize());
         try{
             while(rs.next()){
@@ -139,7 +153,6 @@ public class UserModel {
         }
         //this.permissions.add("edit_billboards");
         return permissions;
-
     }
 
     /**
