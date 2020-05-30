@@ -18,6 +18,9 @@ class SocketClientTest {
 
     @Test
     void testConnection () throws IOException {
+
+        // RUN SERVER.JAVA BEFORE RUNNING TESTS //
+
         clientSocket = new Socket("localhost", port);
     }
 

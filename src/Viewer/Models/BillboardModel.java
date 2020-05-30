@@ -17,7 +17,6 @@ import java.net.Socket;
 public class BillboardModel {
     private BillboardPOJO info;
     private static String response;
-    private static Document responseXML;
 
     public BillboardModel() {
         this.info = new BillboardPOJO();
@@ -31,13 +30,11 @@ public class BillboardModel {
                 "    <type>getBillboard</type>\n" +
                 "</request>");
         response = inFromServer.readUTF();
-        // System.out.println("Server: "+ response);
         clientSocket.close();
         return response;
     }
 
-    public void parseXML(String response) throws IOException {
-        //File xmlFile = new File("src\\Viewer\\Views\\XMLExample.xml");
+    public void parseXML(String response) {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
         try {
@@ -51,6 +48,7 @@ public class BillboardModel {
             e1.printStackTrace();
         }
     }
+
     public void getInfo(NodeList node) {
         NodeList childNodes = node.item(0).getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -89,7 +87,7 @@ public class BillboardModel {
         try{
             this.parseXML(errorBoard);
 
-        }catch(IOException e){
+        }catch(Exception e){
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
         }

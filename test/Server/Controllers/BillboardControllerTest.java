@@ -31,27 +31,4 @@ class BillboardControllerTest {
             assertEquals("", BC.getBillboard(1));
         });
     }
-
-    @Test
-    void convertDocumentToString() {
-
-    }
-
-    @Test
-    void getBillboardList() {
-           // assertEquals("Response", BC.getBillboardList());
-    }
-
-    @Test
-    void deleteBillboard() {
-        //assertEquals("Response", BC.deleteBillboard(2));
-
-    }
-
-    @Test
-    void createBillboard() {
-        assertEquals("Response", BC.createBillboard("#FF00FF", "This is a test",
-                "#00FF00", "https://placebear.com/512/512", "url",
-                "#FF00FF", "Testing", 3));
-    }
 }

@@ -45,15 +45,10 @@ class ScheduleControllerTest {
 
     @Test
     void setBillboardSchedule() {
-        assertEquals("Response", SC.setBillboardSchedule(1, 1000, 0100, 0010));
-    }
-
-    @Test
-    void setBillboardScheduleErrors() {
-        assertThrows(AssertionError.class, () -> {
-            assertEquals("", SC.setBillboardSchedule(1, 1000, 0100, 0010));
-            assertEquals(20, SC.setBillboardSchedule(1, 1000, 0100, 0010));
-            assertEquals(2.0, SC.setBillboardSchedule(1, 1000, 0100, 0010));
+        assertThrows(NullPointerException.class, () -> {
+            assertEquals("", SC.setBillboardSchedule(1, 1000, 0100, 0010, 4));
+            assertEquals(20, SC.setBillboardSchedule(1, 1000, 0100, 0010, 6));
+            assertEquals(2.0, SC.setBillboardSchedule(1, 1000, 0100, 0010, 5));
         });
     }
 }
