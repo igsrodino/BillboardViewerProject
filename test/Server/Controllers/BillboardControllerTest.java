@@ -25,6 +25,8 @@ class BillboardControllerTest {
 
     @Test
     void getBillboard()  {
+        // Always throws NullPointerException as test can only be done with SocketWrench.
+        // See Test section on report for tests.
         assertThrows(NullPointerException.class, () -> {
             assertEquals(1, BC.getBillboard(1));
             assertEquals(null, BC.getBillboard(1));
