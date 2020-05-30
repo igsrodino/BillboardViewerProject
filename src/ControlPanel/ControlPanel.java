@@ -38,7 +38,7 @@ public class ControlPanel {
                     userView, mainNav);
 
             // Start the views
-            appFrame.changeView("schedule");
+            appFrame.changeView("login");
         }
         catch (Exception e)
         {
