@@ -27,6 +27,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -267,8 +269,65 @@ public class UserController {
      * @param permissions  a list of permissions to set
      * @return  a Response string
      */
-    public String setPermissions(String username, String[] permissions){
-        return "Response";
+    public String setPermissions(int requestedUserID, Document request){
+        //return "Response";
+        String set_permXMLString= "response";
+        String[] permissions =
+                request.getElementsByTagName("permissions").item(0).getTextContent().split(",");
+        List<String> perm_list = Arrays.asList(permissions);
+        int create_billboard = 0;
+        int edit_billboards = 0;
+        int schedule_billboards = 0;
+        int edit_users = 0;
+        if(perm_list.contains("create_billboards")){
+            create_billboard = 1;
+        }
+        if(perm_list.contains("edit_billboards")){
+            edit_billboards = 1;
+        }
+        if(perm_list.contains("schedule_billboards")){
+            schedule_billboards = 1;
+        }
+        if(perm_list.contains("edit_users")){
+            edit_users = 1;
+        }
+
+
+        try{
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+            Element resp = doc.createElement("response");
+            Element data = doc.createElement("data");
+            Element type = doc.createElement("type");
+            boolean result = this.model.setPermissions(requestedUserID,create_billboard,edit_billboards,schedule_billboards,edit_users);
+            if(result){
+                type.appendChild(doc.createTextNode("success"));
+            }
+            else{
+                type.appendChild(doc.createTextNode("failure"));
+            }
+           // ArrayList<String> permissions = this.model.getPermissions(requestedUserID);
+//            System.out.println(permissions);
+//            if(permissions != null && permissions.size() > 0){
+//                for (String permission : permissions){
+//                    data.appendChild(doc.createTextNode(permission+","));
+//                }
+//                type.appendChild(doc.createTextNode("success"));
+//            }
+//            else
+//            {
+//                type.appendChild(doc.createTextNode("failure"));
+//            }
+            doc.appendChild(resp);
+            resp.appendChild(data);
+            resp.appendChild(type);
+            set_permXMLString = convertDocumentToString(doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return set_permXMLString;
     }
 
     /**

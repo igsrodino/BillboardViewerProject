@@ -137,6 +137,7 @@ public class UserModel {
         }
         //this.permissions.add("edit_billboards");
         return permissions;
+
     }
 
     /**
@@ -278,7 +279,60 @@ public class UserModel {
      * @param permissions  the permissions to set
      * @return true if the operation was a success or false if it failed
      */
-    public boolean setPermissions(int userID, String[] permissions){
-        return false;
+    public boolean setPermissions(int userID, int create_billboards, int edit_billboards, int schedule_billboards,
+                                  int edit_users){
+
+        ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user="+userID);
+        int result = -1;
+        try {
+            System.out.print(rs.getFetchSize());
+            rs.last();
+            if (rs.getRow()>0){
+                // Run an update query
+                result = dbConn.runUpdateQuery("update permissions set create_billboards="+create_billboards+", edit_billboards="+edit_billboards
+                        +", schedule_billboards="+schedule_billboards+", edit_users="+edit_users+" where user = " + userID);
+            } else {
+                // run an insert query
+                result=dbConn.runUpdateQuery("insert into permissions(create_billboards,edit_billboards,schedule_billboards,edit_users) values("+
+                        create_billboards+","+edit_billboards+","+schedule_billboards+","+edit_users+")");
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return result == 1;
+//        boolean success = false;
+//        try{
+//            ArrayList<String> existing_perm = getPermissions(userID);
+//            for(String perm : req_permissions){
+//                if(existing_perm.contains(perm) == true){
+//                    //permissions.set(permissions.indexOf(perm), perm);
+//                    //this.permissions.remove(perm);
+//                    //System.out.println("User already has this permission");
+//                    success = false;
+//                }
+//                else{
+//                    if(perm=="create_billboards"||perm=="edit_billboards"||perm=="schedule_billboards"||perm=="edit_users"){
+//                        this.permissions.add(perm);
+//
+//                        success = true;
+//                    }
+//                    else{
+//                        //System.out.println("This permission does not exist in the database");
+//                        success = false;
+//                    }
+//
+//                }
+//
+//            }
+//           // return success;
+//        }catch(Exception e){
+//            System.out.println(e.getMessage());
+//        }
+//        finally{
+//            System.out.println("finally block always executed for resource clean-up");
+//            return success;
+//        }
+
     }
 }
