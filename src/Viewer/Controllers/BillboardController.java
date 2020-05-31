@@ -29,6 +29,7 @@ public class BillboardController{
        }catch(IOException e){
            String errorBoard = "<billboard background=\"#0000FF\">\n" +
                    "    <message colour=\"#FFFF00\">Network Error</message>\n" +
+                   "<picture url=\"\"/>\n" +
                    "    <information colour=\"#00FFFF\">Error message: " + e.getMessage() +
                    "</information>"+
                    "</billboard>";

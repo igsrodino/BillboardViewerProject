@@ -26,6 +26,7 @@ public class BillboardPOJO {
         this.creator = "";
         this.owner = -1;
         this.name = "";
+        this.pictureData = "";
     }
 
     public void setOwner(int owner) {

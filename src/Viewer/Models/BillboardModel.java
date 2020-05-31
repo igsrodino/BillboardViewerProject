@@ -62,6 +62,13 @@ public class BillboardModel {
      * Breaks down nodes and sets methods with information, image or message to be displayed(if required).
      */
     public void getInfo(NodeList node) {
+        this.info.setBackgroundColour("");
+        this.info.setMessageColour("");
+        this.info.setMessage("");
+        this.info.setPictureURL("");
+        this.info.setInformationColour("");
+        this.info.setInformation("");
+        this.info.setPictureData("");
         NodeList childNodes = node.item(0).getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
             Node nodeItem = childNodes.item(i);
