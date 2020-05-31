@@ -33,8 +33,10 @@ public class BillboardController{
                    "</information>"+
                    "</billboard>";
            bb = model.getBillboard(errorBoard);
+           view.setData("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=");
            System.err.println(e.getMessage());
            System.err.println(e.getStackTrace());
+
        }
         if (bb.getMessage().length() > 0) {
             view.setMessage(bb.getMessage());
