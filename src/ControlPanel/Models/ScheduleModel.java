@@ -9,6 +9,9 @@ import java.util.Map;
 public class ScheduleModel {
     private Map<String, Integer> sunday;
 
+    /**
+     * Schedule model to start on Sunday, as weekday #1 = Sunday
+     */
     public ScheduleModel(){
         this.sunday = new HashMap<String, Integer>();
     }

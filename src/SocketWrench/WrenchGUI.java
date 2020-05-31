@@ -49,8 +49,6 @@ public class WrenchGUI {
         this.response = response;
     }
 
-
-
     public JButton getSendItButton() {
         return sendItButton;
     }
@@ -70,7 +68,5 @@ public class WrenchGUI {
     public JPanel getRootPanel(){
         return this.rootPanel;
     }
-
-
 
 }

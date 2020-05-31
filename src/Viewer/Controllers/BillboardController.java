@@ -19,6 +19,10 @@ public class BillboardController{
         this.view = view;
         this.bb = null;
     }
+
+    /**
+     * Sets message, image or information to billboard depending on how many are received.
+     */
     public void updateViewer() {
        try{
            bb = model.getBillboard();

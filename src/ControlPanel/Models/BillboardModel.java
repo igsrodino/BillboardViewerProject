@@ -68,7 +68,6 @@ public class BillboardModel {
     public void deleteBillboard(int index) {
         if (index < 0) return;
         this.billboards.remove(index);
-        // TODO: Network request to delete the billboard
     }
 
     /**

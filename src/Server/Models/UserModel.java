@@ -2,16 +2,11 @@ package Server.Models;
 
 import Server.Utilities.Database;
 
-
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import java.sql.*;
-import java.sql.Statement;
-
 import java.util.ArrayList;
 
 /**
@@ -25,6 +20,7 @@ public class UserModel {
     private String salt;
     private int userID;
     private ArrayList<String> permissions;
+
     /** Constructs the User object
     * @param dbConnection allows access to the database via the connection established at server start
      * */
@@ -43,7 +39,6 @@ public class UserModel {
      */
     public String getUsername(int ID){
 
-        //return this.username;
         ResultSet rs = this.dbConn.runSelectQuery("select username from users where id =" + ID+")");
         try{
             while(rs.next()){

@@ -34,6 +34,9 @@ public class ClientController implements Runnable {
         this.dbConn = dbConn;
     }
 
+    /**
+     * Runnable method for request and response.
+     */
     @Override
     public void run() {
         try {

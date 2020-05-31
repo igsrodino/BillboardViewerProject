@@ -3,6 +3,9 @@ package ControlPanel.View;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * View for main navigation screen.
+ */
 public class MainNav {
     private JButton billboardManagementButton;
     private JButton billboardSchedulingButton;

@@ -41,7 +41,6 @@ public class UserController {
      * Constructor
      * @param model  the UserModel object to use for data access
      */
-
     public UserController(UserModel model){
         this.model = model;
     }
@@ -58,13 +57,9 @@ public class UserController {
        String hashedpass2 = UserAuthentication.generateHash(password, salt);
 
 
-       if(UserAuthentication.compareHashes(hashedpass,hashedpass2))
-       {
-          int userid = this.model.getUserID(username);
+       if(UserAuthentication.compareHashes(hashedpass,hashedpass2)) {
+           int userid = this.model.getUserID(username);
            String token = UserAuthentication.generateSessionToken(userid);
-
-
-
 
            return ("<response>\n" +
                    "    <type>success</type>\n" +
@@ -72,7 +67,6 @@ public class UserController {
                    token+
                    "    </data>\n" +
                    "</response>");
-
        }
        else
            {
@@ -82,7 +76,6 @@ public class UserController {
                       "</response>");
 
            }
-
 
     }
 
@@ -330,7 +323,6 @@ public class UserController {
      * @param username  the user to retrieve the userID from
      * @return int  the userID, or -1 if user not found
      */
-
     public int getUserID(String username) throws SQLException {
         return(this.model.getUserID(username));
     }

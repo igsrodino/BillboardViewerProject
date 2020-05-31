@@ -47,7 +47,7 @@ public class UserController {
      * @return  true/false depending on the server response
      */
     private boolean login (String username, String password){
-        //TODO: hash the password, call the model to send it to the server, store the accessToken
+
         System.out.println(username + " - " + password);
         frame.changeView("billboards", true);
         return false;

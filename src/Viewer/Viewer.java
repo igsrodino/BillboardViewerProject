@@ -2,19 +2,17 @@ package Viewer;
 
 import Viewer.Controllers.BillboardController;
 import Viewer.Models.BillboardModel;
-import Viewer.Views.BillboardErrorScreen;
 import Viewer.Views.BillboardView;
 
-import java.net.MalformedURLException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Main method to run Billboard Viewer and update every 15 seconds
+ * Main method to run Billboard
  *
  */
 public class Viewer {
-    public static void main(String args[]) throws MalformedURLException {
+    public static void main(String args[]){
         try
         {
             BillboardModel model = new BillboardModel();
@@ -29,7 +27,7 @@ public class Viewer {
         }
         catch (Exception e)
         {
-            new BillboardErrorScreen();
+            //error handling code
         }
     }
 }

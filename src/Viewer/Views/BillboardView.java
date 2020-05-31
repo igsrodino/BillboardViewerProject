@@ -18,6 +18,9 @@ public class BillboardView {
     private JLabel checkoutLabel;
     private JLabel imageLabel;
 
+    /**
+     * Main method for attaching listener events and labels into frame.
+     */
     public BillboardView() throws IOException {
         welcomeLabel = null;
         checkoutLabel = null;
@@ -32,12 +35,19 @@ public class BillboardView {
         frame.setUndecorated(true); // Makes 100% full screen, no frame.
         frame.setVisible(true); // Show Billboard
     }
+
+    /**
+     * Attach events to listen for mouseclick or escape key clicks.
+     */
     private void attachListenerEvents() {
         Input input = new Input(frame); // Imports Input.java into new instance called input
         input.attachMouseEvent(); // Attach Mouse Listener to method
         input.attachESCKeyEvent(); // Attach ESC Key Listener to method
     }
 
+    /**
+     * Set up message label for GUI ready to add to frame.
+     */
     private void welcomeLabel() {
         // Sets up text for <message> label
         welcomeLabel = new JLabel("", JLabel.CENTER); // Centers text in the center of Billboard (X axis)
@@ -53,6 +63,9 @@ public class BillboardView {
         container.add(welcomeLabel, gbc); // Places label on top part of Billboard (Y axis)
     }
 
+    /**
+     * Set up image label for GUI ready to add to frame.
+     */
     private void imageLabel() {
         // Sets up and display URL image for <picture> label
         ImageIcon image = new ImageIcon(); // Get image if it exists
@@ -66,6 +79,9 @@ public class BillboardView {
         container.add(imageLabel, gbc); // Places label on middle part of Billboard (Y axis)
     }
 
+    /**
+     * Set up information label for GUI ready to add to frame.
+     */
     private void checkoutLabel() {
         // Sets up text for <information> label
         checkoutLabel = new JLabel("", JLabel.CENTER); // Centers text in the center of Billboard (X axis)
@@ -79,6 +95,9 @@ public class BillboardView {
         container.add(checkoutLabel, gbc); // Places label on bottom part of Billboard (Y axis)
     }
 
+    /**
+     * Places all labels in frame.
+     */
     private void createLabels() {
         // Set up billboard layout
         frame.setLayout(new GridBagLayout());
@@ -90,6 +109,9 @@ public class BillboardView {
         checkoutLabel();
     }
 
+    /**
+     * Resizes image received from URL depending on dimensions.
+     */
     public void setUrl (String url){
         try {
             URL imgUrl = new URL(url);
@@ -121,6 +143,10 @@ public class BillboardView {
             System.err.println(e.getStackTrace());
         }
     }
+
+    /**
+     * Resizes image received from data depending on dimensions.
+     */
     public void setData (String data){
         try {
             String imgData = data;
@@ -156,18 +182,38 @@ public class BillboardView {
             System.err.println(e.getStackTrace());
         }
     }
+
+    /**
+     * Sets and returns message.
+     */
     public void setMessage(String message) {
         welcomeLabel.setText(message);
     }
+
+    /**
+     * Sets and returns information.
+     */
     public void setInformation(String information){
         checkoutLabel.setText(information);
     }
+
+    /**
+     * Sets and returns background colour.
+     */
     public void setBackgroundColour(String backgroundColour){
         frame.getContentPane().setBackground(Color.decode(backgroundColour));
     }
+
+    /**
+     * Sets and returns information text colour.
+     */
     public void setInformationColour(String informationColour){
         checkoutLabel.setForeground(Color.decode(informationColour));
     }
+
+    /**
+     * Sets and returns message text colour.
+     */
     public void setMessageColour(String messageColour){
         welcomeLabel.setForeground(Color.decode(messageColour));
     }

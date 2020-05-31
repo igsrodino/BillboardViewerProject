@@ -3,6 +3,9 @@ package ControlPanel.View;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Getters and setters for Control Panel View.
+ */
 public class BillboardView {
     private JPanel containerPanel;
     private JPanel billboardPanel;
@@ -113,6 +116,10 @@ public class BillboardView {
         this.billboardName.setText(s);
     }
 
+    /**
+     * Switch cases for layout depending on if there are all messages,
+     * images and information to display, or any combination of them.
+     */
     public void setPreview() {
         // Sets the preview pane
         int typeCode = 0;
@@ -138,7 +145,6 @@ public class BillboardView {
             }
             case 10: {
                 // Information only
-//                this.previewPanel.setLayout(new BorderLayout());
                 JLabel information = new JLabel(this.getInformation());
                 this.previewPanel.add(information, BorderLayout.CENTER);
                 break;
