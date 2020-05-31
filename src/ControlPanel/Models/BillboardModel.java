@@ -5,6 +5,9 @@ import Viewer.Models.BillboardPOJO;
 import javax.swing.*;
 import java.util.ArrayList;
 
+/**
+ * Different methods to alter billboards
+ */
 public class BillboardModel {
     private ArrayList<BillboardPOJO> billboards;
 
@@ -65,7 +68,6 @@ public class BillboardModel {
     public void deleteBillboard(int index) {
         if (index < 0) return;
         this.billboards.remove(index);
-        // TODO: Network request to delete the billboard
     }
 
     /**

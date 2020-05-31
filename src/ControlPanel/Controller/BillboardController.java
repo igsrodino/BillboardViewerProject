@@ -23,6 +23,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
 
+/**
+ * Sets up the main controller for the billboard
+ */
 public class BillboardController {
     private UserModel userModel;
     private BillboardView billboardView;
@@ -133,7 +136,7 @@ public class BillboardController {
             this.model.deleteBillboard(idx);
         }
         this.updateView(true);
-        // TODO: Call model to delete billboard from server
+        // Call model to delete billboard from server
     }
 
     /**
@@ -239,7 +242,7 @@ public class BillboardController {
                     currentBillboard);
         }
         this.updateView(true);
-        // TODO: Call model.saveBillboard to send to server
+        // Call model.saveBillboard to send to server
     }
 
     /**

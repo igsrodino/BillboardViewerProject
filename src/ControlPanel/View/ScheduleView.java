@@ -2,6 +2,9 @@ package ControlPanel.View;
 
 import javax.swing.*;
 
+/**
+ * Getters for panel and schedule billboard in schedule view.
+ */
 public class ScheduleView {
     private JPanel containerPanel;
     private JButton scheduleBillboard;

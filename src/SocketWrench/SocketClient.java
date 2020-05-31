@@ -3,12 +3,12 @@ package SocketWrench;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * For reading and writing from server to local.
+ */
 public class SocketClient {
     private static String response;
 
-    public SocketClient() {
-
-    }
     public static void sendRequest(int port, String request){
         // Open a connection, send it, save response
         try {
@@ -23,7 +23,6 @@ public class SocketClient {
             System.err.println(e.getMessage());
         }
     };
-
 
     public static String getResponse(){
         if(response == null) return "Error: No data received";

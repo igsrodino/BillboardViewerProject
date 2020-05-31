@@ -3,6 +3,9 @@ package ControlPanel.View;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * View for login screen.
+ */
 public class LoginView {
     private JPasswordField password;
     private JPanel containerPanel;

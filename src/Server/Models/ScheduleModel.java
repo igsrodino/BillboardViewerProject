@@ -6,7 +6,6 @@ import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -124,9 +123,8 @@ public class ScheduleModel {
      */
     public boolean setSchedule(int billboardID, int startTime, int endTime, int duration,
                                int recurs, int weekday) {
-        // Needs to a) add 00 to the startTime before inserting (startTime * 100), and b) calculate
+        // Add 00 to the startTime before inserting (startTime * 100), and b) calculate
         // end_time (startTime + duration)*100
-
         int res = dbConn.runUpdateQuery("insert into schedule (start_time, end_time, duration, weekday, recurs, billboard) \n" +
                 "values (" + (startTime * 100) + "," + endTime + "," + duration + "," + weekday +
                 "," + recurs + "," + billboardID + ")\n");

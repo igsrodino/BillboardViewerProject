@@ -26,7 +26,6 @@ public class NetworkManager {
         return accessToken.length() > 0;
     }
 
-
     /**
      * Makes a request that doesn't require a data payload and returns the response
      * @param type  the type of request to make
@@ -43,13 +42,15 @@ public class NetworkManager {
             // Extract and return the data from the response
             responseData = request.getDocumentElement();
 
-        } catch(Exception e){
+        }
+        catch(Exception e){
             System.err.println(e.getMessage());
             System.err.println(e.getStackTrace());
             return null;
         }
         return responseData;
     }
+
     /**
      * Makes a request with a data payload to the server and returns the data element of the
      * response.

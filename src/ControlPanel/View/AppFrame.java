@@ -5,6 +5,9 @@ import com.sun.tools.javac.Main;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Sets up view for Control Panel.
+ */
 public class AppFrame {
     private CardLayout cardLayout;
     private JPanel content;
@@ -12,6 +15,9 @@ public class AppFrame {
     private LoginView loginView;
     private MainNav mainNav;
 
+    /**
+     * Initialize set up view for control panel.
+     */
     public AppFrame(MainNav mainNav){
         this.mainNav = mainNav;
         this.frame = new JFrame("Control Panel");
@@ -19,10 +25,17 @@ public class AppFrame {
         this.content = new JPanel(new CardLayout());
         initialiseViews();
     }
+
+    /**
+     * Adds view in panel depending on content.
+     */
     public void addView(JPanel view, String name){
         content.add(name, view);
     }
 
+    /**
+     * Initializes view for control panel.
+     */
     public void initialiseViews() {
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(mainNav.getPanel(), BorderLayout.NORTH);
@@ -33,6 +46,10 @@ public class AppFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+
+    /**
+     * Changes view and layout.
+     */
     public void changeView(String panelName){
         CardLayout cl = (CardLayout)(content.getLayout());
         cl.show(content, panelName);
@@ -40,6 +57,9 @@ public class AppFrame {
         frame.repaint();
     }
 
+    /**
+     * Changes view and layout depending on the navState.
+     */
     public void changeView(String panelName, boolean navState){
         CardLayout cl = (CardLayout)(content.getLayout());
         cl.show(content, panelName);
@@ -48,6 +68,9 @@ public class AppFrame {
         frame.repaint();
     }
 
+    /**
+     * Gets and returns the frame.
+     */
     public Frame getFrame() {
         return this.frame;
     }

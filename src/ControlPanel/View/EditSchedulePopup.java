@@ -2,8 +2,10 @@ package ControlPanel.View;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Edit the schedule pop up panel.
+ */
 public class EditSchedulePopup {
     public static String display(String title) {
         String[] items = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",

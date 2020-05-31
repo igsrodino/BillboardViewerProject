@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * GUI setup for socketwrench for setting default text and default response headers.
+ */
 public class WrenchGUI {
     private JPanel rootPanel;
     private JButton sendItButton;
@@ -46,8 +49,6 @@ public class WrenchGUI {
         this.response = response;
     }
 
-
-
     public JButton getSendItButton() {
         return sendItButton;
     }
@@ -67,7 +68,5 @@ public class WrenchGUI {
     public JPanel getRootPanel(){
         return this.rootPanel;
     }
-
-
 
 }

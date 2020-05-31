@@ -13,16 +13,21 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.Socket;
 
-// Contains methods to call the server and return the response in an appropriate format
+/**
+ * Contains methods to call the server and return the response in an appropriate format
+ *
+ */
 public class BillboardModel {
     private BillboardPOJO info;
     private static String response;
 
     public BillboardModel() {
         this.info = new BillboardPOJO();
-
     }
 
+    /**
+     * Requests current billboard from server.
+     */
     private String requestBillboard() throws IOException {
         Socket clientSocket = new Socket("localhost", 5050);
         DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
@@ -35,6 +40,9 @@ public class BillboardModel {
         return response;
     }
 
+    /**
+     * Parses XML received into document so elements can be read.
+     */
     public void parseXML(String response) {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
@@ -50,6 +58,9 @@ public class BillboardModel {
         }
     }
 
+    /**
+     * Breaks down nodes and sets methods with information, image or message to be displayed(if required).
+     */
     public void getInfo(NodeList node) {
         NodeList childNodes = node.item(0).getChildNodes();
         for (int i = 0; i < childNodes.getLength(); i++) {
@@ -84,6 +95,10 @@ public class BillboardModel {
             }
         }
     }
+
+    /**
+     * Displays error message if no billboard is available and/or server is down.
+     */
     public BillboardPOJO getBillboard(String errorBoard) {
         try{
             this.parseXML(errorBoard);
@@ -94,6 +109,10 @@ public class BillboardModel {
         }
         return this.info;
     }
+
+    /**
+     * Displays default advertising billboard if no billboard is available and there is no error.
+     */
     public BillboardPOJO getBillboard() throws IOException {
         String board = this.requestBillboard();
 

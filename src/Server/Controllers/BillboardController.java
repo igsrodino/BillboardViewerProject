@@ -10,7 +10,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.*;
 import Server.Models.BillboardModel;
-//import Server.Models.ClientController;
 
 /**
  * Provides access to billboards
@@ -74,7 +73,7 @@ public class BillboardController {
 
             }
 
-//            //Create message elements
+            //Create message elements
             if (model.getMessage().length() > 0) {
                 Element messageElement = doc.createElement("message");
                 if (model.getMessage_color().length() > 0) {
@@ -88,7 +87,7 @@ public class BillboardController {
             }
 
 
-//            //Create picture elements
+            //Create picture elements
             if (model.getUrl().length() > 0) {
                 Element pictureElement = doc.createElement("picture");
                 Attr attrType1 = doc.createAttribute("url");
@@ -105,8 +104,8 @@ public class BillboardController {
 
                 billboard.appendChild(pictureElement);
             }
-//
-//            //Create information element
+
+            //Create information element
             if (model.getInformation().length() > 0) {
                 Element informationElement = doc.createElement("information");
 
@@ -130,9 +129,10 @@ public class BillboardController {
         return billboardXMLStringValue;
     }
 
-
+    /**
+     * Converts received document into String format.
+     */
     public static String convertDocumentToString(Document doc) {
-        // TODO: add error handling
         String result = "";
         try {
             StringWriter sw = new StringWriter();

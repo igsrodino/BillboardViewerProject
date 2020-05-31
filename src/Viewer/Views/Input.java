@@ -9,12 +9,20 @@ import java.awt.event.MouseEvent;
 
 import static javax.swing.SwingUtilities.getRootPane;
 
+/**
+ * Listener methods to check if a mouse or escape key has been clicked. Used to close Viewer if clicked.
+ *
+ */
 public class Input {
     private final Frame frame;
 
     public Input(Frame frame){
         this.frame = frame;
     }
+
+    /**
+     * Listens for mouse clicks.
+     */
     public void attachMouseEvent(){
         this.frame.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent exit) {
@@ -22,6 +30,10 @@ public class Input {
             }
         });
     }
+
+    /**
+     * Listens for clicks of the escape key.
+     */
     public void attachESCKeyEvent(){
         getRootPane(frame).getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Close");
         getRootPane(frame).getActionMap().put("Close", new AbstractAction() {

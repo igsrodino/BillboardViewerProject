@@ -2,6 +2,9 @@ package SocketWrench;
 
 import javax.swing.*;
 
+/**
+ * GUI for socketwrench to be able to send and get data from database.
+ */
 public class SocketWrench {
     public static void main(String args[]){
         try

@@ -7,6 +7,10 @@ import Viewer.Views.BillboardView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Main method to run Billboard
+ *
+ */
 public class Viewer {
     public static void main(String args[]){
         try

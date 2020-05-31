@@ -2,16 +2,11 @@ package Server.Models;
 
 import Server.Utilities.Database;
 
-
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import java.sql.*;
-import java.sql.Statement;
-
 import java.util.ArrayList;
 
 /**
@@ -25,6 +20,7 @@ public class UserModel {
     private String salt;
     private int userID;
     private ArrayList<String> permissions;
+
     /** Constructs the User object
     * @param dbConnection allows access to the database via the connection established at server start
      * */
@@ -43,7 +39,6 @@ public class UserModel {
      */
     public String getUsername(int ID){
 
-        //return this.username;
         ResultSet rs = this.dbConn.runSelectQuery("select username from users where id =" + ID+")");
         try{
             while(rs.next()){
@@ -65,9 +60,7 @@ public class UserModel {
         ResultSet rs = this.dbConn.runSelectQuery("SELECT password FROM cab302.users where users.username ='" + username + "'");
         while (rs.next()) {
             password = rs.getString("password");
-            // System.out.println(password);
         }
-
 
         return (password);
     }
@@ -76,14 +69,12 @@ public class UserModel {
      * Gets the salt
      * @return the salt
      */
-
     public String getSalt(String username) throws SQLException {
 
             String salt = "";
             ResultSet rs = this.dbConn.runSelectQuery("SELECT salt FROM cab302.users where users.username ='" + username + "'");
             while (rs.next()) {
                 salt = rs.getString("salt");
-                //  System.out.println(salt);
             }
             return (salt);
         }
@@ -101,20 +92,17 @@ public class UserModel {
         }
         return useridcheck;
 
-
     }
+
     /**
      * Gets the permissions
      * @return list of permissions
      * @param userID
      */
     public ArrayList<String> getPermissions(int userID) throws SQLException {
-        //return this.permissions;
-        //String name = getUsername(UserID)
-       // int UserId =
+
         ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= "+userID);
-       // ResultSet rs = this.dbConn.runSelectQuery("select * from permissions where user= 47");
-        //System.out.print(rs.getFetchSize());
+
         try{
             while(rs.next()){
                 //System.out.println(rs.getInt("create_billboards"));
@@ -130,12 +118,12 @@ public class UserModel {
                 if(rs.getBoolean("edit_users")){
                     this.permissions.add("edit_users");
                 }
-                //this.permissions.add(rs.getString("permission"));
+
             }
-        }catch(Exception e){
+        }
+        catch(Exception e){
             System.out.println(e.getMessage());
         }
-        //this.permissions.add("edit_billboards");
         return permissions;
 
     }
@@ -150,14 +138,12 @@ public class UserModel {
         ResultSet rs = this.dbConn.runSelectQuery("SELECT username FROM cab302.users where users.username ='" +userID+"'");
         while ( rs.next() ) {
             useridcheck = rs.getInt("username");
-            // System.out.println(useridcheck);
         }
         if(userID == useridcheck) {
 
             return(true);
         }
-        else
-        {
+        else {
             return(false);
         }
     }
@@ -169,19 +155,15 @@ public class UserModel {
      */
     public boolean getUser(String username) throws SQLException {
 
-
         String Usernamecheck = "";
         ResultSet rs = this.dbConn.runSelectQuery("SELECT username FROM cab302.users where users.username ='" +username+"'");
         while ( rs.next() ) {
             Usernamecheck = rs.getString("username");
-           // System.out.println(Usernamecheck);
         }
         if(username.equals(Usernamecheck)) {
-
             return(true);
         }
-        else
-        {
+        else {
             return(false);
         }
     }
@@ -197,24 +179,16 @@ public class UserModel {
      */
     public boolean setUserPassword(String Username, String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
 
-
         if(getUser(Username)) {
             this.dbConn.runUpdateQuery("update users set users.password = '" + password + "' where users.username = '" + Username + "'");
             this.dbConn.runUpdateQuery("update users set users.salt = '" + salt + "' where users.username = '" + Username + "'");
             return (true);
-
         }
-        else
-            {
-                return (false);
-
+        else {
+            return (false);
             }
 
-
-
-
     }
-
 
     /**
      *
@@ -222,25 +196,17 @@ public class UserModel {
      * @param password unshased new password
      * @param name name of new user
      * @return if sucsessfull returns 1
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws UnsupportedEncodingException
+     * @throws SQLException
      */
-    public boolean createuser(String username , String name , String password, String salt) throws NoSuchAlgorithmException, InvalidKeySpecException, UnsupportedEncodingException, SQLException {
-
+    public boolean createuser(String username , String name , String password, String salt) throws SQLException {
 
         if(!getUser(username)) {
             this.dbConn.runUpdateQuery("INSERT INTO users (username, password, name, salt) VALUES("+"'"+username+"',"+"'"+password+"',"+"'"+name+"','"+salt+"')");
             return (true);
-
         }
-        else
-            {
-                return (false);
-
+        else {
+            return (false);
             }
-
-
 
     }
 
@@ -251,17 +217,12 @@ public class UserModel {
      */
     public boolean deleteUser(String Username) throws SQLException {
 
-
-
         if(getUser(Username)) {
             this.dbConn.runUpdateQuery("DELETE FROM users WHERE username = '"+Username+"'");
             return (true);
-
         }
-        else
-        {
+        else {
             return (false);
-
         }
 
     }
@@ -301,38 +262,6 @@ public class UserModel {
             System.out.println(e);
         }
         return result == 1;
-//        boolean success = false;
-//        try{
-//            ArrayList<String> existing_perm = getPermissions(userID);
-//            for(String perm : req_permissions){
-//                if(existing_perm.contains(perm) == true){
-//                    //permissions.set(permissions.indexOf(perm), perm);
-//                    //this.permissions.remove(perm);
-//                    //System.out.println("User already has this permission");
-//                    success = false;
-//                }
-//                else{
-//                    if(perm=="create_billboards"||perm=="edit_billboards"||perm=="schedule_billboards"||perm=="edit_users"){
-//                        this.permissions.add(perm);
-//
-//                        success = true;
-//                    }
-//                    else{
-//                        //System.out.println("This permission does not exist in the database");
-//                        success = false;
-//                    }
-//
-//                }
-//
-//            }
-//           // return success;
-//        }catch(Exception e){
-//            System.out.println(e.getMessage());
-//        }
-//        finally{
-//            System.out.println("finally block always executed for resource clean-up");
-//            return success;
-//        }
 
     }
 }
