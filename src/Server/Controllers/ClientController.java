@@ -155,9 +155,9 @@ public class ClientController implements Runnable {
                         response = userController.login(username, password);
                         break;
                     case "listUsers":
-                        if (userController.checkPermission(userID, "edit_users")) {
+                        //if (userController.checkPermission(userID, "edit_users")) {
                             response = userController.listUsers();
-                        }
+                        //}
                         break;
                     case "createUser":
                          {
