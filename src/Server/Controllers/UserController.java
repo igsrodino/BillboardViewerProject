@@ -60,7 +60,7 @@ public class UserController {
         {
             hashedpass = this.model.getPassword(username);
             String salt = this.model.getSalt(username);
-            System.out.println(salt);
+            //System.out.println(salt);
             hashedpass2 = UserAuthentication.generateHash(password, salt);
 
         }
@@ -196,7 +196,7 @@ public class UserController {
      */
     public String listUsers(){
 
-       String currentusers = UserAuthentication.listusers();
+      String currentusers = UserAuthentication.listusers();
 
 
 
